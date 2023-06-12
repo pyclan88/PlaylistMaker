@@ -33,16 +33,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="244dp"
-        android:layout_marginTop="24dp"
+        android:layout_height="@dimen/settings_menu_hi"
+        android:layout_marginTop="@dimen/settings_menu_marTop"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingStart="@dimen/set_but_pad_start"
-            android:paddingEnd="14dp"
+            android:paddingStart="@dimen/settings_button_padStart"
+            android:paddingEnd="@dimen/offset14"
             android:text="@string/dark_theme"
             android:textColor="@color/black_text"
             android:textSize="@dimen/settings_menu_text_size" />
@@ -52,8 +52,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:backgroundTint="@color/white"
-            android:paddingStart="@dimen/set_but_pad_start"
-            android:paddingEnd="18dp"
+            android:paddingStart="@dimen/settings_button_padStart"
+            android:paddingEnd="@dimen/offset18"
             android:text="@string/share_the_app"
             android:textAlignment="textStart"
             android:textAllCaps="false"
@@ -68,8 +68,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:backgroundTint="@color/white"
-            android:paddingStart="@dimen/set_but_pad_start"
-            android:paddingEnd="14dp"
+            android:paddingStart="@dimen/settings_button_padStart"
+            android:paddingEnd="@dimen/offset14"
             android:text="@string/contact_support"
             android:textAlignment="textStart"
             android:textAllCaps="false"
@@ -84,7 +84,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:backgroundTint="@color/white"
-            android:paddingStart="@dimen/set_but_pad_start"
+            android:paddingStart="@dimen/settings_button_padStart"
             android:paddingEnd="20dp"
             android:text="@string/user_agreement"
             android:textAlignment="textStart"

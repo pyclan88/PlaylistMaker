@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/blue_main_menu_background"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingTop="14dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="28dp">
+    android:paddingStart="@dimen/main_menu_pad_left"
+    android:paddingTop="@dimen/main_menu_pad_top"
+    android:paddingEnd="@dimen/main_menu_pad_right"
+    android:paddingBottom="@dimen/main_menu_pad_bottom">
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/white"
             android:text="@string/music_library"
             android:textAllCaps="false"
             android:textColor="@color/black_text"
@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:backgroundTint="#FFFFFF"
+            android:backgroundTint="@color/white"
             android:text="@string/settings"
             android:textAllCaps="false"
             android:textColor="@color/black_text"
@@ -79,36 +79,3 @@
 
     </LinearLayout>
 </LinearLayout>
-
-
-    <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="@dimen/medium_padding"
-            android:text="@string/title_hello"
-            android:textColor="@color/black"
-            android:textSize="@dimen/primary_text_size"/>
-    </FrameLayout>-->
-
-    <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--    xmlns:tools="http://schemas.android.com/tools"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent"-->
-    <!--    tools:context=".MainActivity">-->
-
-    <!--    <TextView-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Hello World!"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->

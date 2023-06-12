@@ -5,10 +5,18 @@
     <dimen name="main_menu_text_size">22sp</dimen>
     <dimen name="main_menu_corner_radius">16dp</dimen>
     <dimen name="main_menu_icon_padding">10dp</dimen>
+    <dimen name="main_menu_pad_left">16dp</dimen>
+    <dimen name="main_menu_pad_top">14dp</dimen>
+    <dimen name="main_menu_pad_right">16dp</dimen>
+    <dimen name="main_menu_pad_bottom">28dp</dimen>
     <dimen name="settings_menu_text_size">16sp</dimen>
+    <dimen name="settings_menu_hi">244dp</dimen>
+    <dimen name="settings_menu_marTop">24dp</dimen>
+    <dimen name="offset14">14dp</dimen>
+    <dimen name="settings_button_padStart">16dp</dimen>
+    <dimen name="offset18">18dp</dimen>
     <dimen name="return_icon_size">48dp</dimen>
     <dimen name="head_margin">4dp</dimen>
     <dimen name="head_text_start">12dp</dimen>
     <dimen name="head_text_top">10dp</dimen>
-    <dimen name="set_but_pad_start">16dp</dimen>
 </resources>

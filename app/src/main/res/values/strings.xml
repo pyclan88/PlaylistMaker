@@ -10,4 +10,6 @@
     <string name="user_agreement">Пользовательское соглашение</string>
     <string name="title_hello">Привет, Практикум</string>
     <string name="return_button">return to main menu</string>
+    <string name="media_library_text">Empty Media-library activity</string>
+    <string name="search_text">Empty Search activity</string>
 </resources>
