@@ -1,18 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@color/blue_main_menu_background"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/main_menu_pad_left"
+    android:paddingTop="@dimen/main_menu_pad_top"
+    android:paddingEnd="@dimen/main_menu_pad_right"
+    android:paddingBottom="@dimen/main_menu_pad_bottom">
 
-    <TextView
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@string/main_menu"
+            android:textColor="@color/white"
+            android:textSize="@dimen/main_menu_text_size" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/search_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="@string/search"
+            android:textAllCaps="false"
+            android:textColor="@color/black_text"
+            android:textSize="@dimen/main_menu_text_size"
+            app:cornerRadius="@dimen/main_menu_corner_radius"
+            app:icon="@drawable/ic_search"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/main_menu_icon_padding"
+            app:iconTint="@color/black_text" />
+
+        <Button
+            android:id="@+id/media_library_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="@string/music_library"
+            android:textAllCaps="false"
+            android:textColor="@color/black_text"
+            android:textSize="@dimen/main_menu_text_size"
+            app:cornerRadius="@dimen/main_menu_corner_radius"
+            app:icon="@drawable/ic_media_library"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/main_menu_icon_padding"
+            app:iconTint="@color/black_text" />
+
+        <Button
+            android:id="@+id/settings_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="@string/settings"
+            android:textAllCaps="false"
+            android:textColor="@color/black_text"
+            android:textSize="@dimen/main_menu_text_size"
+            app:cornerRadius="@dimen/main_menu_corner_radius"
+            app:icon="@drawable/ic_settings"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/main_menu_icon_padding"
+            app:iconTint="@color/black_text" />
+
+    </LinearLayout>
+</LinearLayout>
