@@ -12,9 +12,9 @@
     <dimen name="settings_menu_text_size">16sp</dimen>
     <dimen name="settings_menu_hi">244dp</dimen>
     <dimen name="settings_menu_marTop">24dp</dimen>
+    <dimen name="offset16">16dp</dimen>
     <dimen name="offset14">14dp</dimen>
-    <dimen name="settings_button_padStart">16dp</dimen>
-    <dimen name="offset18">18dp</dimen>
+    <dimen name="offset20">20dp</dimen>
     <dimen name="return_icon_size">48dp</dimen>
     <dimen name="head_margin">4dp</dimen>
     <dimen name="head_text_start">12dp</dimen>
