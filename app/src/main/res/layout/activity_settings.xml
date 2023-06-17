@@ -34,6 +34,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_menu_hi"
+        android:layout_marginStart="@dimen/offset16"
         android:layout_marginTop="@dimen/settings_menu_marTop"
         android:orientation="vertical">
 
@@ -41,59 +42,86 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingStart="@dimen/settings_button_padStart"
+            android:paddingStart="0dp"
             android:paddingEnd="@dimen/offset14"
             android:text="@string/dark_theme"
             android:textColor="@color/black_text"
             android:textSize="@dimen/settings_menu_text_size" />
 
-        <Button
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:paddingStart="@dimen/settings_button_padStart"
-            android:paddingEnd="@dimen/offset18"
-            android:text="@string/share_the_app"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@color/black_text"
-            android:textSize="@dimen/settings_menu_text_size"
-            app:icon="@drawable/ic_share"
-            app:iconGravity="end"
-            app:iconTint="@color/gray_icon" />
+            android:layout_weight="1">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:paddingStart="@dimen/settings_button_padStart"
-            android:paddingEnd="@dimen/offset14"
-            android:text="@string/contact_support"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@color/black_text"
-            android:textSize="@dimen/settings_menu_text_size"
-            app:icon="@drawable/ic_support"
-            app:iconGravity="end"
-            app:iconTint="@color/gray_icon" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:gravity="center"
+                android:text="@string/share_the_app"
+                android:textColor="@color/black_text"
+                android:textSize="@dimen/settings_menu_text_size" />
 
-        <Button
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:paddingStart="@dimen/offset16"
+                android:paddingEnd="@dimen/offset16"
+                android:src="@drawable/ic_share"
+                app:iconTint="@color/gray_icon" />
+
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:paddingStart="@dimen/settings_button_padStart"
-            android:paddingEnd="20dp"
-            android:text="@string/user_agreement"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@color/black_text"
-            android:textSize="@dimen/settings_menu_text_size"
-            app:icon="@drawable/ic_arrow_forward"
-            app:iconGravity="end"
-            app:iconTint="@color/gray_icon" />
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:gravity="center"
+                android:text="@string/contact_support"
+                android:textColor="@color/black_text"
+                android:textSize="@dimen/settings_menu_text_size" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:paddingStart="@dimen/offset14"
+                android:paddingEnd="@dimen/offset14"
+                android:src="@drawable/ic_support"
+                app:iconTint="@color/gray_icon" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:gravity="center"
+                android:text="@string/user_agreement"
+                android:textColor="@color/black_text"
+                android:textSize="@dimen/settings_menu_text_size" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:paddingStart="@dimen/offset20"
+                android:paddingEnd="@dimen/offset20"
+                android:src="@drawable/ic_arrow_forward"
+                app:iconTint="@color/gray_icon" />
+
+        </FrameLayout>
 
     </LinearLayout>
 
