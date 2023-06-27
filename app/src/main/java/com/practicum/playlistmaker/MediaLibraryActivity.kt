@@ -18,7 +18,7 @@ class MediaLibraryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_medialibrary)
 
-        val backButton = findViewById<ImageButton>(R.id.back_from_medialibrary_button)
+        val backButton = findViewById<ImageButton>(R.id.backFromMedialibraryButton)
 
         backButton.setOnClickListener {
             finish()

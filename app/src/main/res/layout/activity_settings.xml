@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?attr/background"
     android:orientation="vertical">
-
+<!--?attr/background-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,114 +14,71 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/back_from_settings_button"
+            android:id="@+id/backFromSettingsButton"
             android:layout_width="@dimen/return_icon_size"
             android:layout_height="@dimen/return_icon_size"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="?attr/background"
             android:contentDescription="@string/return_button"
-            android:src="@drawable/ic_arrow_back" />
+            android:src="@drawable/ic_arrow_back"
+            app:tint="?attr/colorOnBackground" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/head_text_start"
             android:layout_marginTop="@dimen/head_text_top"
+            android:fontFamily="@font/ys_display_medium"
             android:text="@string/settings"
-            android:textColor="@color/black_text"
-            android:textSize="@dimen/main_menu_text_size" />
+            android:textColor="?attr/colorOnBackground"
+            android:textFontWeight="500"
+            android:textSize="@dimen/text22" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/settings_menu_hi"
-        android:layout_marginStart="@dimen/offset16"
-        android:layout_marginTop="@dimen/settings_menu_marTop"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/offset24"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingStart="0dp"
+            android:layout_height="@dimen/button_height61"
+            android:fontFamily="@font/ys_display_regular"
+            android:paddingStart="@dimen/offset16"
             android:paddingEnd="@dimen/offset14"
             android:text="@string/dark_theme"
-            android:textColor="@color/black_text"
-            android:textSize="@dimen/settings_menu_text_size" />
+            android:textColor="?attr/colorOnBackground"
+            android:textFontWeight="400"
+            android:textSize="@dimen/text16"
+            app:thumbTint="?attr/thumbTint"
+            app:trackTint="?attr/trackTint" />
 
-        <FrameLayout
+        <Button
+            android:id="@+id/share_button"
+            style="@style/SettingsButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="@dimen/button_height61"
+            android:drawableEnd="@drawable/ic_share"
+            android:paddingEnd="@dimen/offset16"
+            android:text="@string/share_the_app" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:gravity="center"
-                android:text="@string/share_the_app"
-                android:textColor="@color/black_text"
-                android:textSize="@dimen/settings_menu_text_size" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:paddingStart="@dimen/offset16"
-                android:paddingEnd="@dimen/offset16"
-                android:src="@drawable/ic_share"
-                app:iconTint="@color/gray_icon" />
-
-        </FrameLayout>
-
-        <FrameLayout
+        <Button
+            android:id="@+id/support_button"
+            style="@style/SettingsButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="@dimen/button_height61"
+            android:drawableEnd="@drawable/ic_support"
+            android:paddingEnd="@dimen/offset14"
+            android:text="@string/contact_support" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:gravity="center"
-                android:text="@string/contact_support"
-                android:textColor="@color/black_text"
-                android:textSize="@dimen/settings_menu_text_size" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:paddingStart="@dimen/offset14"
-                android:paddingEnd="@dimen/offset14"
-                android:src="@drawable/ic_support"
-                app:iconTint="@color/gray_icon" />
-
-        </FrameLayout>
-
-        <FrameLayout
+        <Button
+            android:id="@+id/agreement_button"
+            style="@style/SettingsButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:gravity="center"
-                android:text="@string/user_agreement"
-                android:textColor="@color/black_text"
-                android:textSize="@dimen/settings_menu_text_size" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:paddingStart="@dimen/offset20"
-                android:paddingEnd="@dimen/offset20"
-                android:src="@drawable/ic_arrow_forward"
-                app:iconTint="@color/gray_icon" />
-
-        </FrameLayout>
+            android:layout_height="@dimen/button_height61"
+            android:drawableEnd="@drawable/ic_arrow_forward"
+            android:paddingEnd="20dp"
+            android:text="@string/user_agreement" />
 
     </LinearLayout>
 
