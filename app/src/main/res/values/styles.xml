@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MainButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">?attr/colorSurface</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/text22</item>
+        <item name="cornerRadius">@dimen/corner16</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/main_menu_icon_padding</item>
+        <item name="iconTint">?attr/colorOnSurface</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="SettingsButtonStyle">
+        <item name="android:backgroundTint">?attr/background</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/offset16</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">?attr/colorOnBackground</item>
+        <item name="android:textSize">@dimen/text16</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+    
+    <style name="BackHeader">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textColor">?attr/colorOnBackground</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+    
+    <style name="EditTextCursorStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:textCursorDrawable">@drawable/custom_cursor</item>
+    </style>
+
+</resources>

@@ -2,8 +2,25 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="background">@color/yp_white</item>
+        <item name="colorOnBackground">@color/yp_black</item>
+        <item name="colorSurface">@color/yp_white</item>
+        <item name="colorOnSurface">@color/yp_black</item>
+        <!-- Settings icons color.-->
+        <item name="iconTint">@color/yp_text_gray</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/yp_blue</item>
+        <item name="colorOnPrimary">@color/yp_white</item>
+        <!-- Switch color. -->
+        <item name="thumbTint">@color/yp_text_gray</item>
+        <item name="trackTint">@color/yp_light_gray</item>
+        <!-- Search color.-->
+        <item name="searchHintIcon">@color/yp_text_gray</item>
+        <item name="searchIcon">@color/yp_text_gray</item>
+        <item name="searchViewStyle">@color/yp_light_gray</item>
     </style>
 
-    <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
+    <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker">
+
+    </style>
 </resources>
