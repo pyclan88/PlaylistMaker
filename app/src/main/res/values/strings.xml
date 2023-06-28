@@ -11,4 +11,9 @@
     <string name="return_button">return to main menu</string>
     <string name="media_library_text">Empty Media-library activity</string>
     <string name="search_text">Empty Search activity</string>
+    <string name="share_link">https://practicum.yandex.ru/profile/android-developer/</string>
+    <string name="email_recipient">gumabemc@yandex.ru</string>
+    <string name="email_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="email_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="agreement_website">https://yandex.ru/legal/practicum_offer/</string>
 </resources>

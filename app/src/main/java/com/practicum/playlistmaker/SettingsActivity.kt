@@ -29,7 +29,7 @@ class SettingsActivity : AppCompatActivity() {
             val sendIntent = Intent().apply {
                 action = Intent.ACTION_SEND
                 type = "text/plain"
-                val textToShare = "https://practicum.yandex.ru/profile/android-developer/"
+                val textToShare = getString(R.string.share_link)
                 putExtra(Intent.EXTRA_TEXT, textToShare)
             }
             val shareIntent = Intent.createChooser(sendIntent, null)
@@ -41,11 +41,11 @@ class SettingsActivity : AppCompatActivity() {
             val sendIntent = Intent().apply {
                 action = Intent.ACTION_SENDTO
                 data = Uri.parse("mailto:")
-                val recipientEmail = "gumabemc@yandex.ru"
+                val recipientEmail = getString(R.string.email_recipient)
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(recipientEmail))
-                val subject = "Сообщение разработчикам и разработчицам приложения Playlist Maker"
+                val subject = getString(R.string.email_subject)
                 putExtra(Intent.EXTRA_SUBJECT, subject)
-                val message = "Спасибо разработчикам и разработчицам за крутое приложение!"
+                val message = getString(R.string.email_message)
                 putExtra(Intent.EXTRA_TEXT, message)
             }
             val supportIntent = Intent.createChooser(sendIntent, null)
@@ -54,7 +54,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val agreementButton = findViewById<Button>(R.id.agreement_button)
         agreementButton.setOnClickListener {
-            val websiteUrl = "https://yandex.ru/legal/practicum_offer/"
+            val websiteUrl = getString(R.string.agreement_website)
             val agreementIntent = Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl))
             startActivity(agreementIntent)
         }
