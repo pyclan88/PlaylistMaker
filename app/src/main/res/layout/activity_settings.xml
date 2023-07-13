@@ -36,13 +36,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/layout_height244"
         android:layout_marginTop="@dimen/offset24"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height61"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:fontFamily="@font/ys_display_regular"
             android:paddingStart="@dimen/offset16"
             android:paddingEnd="@dimen/offset14"
@@ -57,7 +58,8 @@
             android:id="@+id/share_button"
             style="@style/SettingsButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height61"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:drawableEnd="@drawable/ic_share"
             android:paddingEnd="@dimen/offset16"
             android:text="@string/share_the_app" />
@@ -66,7 +68,8 @@
             android:id="@+id/support_button"
             style="@style/SettingsButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height61"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:drawableEnd="@drawable/ic_support"
             android:paddingEnd="@dimen/offset14"
             android:text="@string/contact_support" />
@@ -75,7 +78,8 @@
             android:id="@+id/agreement_button"
             style="@style/SettingsButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height61"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:drawableEnd="@drawable/ic_arrow_forward"
             android:paddingEnd="20dp"
             android:text="@string/user_agreement" />

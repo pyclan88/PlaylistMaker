@@ -2,21 +2,15 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/yp_black</item>
-        <item name="colorOnPrimary">@color/yp_white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/yp_black</item>
-        <item name="colorSecondaryVariant">@color/yp_white</item>
-        <item name="colorOnSecondary">@color/yp_white</item>
-
-
         <item name="background">@color/yp_black</item>
         <item name="colorOnBackground">@color/yp_white</item>
         <item name="colorSurface">@color/yp_white</item>
         <item name="colorOnSurface">@color/yp_black</item>
+        <!-- Settings icons color.-->
         <item name="iconTint">@color/yp_white</item>
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/yp_black</item>
+        <item name="colorOnPrimary">@color/yp_white</item>
         <!-- Switch color. -->
         <item name="thumbTint">@color/yp_blue</item>
         <item name="trackTint">@color/yp_blue</item>
