@@ -8,12 +8,14 @@
     <dimen name="main_menu_pad_top">14dp</dimen>
     <dimen name="main_menu_pad_right">16dp</dimen>
     <dimen name="main_menu_pad_bottom">28dp</dimen>
+    <dimen name="text11">11sp</dimen>
     <dimen name="text16">16sp</dimen>
     <dimen name="text22">22sp</dimen>
-    <dimen name="button_height61">61dp</dimen>
+    <dimen name="layout_height244">244dp</dimen>
     <dimen name="offset4">4dp</dimen>
     <dimen name="offset8">8dp</dimen>
     <dimen name="offset12">12dp</dimen>
+    <dimen name="offset13">13dp</dimen>
     <dimen name="offset14">14dp</dimen>
     <dimen name="offset16">16dp</dimen>
     <dimen name="offset20">20dp</dimen>
@@ -22,4 +24,7 @@
     <dimen name="head_margin">4dp</dimen>
     <dimen name="head_text_start">12dp</dimen>
     <dimen name="head_text_top">10dp</dimen>
+    <dimen name="ellipse_offset13">13dp</dimen>
+    <dimen name="arrow_forward_offset24">24dp</dimen>
+    <dimen name="cover_size45">45dp</dimen>
 </resources>

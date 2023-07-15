@@ -38,8 +38,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val supportButton = findViewById<Button>(R.id.support_button)
         supportButton.setOnClickListener {
-            val sendIntent = Intent().apply {
-                action = Intent.ACTION_SENDTO
+            Intent(Intent.ACTION_SENDTO).apply { // }
                 data = Uri.parse("mailto:")
                 val recipientEmail = getString(R.string.email_recipient)
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(recipientEmail))
@@ -47,9 +46,8 @@ class SettingsActivity : AppCompatActivity() {
                 putExtra(Intent.EXTRA_SUBJECT, subject)
                 val message = getString(R.string.email_message)
                 putExtra(Intent.EXTRA_TEXT, message)
+                startActivity(Intent.createChooser(this, null))
             }
-            val supportIntent = Intent.createChooser(sendIntent, null)
-            startActivity(supportIntent)
         }
 
         val agreementButton = findViewById<Button>(R.id.agreement_button)
