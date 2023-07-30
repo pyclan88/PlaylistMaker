@@ -1,17 +1,18 @@
 package com.practicum.playlistmaker
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-class TrackViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
-    LayoutInflater.from(parentView.context)
-        .inflate(R.layout.track_view, parentView, false)
-){
+const val COVER_CORNER = 2
+
+
+class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val trackName: TextView = itemView.findViewById(R.id.track_name)
     private val artistName: TextView = itemView.findViewById(R.id.artist_name)
@@ -21,12 +22,13 @@ class TrackViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
     fun bind(track: Track) {
         trackName.text = track.trackName
         artistName.text = track.artistName
-        trackTime.text = track.trackTime
+        trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault())
+            .format(track.trackTimeMillis.toLong())
         Glide.with(itemView)
             .load(track.artworkUrl100)
             .placeholder(R.drawable.placeholder)
             .centerCrop()
-            .transform(RoundedCorners(10))
+            .transform(RoundedCorners(COVER_CORNER))
             .into(cover)
     }
 }
