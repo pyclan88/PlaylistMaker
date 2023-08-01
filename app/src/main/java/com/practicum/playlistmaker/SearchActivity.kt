@@ -44,6 +44,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var linearNothingFound: ViewGroup
     private lateinit var linearInternetError: ViewGroup
     private lateinit var refreshButton: Button
+    private lateinit var trackListReVi: RecyclerView
 
     companion object {
         private const val SEARCH_INPUT = "SEARCH_INPUT"
@@ -64,6 +65,11 @@ class SearchActivity : AppCompatActivity() {
         linearNothingFound = findViewById(R.id.linear_nothing_found)
         linearInternetError = findViewById(R.id.linear_internet_error)
         refreshButton = findViewById(R.id.refresh_button)
+        trackListReVi = findViewById<RecyclerView>(R.id.rv_search_track)
+
+        trackListReVi.layoutManager = LinearLayoutManager(this)
+        trackListReVi.adapter = trackAdapter
+        trackAdapter.tracks = trackList
 
         backButton.setOnClickListener {
             finish()
@@ -73,11 +79,19 @@ class SearchActivity : AppCompatActivity() {
             queryInput.setText("")
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(queryInput.windowToken, 0)
+
+            trackList.clear()
+            trackAdapter.notifyDataSetChanged()
+        }
+
+        setupSearchListener()
+
+        refreshButton.setOnClickListener {
+            performITunesSearch()
         }
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -85,24 +99,10 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-
             }
         }
 
         queryInput.addTextChangedListener(simpleTextWatcher)
-
-        val recyclerView = findViewById<RecyclerView>(R.id.rv_search_track)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        recyclerView.adapter = trackAdapter
-
-        trackAdapter.tracks = trackList
-
-        setupSearchListener()
-
-        refreshButton.setOnClickListener {
-            performITunesSearch()
-        }
     }
 
 
@@ -123,17 +123,12 @@ class SearchActivity : AppCompatActivity() {
                         } else showMessage(linearNothingFound, linearInternetError, "")
 
                     } else showMessage(
-                        linearInternetError,
-                        linearNothingFound,
-                        response.code().toString()
+                        linearInternetError, linearNothingFound, response.code().toString()
                     )
                 }
 
                 override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
-                    showMessage(
-                        linearInternetError,
-                        linearNothingFound,
-                        t.message.toString()
+                    showMessage(linearInternetError, linearNothingFound, t.message.toString()
                     )
                 }
 
@@ -150,6 +145,7 @@ class SearchActivity : AppCompatActivity() {
                 true
             }
             false
+
         }
     }
 
