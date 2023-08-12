@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="?attr/background"
     android:orientation="vertical">
-<!--?attr/background-->
+    <!--?attr/background-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,22 +40,30 @@
         android:layout_marginTop="@dimen/offset24"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.SwitchCompat
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/ys_display_regular"
-            android:paddingStart="@dimen/offset16"
-            android:paddingEnd="@dimen/offset14"
-            android:text="@string/dark_theme"
-            android:textColor="?attr/colorOnBackground"
-            android:textFontWeight="400"
-            android:textSize="@dimen/text16"
-            app:thumbTint="?attr/thumbTint"
-            app:trackTint="?attr/trackTint" />
+            android:layout_weight="1">
+
+            <TextView
+                style="@style/SettingsButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/dark_theme" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/themeSwitcher"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingEnd="@dimen/offset6"
+                app:thumbTint="?attr/thumbTint"
+                app:trackTint="?attr/trackTint" />
+
+        </FrameLayout>
 
         <Button
-            android:id="@+id/share_button"
+            android:id="@+id/shareButton"
             style="@style/SettingsButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -65,7 +73,7 @@
             android:text="@string/share_the_app" />
 
         <Button
-            android:id="@+id/support_button"
+            android:id="@+id/supportButton"
             style="@style/SettingsButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -75,13 +83,13 @@
             android:text="@string/contact_support" />
 
         <Button
-            android:id="@+id/agreement_button"
+            android:id="@+id/agreementButton"
             style="@style/SettingsButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:drawableEnd="@drawable/ic_arrow_forward"
-            android:paddingEnd="20dp"
+            android:paddingEnd="@dimen/offset20"
             android:text="@string/user_agreement" />
 
     </LinearLayout>

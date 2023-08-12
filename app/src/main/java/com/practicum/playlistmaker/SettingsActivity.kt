@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -24,7 +25,15 @@ class SettingsActivity : AppCompatActivity() {
         val backButton = findViewById<ImageButton>(R.id.backFromSettingsButton)
         backButton.setOnClickListener { finish() }
 
-        val shareButton = findViewById<Button>(R.id.share_button)
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+        }
+
+        val shareButton = findViewById<Button>(R.id.shareButton)
         shareButton.setOnClickListener {
             val sendIntent = Intent().apply {
                 action = Intent.ACTION_SEND
@@ -36,7 +45,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(shareIntent)
         }
 
-        val supportButton = findViewById<Button>(R.id.support_button)
+        val supportButton = findViewById<Button>(R.id.supportButton)
         supportButton.setOnClickListener {
             Intent(Intent.ACTION_SENDTO).apply { // }
                 data = Uri.parse("mailto:")
@@ -50,12 +59,21 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        val agreementButton = findViewById<Button>(R.id.agreement_button)
+        val agreementButton = findViewById<Button>(R.id.agreementButton)
         agreementButton.setOnClickListener {
             val websiteUrl = getString(R.string.agreement_website)
             val agreementIntent = Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl))
             startActivity(agreementIntent)
         }
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        val sharedPrefs = getSharedPreferences(THEME_SWITCH_PREFERENCES, MODE_PRIVATE)
+        sharedPrefs.edit()
+            .putBoolean(THEME_SWITCH_KEY, (applicationContext as App).darkTheme)
+            .apply()
     }
 }

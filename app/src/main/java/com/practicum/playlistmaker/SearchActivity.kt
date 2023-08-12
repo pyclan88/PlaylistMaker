@@ -13,6 +13,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +24,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
+
+const val SEARCH_HISTORY_PREFERENCES = "search_history_preferences"
+const val SEARCH_HISTORY_KEY = "key_for_search_history"
 
 class SearchActivity : AppCompatActivity() {
 
@@ -37,6 +43,7 @@ class SearchActivity : AppCompatActivity() {
     private var searchInput: String = ""
     private val trackList = ArrayList<Track>()
     private val trackAdapter: TrackAdapter = TrackAdapter()
+    private val historyAdapter: HistoryAdapter = HistoryAdapter()
 
     private lateinit var backButton: ImageButton
     private lateinit var clearButton: ImageView
@@ -45,6 +52,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var linearInternetError: ViewGroup
     private lateinit var refreshButton: Button
     private lateinit var trackListReVi: RecyclerView
+    private lateinit var youSearched: TextView
+    private lateinit var clearHistory: Button
+    private lateinit var searchScroll: ScrollView
 
     companion object {
         private const val SEARCH_INPUT = "SEARCH_INPUT"
@@ -60,16 +70,22 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         backButton = findViewById(R.id.backFromSearchButton)
-        clearButton = findViewById(R.id.clearIcon)
+        clearButton = findViewById(R.id.clear_icon)
         queryInput = findViewById(R.id.searchEditText)
         linearNothingFound = findViewById(R.id.linear_nothing_found)
         linearInternetError = findViewById(R.id.linear_internet_error)
         refreshButton = findViewById(R.id.refresh_button)
-        trackListReVi = findViewById<RecyclerView>(R.id.rv_search_track)
+        trackListReVi = findViewById(R.id.rv_search_track)
+        youSearched = findViewById(R.id.you_searched)
+        clearHistory = findViewById(R.id.clear_history)
+        searchScroll = findViewById(R.id.search_scroll)
 
         trackListReVi.layoutManager = LinearLayoutManager(this)
         trackListReVi.adapter = trackAdapter
+
         trackAdapter.tracks = trackList
+
+        val historyOfTracks = HistoryAdapter.clickedTracks
 
         backButton.setOnClickListener {
             finish()
@@ -79,9 +95,23 @@ class SearchActivity : AppCompatActivity() {
             queryInput.setText("")
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(queryInput.windowToken, 0)
-
             trackList.clear()
+        }
+
+        val sharedPrefs = getSharedPreferences(SEARCH_HISTORY_PREFERENCES, MODE_PRIVATE)
+
+        clearHistory.setOnClickListener {
+            historyOfTracks.clear()
+            youSearched.visibility = View.GONE
+            clearHistory.visibility = View.GONE
+            SearchHistory(sharedPrefs).saveHistory()
             trackAdapter.notifyDataSetChanged()
+        }
+
+        if (historyOfTracks.isEmpty()) historyOfTracks.addAll(SearchHistory(sharedPrefs).readHistory())
+        if (historyOfTracks.isNotEmpty()){
+            trackListReVi.adapter = historyAdapter
+            showHistory()
         }
 
         setupSearchListener()
@@ -96,6 +126,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
+                searchScroll.visibility = if (queryInput.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -105,8 +136,25 @@ class SearchActivity : AppCompatActivity() {
         queryInput.addTextChangedListener(simpleTextWatcher)
     }
 
+    override fun onStop() {
+        super.onStop()
+
+        val sharedPrefs = getSharedPreferences(SEARCH_HISTORY_PREFERENCES, MODE_PRIVATE)
+        SearchHistory(sharedPrefs).saveHistory()
+    }
+
+    private fun showHistory() {
+        historyAdapter.notifyDataSetChanged()
+        youSearched.visibility = View.VISIBLE
+        clearHistory.visibility = View.VISIBLE
+    }
 
     private fun performITunesSearch() {
+        trackListReVi.adapter = trackAdapter
+        youSearched.visibility = View.GONE
+        clearHistory.visibility = View.GONE
+        searchScroll.visibility = View.VISIBLE
+
         iTunesService.search(queryInput.text.toString())
             .enqueue(object : Callback<ITunesResponse> {
                 override fun onResponse(
@@ -117,6 +165,7 @@ class SearchActivity : AppCompatActivity() {
                         trackList.clear()
                         if (response.body()?.results?.isNotEmpty() == true) {
                             trackList.addAll(response.body()?.results!!)
+                            trackAdapter.tracks = trackList
                             trackAdapter.notifyDataSetChanged()
                             linearNothingFound.visibility = View.GONE
                             linearInternetError.visibility = View.GONE
@@ -128,13 +177,13 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
-                    showMessage(linearInternetError, linearNothingFound, t.message.toString()
+                    showMessage(
+                        linearInternetError, linearNothingFound, t.message.toString()
                     )
                 }
 
             })
     }
-
 
     private fun setupSearchListener() {
         queryInput.setOnEditorActionListener { _, actionId, _ ->
@@ -148,7 +197,6 @@ class SearchActivity : AppCompatActivity() {
 
         }
     }
-
 
     private fun showMessage(fstLinear: ViewGroup, sndLinear: ViewGroup, additionalMessage: String) {
         fstLinear.visibility = View.VISIBLE

@@ -2,7 +2,10 @@ package com.practicum.playlistmaker
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+
+const val MAX_NUM_OF_HIST_TRACKS = 10
 
 class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
@@ -13,9 +16,16 @@ class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
         return TrackViewHolder(view)
     }
 
-    override fun getItemCount(): Int  = tracks.size
+    override fun getItemCount(): Int = tracks.size
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks[position])
+        val track = tracks[position]
+        holder.bind(track)
+        holder.itemView.findViewById<LinearLayout>(R.id.track_view).setOnClickListener {
+            val historyTracks = HistoryAdapter.clickedTracks
+            historyTracks.removeIf { it.trackId == track.trackId }
+            if (historyTracks.size == MAX_NUM_OF_HIST_TRACKS) historyTracks.removeAt(historyTracks.size - 1)
+            historyTracks.add(0, track)
+        }
     }
 }
