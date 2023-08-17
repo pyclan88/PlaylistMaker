@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 const val MAX_NUM_OF_HIST_TRACKS = 10
 
-class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter(private val historyAdapter: HistoryAdapter) : RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks = ArrayList<Track>()
 
@@ -22,7 +22,7 @@ class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
         val track = tracks[position]
         holder.bind(track)
         holder.itemView.findViewById<LinearLayout>(R.id.track_view).setOnClickListener {
-            val historyTracks = HistoryAdapter.clickedTracks
+            val historyTracks = historyAdapter.clickedTracks
             historyTracks.removeIf { it.trackId == track.trackId }
             if (historyTracks.size == MAX_NUM_OF_HIST_TRACKS) historyTracks.removeAt(historyTracks.size - 1)
             historyTracks.add(0, track)

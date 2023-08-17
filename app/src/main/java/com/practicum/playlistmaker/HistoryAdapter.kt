@@ -7,9 +7,7 @@ import kotlin.collections.ArrayList
 
 class HistoryAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
-    companion object {
     var clickedTracks = ArrayList<Track>()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)

@@ -6,18 +6,16 @@ import com.google.gson.Gson
 
 class SearchHistory(private val sharedPreferences: SharedPreferences) {
 
-    private val historyList = HistoryAdapter.clickedTracks
-
-    fun saveHistory() {
+    fun saveHistory(historyList: ArrayList<Track>) {
         val jsonHistoryOfTracks = Gson().toJson(historyList)
         sharedPreferences.edit()
-            .putString(SEARCH_HISTORY_KEY, jsonHistoryOfTracks)
+            .putString(SearchActivity.SEARCH_HISTORY_KEY, jsonHistoryOfTracks)
             .apply()
     }
 
-    fun readHistory(): Array<Track> {
+    fun readHistory(): List<Track> {
         val jsonHistoryOfTracks =
-            sharedPreferences.getString(SEARCH_HISTORY_KEY, null) ?: return emptyArray()
-        return Gson().fromJson(jsonHistoryOfTracks, Array<Track>::class.java)
+            sharedPreferences.getString(SearchActivity.SEARCH_HISTORY_KEY, null) ?: return emptyList()
+        return Gson().fromJson(jsonHistoryOfTracks, Array<Track>::class.java).toList()
     }
 }
