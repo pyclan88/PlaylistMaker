@@ -11,7 +11,6 @@ import java.util.Locale
 
 const val COVER_CORNER = 2
 
-
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val trackName: TextView = itemView.findViewById(R.id.track_name)

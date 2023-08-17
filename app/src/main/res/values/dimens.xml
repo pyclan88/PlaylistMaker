@@ -20,6 +20,7 @@
     <dimen name="offset13">13dp</dimen>
     <dimen name="offset14">14dp</dimen>
     <dimen name="offset16">16dp</dimen>
+    <dimen name="offset18">18dp</dimen>
     <dimen name="offset20">20dp</dimen>
     <dimen name="offset24">24dp</dimen>
     <dimen name="offset102">102dp</dimen>
@@ -33,4 +34,12 @@
     <dimen name="refresh_width">91dp</dimen>
     <dimen name="refresh_height">36dp</dimen>
     <dimen name="refresh_corner">54dp</dimen>
+    <dimen name="offset6">6dp</dimen>
+    <dimen name="font_weight500">500</dimen>
+    <dimen name="offset42">42dp</dimen>
+    <dimen name="offset26">26dp</dimen>
+    <dimen name="height36">36dp</dimen>
+    <dimen name="padding16">16dp</dimen>
+    <dimen name="padding14">14dp</dimen>
+
 </resources>
