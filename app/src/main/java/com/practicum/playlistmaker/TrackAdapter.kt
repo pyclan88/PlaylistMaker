@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -26,6 +27,10 @@ class TrackAdapter(private val historyAdapter: HistoryAdapter) : RecyclerView.Ad
             historyTracks.removeIf { it.trackId == track.trackId }
             if (historyTracks.size == MAX_NUM_OF_HIST_TRACKS) historyTracks.removeAt(historyTracks.size - 1)
             historyTracks.add(0, track)
+
+            val intent = Intent(holder.itemView.context, AudioPlayerActivity::class.java)
+            holder.itemView.context.startActivity(intent)
+            AudioPlayerActivity.currentTrack = track
         }
     }
 }

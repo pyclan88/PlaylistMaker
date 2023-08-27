@@ -38,7 +38,6 @@ class SearchActivity : AppCompatActivity() {
 
     private var searchInput: String = ""
     private val trackList = ArrayList<Track>()
-    private val historyAdapter: HistoryAdapter = HistoryAdapter()
     private val trackAdapter: TrackAdapter = TrackAdapter(historyAdapter)
 
     private var ibBackButton: ImageButton? = null
@@ -53,6 +52,7 @@ class SearchActivity : AppCompatActivity() {
     private var svSearch: ScrollView? = null
 
     companion object {
+        val historyAdapter: HistoryAdapter = HistoryAdapter()
         private const val SEARCH_INPUT = "SEARCH_INPUT"
         const val SEARCH_HISTORY_PREFERENCES = "search_history_preferences"
         const val SEARCH_HISTORY_KEY = "key_for_search_history"
@@ -111,7 +111,6 @@ class SearchActivity : AppCompatActivity() {
             rvTracks?.adapter = historyAdapter
             showHistory()
         }
-
         setupSearchListener()
 
         bRefreshButton?.setOnClickListener {

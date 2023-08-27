@@ -7,4 +7,6 @@
     <color name="yp_background">#801A1B22</color>
     <color name="yp_red">#F56B6C</color>
     <color name="yp_blue">#3772E7</color>
+    <color name="yp_gray_icon_light">#C5C6C7</color>
+    <color name="yp_gray_icon_night">#535459</color>
 </resources>
