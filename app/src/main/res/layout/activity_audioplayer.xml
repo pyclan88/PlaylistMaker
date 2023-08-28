@@ -9,7 +9,7 @@
         android:id="@+id/backFromAudioPlayer"
         android:layout_width="@dimen/return_icon_size"
         android:layout_height="@dimen/return_icon_size"
-        android:layout_marginStart="@dimen/offset4"
+        android:layout_margin="@dimen/offset4"
         android:backgroundTint="?attr/background"
         android:contentDescription="@string/return_button"
         android:src="@drawable/ic_arrow_back"
@@ -35,14 +35,16 @@
         android:id="@+id/cover"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/offset26"
         android:layout_marginBottom="@dimen/offset24"
         android:scaleType="centerCrop"
-        android:src="@drawable/placeholder"
         app:layout_constraintBottom_toTopOf="@id/trackName"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@id/rightTopGuideline"
+        app:layout_constraintStart_toEndOf="@id/backFromAudioPlayer"
         app:layout_constraintStart_toStartOf="@id/leftTopGuideline"
-        app:layout_constraintTop_toBottomOf="@id/backFromAudioPlayer" />
+        app:layout_constraintTop_toBottomOf="@id/backFromAudioPlayer"
+        app:srcCompat="@drawable/placeholder" />
 
     <TextView
         android:id="@+id/trackName"
@@ -71,41 +73,36 @@
         app:layout_constraintStart_toStartOf="@id/leftTopGuideline"
         tools:text="The Beatles" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/addToPlaylistButton"
         android:layout_width="@dimen/playerButton51"
         android:layout_height="@dimen/playerButton51"
-        android:background="@drawable/round_button"
-        android:src="@drawable/ic_add_to_playlist"
         app:layout_constraintBottom_toBottomOf="@id/playButton"
         app:layout_constraintEnd_toStartOf="@id/playButton"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@id/leftTopGuideline"
         app:layout_constraintTop_toTopOf="@id/playButton"
-        app:layout_constraintVertical_bias="0.51" />
+        app:srcCompat="@drawable/ic_add_to_playlist" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/playButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginBottom="@dimen/offset4"
-        android:background="?attr/background"
-        android:src="@drawable/ic_play_button"
         app:layout_constraintBottom_toTopOf="@id/playbackTime"
         app:layout_constraintEnd_toStartOf="@id/addToFavoriteButton"
         app:layout_constraintStart_toEndOf="@id/addToPlaylistButton"
-        app:tint="?attr/colorOnBackground" />
+        app:srcCompat="@drawable/ic_play_button" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/addToFavoriteButton"
         android:layout_width="@dimen/playerButton51"
         android:layout_height="@dimen/playerButton51"
-        android:background="@drawable/round_button"
-        android:src="@drawable/ic_add_to_favorite"
         app:layout_constraintBottom_toBottomOf="@id/playButton"
         app:layout_constraintEnd_toStartOf="@id/rightTopGuideline"
         app:layout_constraintStart_toEndOf="@id/playButton"
-        app:layout_constraintTop_toTopOf="@id/playButton" />
+        app:layout_constraintTop_toTopOf="@id/playButton"
+        app:srcCompat="@drawable/ic_add_to_favorite" />
 
     <TextView
         android:id="@+id/playbackTime"
