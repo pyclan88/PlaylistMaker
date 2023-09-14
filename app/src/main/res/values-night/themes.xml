@@ -18,8 +18,6 @@
         <item name="searchHintIcon">@color/yp_black</item>
         <item name="searchIcon">@color/yp_black</item>
         <item name="searchViewStyle">@color/yp_white</item>
-        <!-- AudioPlayerGrayIcon. -->
-        <item name="color">@color/yp_gray_icon_night</item>
     </style>
 
 </resources>

@@ -18,8 +18,6 @@
         <item name="searchHintIcon">@color/yp_text_gray</item>
         <item name="searchIcon">@color/yp_text_gray</item>
         <item name="searchViewStyle">@color/yp_light_gray</item>
-        <!-- AudioPlayerGrayIcon. -->
-        <item name="color">@color/yp_gray_icon_light</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker">

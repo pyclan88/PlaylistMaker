@@ -10,23 +10,24 @@
     <color name="yp_gray_icon_light">#C5C6C7</color>
     <color name="yp_gray_icon_night">#535459</color>
 
-    <color name="customBackground">#FFFFFF</color>
-    <color name="customColorOnBackground">#1A1B22</color>
+    <!-- Customize your dark theme here. -->
+    <color name="customBackground">#1A1B22</color>
+    <color name="customColorOnBackground">#FFFFFF</color>
     <color name="customColorSurface">#FFFFFF</color>
     <color name="customColorOnSurface">#1A1B22</color>
     <!-- Settings icons color.-->
-    <color name="customIconTint">#AEAFB4</color>
+    <color name="customIconTint">#FFFFFF</color>
     <!-- Primary brand color. -->
-    <color name="customColorPrimary">#3772E7</color>
+    <color name="customColorPrimary">#1A1B22</color>
     <color name="customColorOnPrimary">#FFFFFF</color>
     <!-- Switch color. -->
-    <color name="customThumbTint">#AEAFB4</color>
-    <color name="customTrackTint">#E6E8EB</color>
+    <color name="customThumbTint">#3772E7</color>
+    <color name="customTrackTint">#3772E7</color>
     <!-- Search color.-->
-    <color name="customSearchHintIcon">#AEAFB4</color>
-    <color name="customSearchIcon">#AEAFB4</color>
-    <color name="customSearchViewStyle">#E6E8EB</color>
+    <color name="customSearchHintIcon">#1A1B22</color>
+    <color name="customSearchIcon">#1A1B22</color>
+    <color name="customSearchViewStyle">#FFFFFF</color>
     <!-- AudioPlayerGrayIcon. -->
-<!--    <color name="customColor">#C5C6C7</color>-->
-<!--    <color name="customAlpha">0.25</color>-->
+<!--    <color name="customColor">#535459</color>-->
+<!--    <color name="custom alpha">0.75</color>-->
 </resources>
