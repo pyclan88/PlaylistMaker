@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 const val MAX_NUM_OF_HIST_TRACKS = 10
 
-class TrackAdapter(private val historyAdapter: HistoryAdapter) : RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter(private val historyAdapter: HistoryAdapter) :
+    RecyclerView.Adapter<TrackViewHolder>() {
 
     var tracks = ArrayList<Track>()
 
@@ -26,6 +27,8 @@ class TrackAdapter(private val historyAdapter: HistoryAdapter) : RecyclerView.Ad
             historyTracks.removeIf { it.trackId == track.trackId }
             if (historyTracks.size == MAX_NUM_OF_HIST_TRACKS) historyTracks.removeAt(historyTracks.size - 1)
             historyTracks.add(0, track)
+
+            AudioPlayerActivity.startActivity(holder.itemView.context, track)
         }
     }
 }

@@ -41,5 +41,12 @@
     <dimen name="height36">36dp</dimen>
     <dimen name="padding16">16dp</dimen>
     <dimen name="padding14">14dp</dimen>
+    <dimen name="playerButton51">51dp</dimen>
+    <dimen name="offset54">54dp</dimen>
+    <dimen name="offset84">84dp</dimen>
+    <dimen name="text13">13sp</dimen>
+    <dimen name="offset17">17dp</dimen>
+    <dimen name="offset28">28dp</dimen>
+    <dimen name="offset39">39dp</dimen>
 
 </resources>

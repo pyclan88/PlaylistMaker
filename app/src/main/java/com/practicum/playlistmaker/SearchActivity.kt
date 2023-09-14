@@ -27,6 +27,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
+    companion object {
+        private const val SEARCH_INPUT = "SEARCH_INPUT"
+        const val SEARCH_HISTORY_PREFERENCES = "search_history_preferences"
+        const val SEARCH_HISTORY_KEY = "key_for_search_history"
+
+        fun startActivity(context: Context) {
+            val intent = Intent(context, SearchActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
+
+    private val historyAdapter: HistoryAdapter = HistoryAdapter()
+
     private val itunesBaseUrl = "https://itunes.apple.com"
 
     private val retrofit = Retrofit.Builder()
@@ -38,7 +51,6 @@ class SearchActivity : AppCompatActivity() {
 
     private var searchInput: String = ""
     private val trackList = ArrayList<Track>()
-    private val historyAdapter: HistoryAdapter = HistoryAdapter()
     private val trackAdapter: TrackAdapter = TrackAdapter(historyAdapter)
 
     private var ibBackButton: ImageButton? = null
@@ -51,17 +63,6 @@ class SearchActivity : AppCompatActivity() {
     private var tvYouSearched: TextView? = null
     private var bClearHistory: Button? = null
     private var svSearch: ScrollView? = null
-
-    companion object {
-        private const val SEARCH_INPUT = "SEARCH_INPUT"
-        const val SEARCH_HISTORY_PREFERENCES = "search_history_preferences"
-        const val SEARCH_HISTORY_KEY = "key_for_search_history"
-
-        fun startActivity(context: Context) {
-            val intent = Intent(context, SearchActivity::class.java)
-            context.startActivity(intent)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,7 +112,6 @@ class SearchActivity : AppCompatActivity() {
             rvTracks?.adapter = historyAdapter
             showHistory()
         }
-
         setupSearchListener()
 
         bRefreshButton?.setOnClickListener {

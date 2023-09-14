@@ -9,7 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-const val COVER_CORNER = 2
+const val COVER_CORNER_2 = 2
 
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -22,12 +22,12 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackName.text = track.trackName
         artistName.text = track.artistName
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault())
-            .format(track.trackTimeMillis.toLong())
+            .format(track.trackTimeMillis?.toLong())
         Glide.with(itemView)
             .load(track.artworkUrl100)
             .placeholder(R.drawable.placeholder)
             .centerCrop()
-            .transform(RoundedCorners(COVER_CORNER))
+            .transform(RoundedCorners(COVER_CORNER_2))
             .into(cover)
     }
 }

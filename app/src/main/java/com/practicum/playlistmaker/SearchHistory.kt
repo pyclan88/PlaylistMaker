@@ -9,8 +9,8 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
     fun saveHistory(historyList: ArrayList<Track>) {
         val jsonHistoryOfTracks = Gson().toJson(historyList)
         sharedPreferences.edit()
-            .putString(SearchActivity.SEARCH_HISTORY_KEY, jsonHistoryOfTracks)
-            .apply()
+            ?.putString(SearchActivity.SEARCH_HISTORY_KEY, jsonHistoryOfTracks)
+            ?.apply()
     }
 
     fun readHistory(): List<Track> {

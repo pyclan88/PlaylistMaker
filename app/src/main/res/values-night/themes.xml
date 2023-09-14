@@ -19,4 +19,5 @@
         <item name="searchIcon">@color/yp_black</item>
         <item name="searchViewStyle">@color/yp_white</item>
     </style>
+
 </resources>
