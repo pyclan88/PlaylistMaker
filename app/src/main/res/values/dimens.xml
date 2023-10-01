@@ -48,5 +48,7 @@
     <dimen name="offset17">17dp</dimen>
     <dimen name="offset28">28dp</dimen>
     <dimen name="offset39">39dp</dimen>
+    <dimen name="progressBar44">44dp</dimen>
+    <dimen name="offset148">148dp</dimen>
 
 </resources>

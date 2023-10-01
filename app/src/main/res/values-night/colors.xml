@@ -10,7 +10,6 @@
     <color name="yp_gray_icon_light">#C5C6C7</color>
     <color name="yp_gray_icon_night">#535459</color>
 
-    <!-- Customize your dark theme here. -->
     <color name="customBackground">#1A1B22</color>
     <color name="customColorOnBackground">#FFFFFF</color>
     <color name="customColorSurface">#FFFFFF</color>
@@ -27,7 +26,4 @@
     <color name="customSearchHintIcon">#1A1B22</color>
     <color name="customSearchIcon">#1A1B22</color>
     <color name="customSearchViewStyle">#FFFFFF</color>
-    <!-- AudioPlayerGrayIcon. -->
-<!--    <color name="customColor">#535459</color>-->
-<!--    <color name="custom alpha">0.75</color>-->
 </resources>
