@@ -14,21 +14,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import java.text.SimpleDateFormat
-import java.util.Locale
 
-
-const val COVER_CORNER_8 = 8
 
 class AudioPlayerActivity : AppCompatActivity() {
 
     companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-
-        private const val DELAY = 300L
+        private const val DELAY_MILLIS = 300L
 
         private const val EXTRA_KEY = "Track"
 
@@ -43,7 +34,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     private var mainThreadHandler: Handler? = null
     private lateinit var runnableTimer: Runnable
 
-    private var playerState = STATE_DEFAULT
+    private var playerState = PlayerState.DEFAULT
 
     private var currentTrack: Track? = null
 
@@ -68,9 +59,9 @@ class AudioPlayerActivity : AppCompatActivity() {
         mainThreadHandler = Handler(Looper.getMainLooper())
 
         currentTrack = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("Track", Track::class.java)
+            intent.getParcelableExtra(EXTRA_KEY, Track::class.java)
         } else {
-            intent.getParcelableExtra("Track")
+            intent.getParcelableExtra(EXTRA_KEY)
         }
 
         initViews()
@@ -81,11 +72,8 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         runnableTimer = object : Runnable {
             override fun run() {
-                tvPlaybackTime?.text = SimpleDateFormat(
-                    "mm:ss",
-                    Locale.getDefault()
-                ).format(mediaPlayer.currentPosition)
-                mainThreadHandler?.postDelayed(this, DELAY)
+                tvPlaybackTime?.text = DateTimeUtil.formatTime(mediaPlayer.currentPosition)
+                mainThreadHandler?.postDelayed(this, DELAY_MILLIS)
             }
         }
 
@@ -110,10 +98,12 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun playbackControl() {
         when (playerState) {
-            STATE_PLAYING -> pausePlayer()
+            PlayerState.PLAYING -> pausePlayer()
 
-            STATE_PREPARED,
-            STATE_PAUSED -> startPlayer()
+            PlayerState.PREPARED,
+            PlayerState.PAUSED -> startPlayer()
+
+            else -> {}
         }
     }
 
@@ -121,12 +111,12 @@ class AudioPlayerActivity : AppCompatActivity() {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            playerState = STATE_PREPARED
+            playerState = PlayerState.PREPARED
         }
         mediaPlayer.setOnCompletionListener {
             ibPlayButton?.setImageResource(R.drawable.ic_play_button)
             tvPlaybackTime?.text = getString(R.string.playback_time)
-            playerState = STATE_PREPARED
+            playerState = PlayerState.PREPARED
             mainThreadHandler?.removeCallbacks(runnableTimer)
         }
     }
@@ -134,14 +124,14 @@ class AudioPlayerActivity : AppCompatActivity() {
     private fun startPlayer() {
         mediaPlayer.start()
         ibPlayButton?.setImageResource(R.drawable.ic_pause_button)
-        playerState = STATE_PLAYING
+        playerState = PlayerState.PLAYING
         mainThreadHandler?.post(runnableTimer)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         ibPlayButton?.setImageResource(R.drawable.ic_play_button)
-        playerState = STATE_PAUSED
+        playerState = PlayerState.PAUSED
         mainThreadHandler?.removeCallbacks(runnableTimer)
     }
 
@@ -162,8 +152,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     private fun setValues() {
         tvTrackName?.text = currentTrack?.trackName
         tvArtistName?.text = currentTrack?.artistName
-        tvDuration?.text = SimpleDateFormat("mm:ss", Locale.getDefault())
-            .format(currentTrack?.trackTimeMillis?.toLong())
+        tvDuration?.text = DateTimeUtil.formatTime(currentTrack?.trackTimeMillis?.toInt())
         tvAlbum?.text = currentTrack?.collectionName
         tvYear?.text = currentTrack?.releaseDate?.substring(0, 4)
         tvGenre?.text = currentTrack?.primaryGenreName
@@ -185,7 +174,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         Glide.with(applicationContext)
             .load(getCoverArtwork(currentTrack?.artworkUrl100))
             .placeholder(R.drawable.placeholder)
-            .transform(RoundedCorners(COVER_CORNER_8))
+            .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner8)))
             .into(ivCover)
     }
 

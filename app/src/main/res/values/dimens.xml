@@ -3,6 +3,7 @@
     <dimen name="medium_padding">8dp</dimen>
     <dimen name="primary_text_size">24sp</dimen>
     <dimen name="corner16">16dp</dimen>
+    <dimen name="corner8">8dp</dimen>
     <dimen name="main_menu_icon_padding">10dp</dimen>
     <dimen name="main_menu_pad_left">16dp</dimen>
     <dimen name="main_menu_pad_top">14dp</dimen>

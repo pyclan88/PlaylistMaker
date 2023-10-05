@@ -34,8 +34,8 @@ class SearchActivity : AppCompatActivity() {
         const val SEARCH_HISTORY_PREFERENCES = "search_history_preferences"
         const val SEARCH_HISTORY_KEY = "key_for_search_history"
 
-        const val SEARCH_DEBOUNCE_DELAY = 2_000L
-        const val CLICK_DEBOUNCE_DELAY = 1_000L
+        const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2_000L
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 1_000L
 
         fun startActivity(context: Context) {
             val intent = Intent(context, SearchActivity::class.java)
@@ -70,7 +70,7 @@ class SearchActivity : AppCompatActivity() {
     private var progressBar: ProgressBar? = null
 
     private val mainThreadHandler = Handler(Looper.getMainLooper())
-    private var searchRunnable: Runnable? = null
+    private val searchRunnable = Runnable { performITunesSearch() }
     private val historyAdapter: HistoryAdapter = HistoryAdapter(mainThreadHandler)
     private val trackAdapter: TrackAdapter = TrackAdapter(historyAdapter, mainThreadHandler)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,9 +93,6 @@ class SearchActivity : AppCompatActivity() {
         rvTracks?.adapter = trackAdapter
 
         trackAdapter.tracks = trackList
-
-//        mainThreadHandler = Handler(Looper.getMainLooper())
-        searchRunnable = Runnable { performITunesSearch() }
 
         val historyOfTracks = historyAdapter.clickedTracks
 
@@ -158,7 +155,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mainThreadHandler.removeCallbacks(searchRunnable!!)
+        mainThreadHandler.removeCallbacks(searchRunnable)
     }
 
     private fun showHistory() {
@@ -233,8 +230,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchDebounce() {
-        mainThreadHandler.removeCallbacks(searchRunnable!!)
-        mainThreadHandler.postDelayed(searchRunnable!!, SEARCH_DEBOUNCE_DELAY)
+        mainThreadHandler.removeCallbacks(searchRunnable)
+        mainThreadHandler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
     }
 
 

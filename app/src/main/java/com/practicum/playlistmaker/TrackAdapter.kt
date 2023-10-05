@@ -48,7 +48,7 @@ class TrackAdapter(private val historyAdapter: HistoryAdapter,
         val current = isClickedAllowed
         if (isClickedAllowed) {
             isClickedAllowed = false
-            handler.postDelayed({ isClickedAllowed = true }, SearchActivity.CLICK_DEBOUNCE_DELAY)
+            handler.postDelayed({ isClickedAllowed = true }, SearchActivity.CLICK_DEBOUNCE_DELAY_MILLIS)
         }
         return current
     }
