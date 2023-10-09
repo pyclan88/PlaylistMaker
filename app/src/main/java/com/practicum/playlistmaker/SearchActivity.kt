@@ -3,16 +3,18 @@ package com.practicum.playlistmaker
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -32,13 +34,15 @@ class SearchActivity : AppCompatActivity() {
         const val SEARCH_HISTORY_PREFERENCES = "search_history_preferences"
         const val SEARCH_HISTORY_KEY = "key_for_search_history"
 
+        const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2_000L
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 1_000L
+
         fun startActivity(context: Context) {
             val intent = Intent(context, SearchActivity::class.java)
             context.startActivity(intent)
         }
     }
 
-    private val historyAdapter: HistoryAdapter = HistoryAdapter()
 
     private val itunesBaseUrl = "https://itunes.apple.com"
 
@@ -51,7 +55,7 @@ class SearchActivity : AppCompatActivity() {
 
     private var searchInput: String = ""
     private val trackList = ArrayList<Track>()
-    private val trackAdapter: TrackAdapter = TrackAdapter(historyAdapter)
+
 
     private var ibBackButton: ImageButton? = null
     private var imClearButton: ImageView? = null
@@ -63,7 +67,12 @@ class SearchActivity : AppCompatActivity() {
     private var tvYouSearched: TextView? = null
     private var bClearHistory: Button? = null
     private var svSearch: ScrollView? = null
+    private var progressBar: ProgressBar? = null
 
+    private val mainThreadHandler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { performITunesSearch() }
+    private val historyAdapter: HistoryAdapter = HistoryAdapter(mainThreadHandler)
+    private val trackAdapter: TrackAdapter = TrackAdapter(historyAdapter, mainThreadHandler)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -78,6 +87,7 @@ class SearchActivity : AppCompatActivity() {
         tvYouSearched = findViewById(R.id.you_searched)
         bClearHistory = findViewById(R.id.clear_history)
         svSearch = findViewById(R.id.search_scroll)
+        progressBar = findViewById(R.id.progress_bar)
 
         rvTracks?.layoutManager = LinearLayoutManager(this)
         rvTracks?.adapter = trackAdapter
@@ -87,7 +97,7 @@ class SearchActivity : AppCompatActivity() {
         val historyOfTracks = historyAdapter.clickedTracks
 
         ibBackButton?.setOnClickListener {
-            finish()
+            MainActivity.startActivity(this)
         }
 
         imClearButton?.setOnClickListener {
@@ -108,11 +118,10 @@ class SearchActivity : AppCompatActivity() {
         }
 
         if (historyOfTracks.isEmpty()) historyOfTracks.addAll(SearchHistory(sharedPrefs).readHistory())
-        if (historyOfTracks.isNotEmpty()){
+        if (historyOfTracks.isNotEmpty()) {
             rvTracks?.adapter = historyAdapter
             showHistory()
         }
-        setupSearchListener()
 
         bRefreshButton?.setOnClickListener {
             performITunesSearch()
@@ -124,7 +133,10 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 imClearButton?.visibility = clearButtonVisibility(s)
-                svSearch?.visibility = if (etQueryInput!!.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                svSearch?.visibility =
+                    if (etQueryInput!!.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -141,6 +153,11 @@ class SearchActivity : AppCompatActivity() {
         SearchHistory(sharedPrefs).saveHistory(historyAdapter.clickedTracks)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mainThreadHandler.removeCallbacks(searchRunnable)
+    }
+
     private fun showHistory() {
         historyAdapter.notifyDataSetChanged()
         tvYouSearched?.visibility = View.VISIBLE
@@ -151,7 +168,10 @@ class SearchActivity : AppCompatActivity() {
         rvTracks?.adapter = trackAdapter
         tvYouSearched?.visibility = View.GONE
         bClearHistory?.visibility = View.GONE
-        svSearch?.visibility = View.VISIBLE
+        svSearch?.visibility = View.GONE
+        progressBar?.visibility = View.VISIBLE
+        vgNothingFound?.visibility = View.GONE
+        vgInternetError?.visibility = View.GONE
 
         iTunesService.search(etQueryInput?.text.toString())
             .enqueue(object : Callback<ITunesResponse> {
@@ -159,14 +179,14 @@ class SearchActivity : AppCompatActivity() {
                     call: Call<ITunesResponse>,
                     response: Response<ITunesResponse>
                 ) {
+                    progressBar?.visibility = View.GONE
+                    svSearch?.visibility = View.VISIBLE
                     if (response.code() == 200) {
                         trackList.clear()
                         if (response.body()?.results?.isNotEmpty() == true) {
                             trackList.addAll(response.body()?.results!!)
                             trackAdapter.tracks = trackList
                             trackAdapter.notifyDataSetChanged()
-                            vgNothingFound?.visibility = View.GONE
-                            vgInternetError?.visibility = View.GONE
                         } else showMessage(vgNothingFound, vgInternetError, "")
 
                     } else showMessage(
@@ -175,28 +195,21 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ITunesResponse>, t: Throwable) {
+                    progressBar?.visibility = View.GONE
+                    svSearch?.visibility = View.VISIBLE
                     showMessage(
                         vgInternetError, vgNothingFound, t.message.toString()
                     )
                 }
-
             })
+        trackList.clear()
     }
 
-    private fun setupSearchListener() {
-        etQueryInput?.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if (etQueryInput?.text!!.isNotEmpty()) {
-                    performITunesSearch()
-                }
-                true
-            }
-            false
-
-        }
-    }
-
-    private fun showMessage(fstLinear: ViewGroup?, sndLinear: ViewGroup?, additionalMessage: String) {
+    private fun showMessage(
+        fstLinear: ViewGroup?,
+        sndLinear: ViewGroup?,
+        additionalMessage: String
+    ) {
         fstLinear?.visibility = View.VISIBLE
         sndLinear?.visibility = View.GONE
         trackList.clear()
@@ -214,6 +227,11 @@ class SearchActivity : AppCompatActivity() {
         } else {
             View.VISIBLE
         }
+    }
+
+    private fun searchDebounce() {
+        mainThreadHandler.removeCallbacks(searchRunnable)
+        mainThreadHandler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
     }
 
 

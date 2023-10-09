@@ -26,7 +26,4 @@
     <color name="customSearchHintIcon">#AEAFB4</color>
     <color name="customSearchIcon">#AEAFB4</color>
     <color name="customSearchViewStyle">#E6E8EB</color>
-    <!-- AudioPlayerGrayIcon. -->
-<!--    <color name="customColor">#C5C6C7</color>-->
-<!--    <color name="customAlpha">0.25</color>-->
 </resources>

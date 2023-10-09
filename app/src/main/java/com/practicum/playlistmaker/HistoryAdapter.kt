@@ -1,14 +1,16 @@
 package com.practicum.playlistmaker
 
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.ArrayList
 
-class HistoryAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
+class HistoryAdapter(private val handler: Handler) : RecyclerView.Adapter<TrackViewHolder>() {
 
     var clickedTracks = ArrayList<Track>()
+
+    private var isClickedAllowed = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
@@ -22,10 +24,30 @@ class HistoryAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
         with(holder) {
             bind(track)
-            holder.itemView.findViewById<LinearLayout>(R.id.track_view).setOnClickListener {
-                AudioPlayerActivity.startActivity(holder.itemView.context, track)
+            holder.itemView.setOnClickListener {
+
+                if (clickDebounce()) {
+                    clickedTracks.removeIf { it.trackId == track.trackId }
+                    if (clickedTracks.size == MAX_NUM_OF_HIST_TRACKS) clickedTracks.removeAt(
+                        clickedTracks.size - 1
+                    )
+                    clickedTracks.add(0, track)
+
+                    AudioPlayerActivity.startActivity(holder.itemView.context, track)
+                }
+
             }
         }
 
     }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickedAllowed
+        if (isClickedAllowed) {
+            isClickedAllowed = false
+            handler.postDelayed({ isClickedAllowed = true }, SearchActivity.CLICK_DEBOUNCE_DELAY_MILLIS)
+        }
+        return current
+    }
+
 }
