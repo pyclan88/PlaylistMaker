@@ -1,10 +1,7 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.presentation.ui.player
 
 import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
-import android.os.Build
-import android.os.Build.VERSION
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,6 +11,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.practicum.playlistmaker.DateTimeUtil
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.SearchActivity
+import com.practicum.playlistmaker.creator.Creator
+import com.practicum.playlistmaker.domain.api.PlayerInteractor
+import com.practicum.playlistmaker.domain.entity.PlayerState
+import com.practicum.playlistmaker.domain.models.Track
 
 
 class AudioPlayerActivity : AppCompatActivity() {
@@ -21,11 +25,8 @@ class AudioPlayerActivity : AppCompatActivity() {
     companion object {
         private const val DELAY_MILLIS = 300L
 
-        private const val EXTRA_KEY = "Track"
-
-        fun startActivity(context: Context, currentTrack: Track) {
+        fun startActivity(context: Context) {
             val intent = Intent(context, AudioPlayerActivity::class.java)
-            intent.putExtra(EXTRA_KEY, currentTrack)
             context.startActivity(intent)
         }
 
@@ -50,7 +51,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     private var tvPlaybackTime: TextView? = null
     private lateinit var ivCover: ImageView
 
-    private var mediaPlayer = MediaPlayer()
+    private lateinit var getPlayerInteractor: PlayerInteractor
     private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,11 +59,9 @@ class AudioPlayerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_audioplayer)
         mainThreadHandler = Handler(Looper.getMainLooper())
 
-        currentTrack = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(EXTRA_KEY, Track::class.java)
-        } else {
-            intent.getParcelableExtra(EXTRA_KEY)
-        }
+        getPlayerInteractor = Creator.providePlayerInteractor(this)
+
+        currentTrack = getPlayerInteractor.getTrack()
 
         initViews()
 
@@ -72,7 +71,8 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         runnableTimer = object : Runnable {
             override fun run() {
-                tvPlaybackTime?.text = DateTimeUtil.formatTime(mediaPlayer.currentPosition)
+                tvPlaybackTime?.text =
+                    DateTimeUtil.formatTime(getPlayerInteractor.getCurrentPosition())
                 mainThreadHandler?.postDelayed(this, DELAY_MILLIS)
             }
         }
@@ -92,7 +92,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        getPlayerInteractor.releasePlayer()
         mainThreadHandler?.removeCallbacks(runnableTimer)
     }
 
@@ -108,28 +108,26 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            playerState = PlayerState.PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            ibPlayButton?.setImageResource(R.drawable.ic_play_button)
-            tvPlaybackTime?.text = getString(R.string.playback_time)
-            playerState = PlayerState.PREPARED
-            mainThreadHandler?.removeCallbacks(runnableTimer)
-        }
+        getPlayerInteractor.preparePlayer(
+            { playerState = PlayerState.PREPARED },
+            {
+                ibPlayButton?.setImageResource(R.drawable.ic_play_button)
+                tvPlaybackTime?.text = getString(R.string.playback_time)
+                playerState = PlayerState.PREPARED
+                mainThreadHandler?.removeCallbacks(runnableTimer)
+            }
+        )
     }
 
     private fun startPlayer() {
-        mediaPlayer.start()
+        getPlayerInteractor.startPlayer()
         ibPlayButton?.setImageResource(R.drawable.ic_pause_button)
         playerState = PlayerState.PLAYING
         mainThreadHandler?.post(runnableTimer)
     }
 
     private fun pausePlayer() {
-        mediaPlayer.pause()
+        getPlayerInteractor.pausePlayer()
         ibPlayButton?.setImageResource(R.drawable.ic_play_button)
         playerState = PlayerState.PAUSED
         mainThreadHandler?.removeCallbacks(runnableTimer)

@@ -1,12 +1,20 @@
 package com.practicum.playlistmaker
 
+import android.content.Context
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.practicum.playlistmaker.data.SAVED_TRACK_KEY
+import com.practicum.playlistmaker.data.SAVED_TRACK_PREFERENCES
+import com.practicum.playlistmaker.data.mapper.TrackToTrackDtoMapper
+import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.presentation.ui.player.AudioPlayerActivity
 import kotlin.collections.ArrayList
 
-class HistoryAdapter(private val handler: Handler) : RecyclerView.Adapter<TrackViewHolder>() {
+class HistoryAdapter(private val context: Context, private val handler: Handler) :
+    RecyclerView.Adapter<TrackViewHolder>() {
 
     var clickedTracks = ArrayList<Track>()
 
@@ -33,7 +41,17 @@ class HistoryAdapter(private val handler: Handler) : RecyclerView.Adapter<TrackV
                     )
                     clickedTracks.add(0, track)
 
-                    AudioPlayerActivity.startActivity(holder.itemView.context, track)
+                    val gson = Gson()
+                    val trackToJson = gson.toJson(TrackToTrackDtoMapper.map(track))
+                    val sharedPrefs = context.getSharedPreferences(
+                        SAVED_TRACK_PREFERENCES,
+                        Context.MODE_PRIVATE
+                    )
+                    sharedPrefs.edit()
+                        .putString(SAVED_TRACK_KEY, trackToJson)
+                        .apply()
+
+                    AudioPlayerActivity.startActivity(holder.itemView.context)
                 }
 
             }
@@ -45,7 +63,10 @@ class HistoryAdapter(private val handler: Handler) : RecyclerView.Adapter<TrackV
         val current = isClickedAllowed
         if (isClickedAllowed) {
             isClickedAllowed = false
-            handler.postDelayed({ isClickedAllowed = true }, SearchActivity.CLICK_DEBOUNCE_DELAY_MILLIS)
+            handler.postDelayed(
+                { isClickedAllowed = true },
+                SearchActivity.CLICK_DEBOUNCE_DELAY_MILLIS
+            )
         }
         return current
     }
