@@ -57,7 +57,6 @@ class SearchActivity : AppCompatActivity() {
     private var searchInput: String = ""
     private val trackList = ArrayList<Track>()
 
-
     private var ibBackButton: ImageButton? = null
     private var imClearButton: ImageView? = null
     private var etQueryInput: EditText? = null
@@ -215,10 +214,6 @@ class SearchActivity : AppCompatActivity() {
         sndLinear?.visibility = View.GONE
         trackList.clear()
         trackAdapter.notifyDataSetChanged()
-        if (additionalMessage.isNotEmpty()) {
-            Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
-                .show()
-        }
     }
 
 

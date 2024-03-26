@@ -24,6 +24,6 @@
     <color name="customTrackTint">#3772E7</color>
     <!-- Search color.-->
     <color name="customSearchHintIcon">#1A1B22</color>
-    <color name="customSearchIcon">#1A1B22</color>
+    <color name="customSearchIcons">#1A1B22</color>
     <color name="customSearchViewStyle">#FFFFFF</color>
 </resources>

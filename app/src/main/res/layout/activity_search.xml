@@ -76,8 +76,9 @@
             android:id="@+id/clear_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|center_horizontal"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/offset12"
+            android:src="@drawable/button_clear"
             android:visibility="gone" />
     </FrameLayout>
 

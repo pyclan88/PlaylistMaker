@@ -13,7 +13,10 @@ import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.presentation.ui.player.AudioPlayerActivity
 import kotlin.collections.ArrayList
 
-class HistoryAdapter(private val context: Context, private val handler: Handler) :
+class HistoryAdapter(
+    private val context: Context,
+    private val handler: Handler
+) :
     RecyclerView.Adapter<TrackViewHolder>() {
 
     var clickedTracks = ArrayList<Track>()
