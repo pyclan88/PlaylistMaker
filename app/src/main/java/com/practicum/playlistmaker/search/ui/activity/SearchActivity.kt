@@ -67,8 +67,7 @@ class SearchActivity : AppCompatActivity() {
 
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(R.string.empty_string)
-            adapter.tracks.clear()
-            adapter.notifyDataSetChanged()
+            showHistory()
         }
 
         binding.clearHistory.setOnClickListener {
@@ -92,7 +91,9 @@ class SearchActivity : AppCompatActivity() {
                 latestSearchText = s?.toString() ?: ""
             }
 
-            override fun afterTextChanged(s: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrEmpty()) showHistory()
+            }
         }
 
         simpleTextWatcher.let { binding.searchEditText.addTextChangedListener(simpleTextWatcher) }
