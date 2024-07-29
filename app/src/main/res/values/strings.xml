@@ -29,4 +29,6 @@
     <string name="playback_time">00:00</string>
     <string name="audioplayer_playback_time">00:00</string>
     <string name="empty_string"></string>
+    <string name="search_error_minus1">Проблемы со связью\nЗагрузка не удалась. Проверьте\nподключение к интернету</string>
+    <string name="search_error_else">Ошибка сервера</string>
 </resources>

@@ -11,7 +11,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.main.ui.MainActivity
 import com.practicum.playlistmaker.R
@@ -20,18 +19,11 @@ import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.player.ui.activity.PlayerActivity
 import com.practicum.playlistmaker.search.ui.TrackAdapter
 import com.practicum.playlistmaker.search.ui.model.SearchScreenState
-import com.practicum.playlistmaker.search.ui.view_model.SearchViewModel
+import com.practicum.playlistmaker.search.ui.viewmodel.SearchViewModel
+import com.practicum.playlistmaker.util.invisible
+import com.practicum.playlistmaker.util.visible
 
 class SearchActivity : AppCompatActivity() {
-
-    companion object {
-        const val CLICK_DEBOUNCE_DELAY = 1_000L
-
-        fun startActivity(context: Context) {
-            val intent = Intent(context, SearchActivity::class.java)
-            context.startActivity(intent)
-        }
-    }
 
     private val adapter = TrackAdapter(
         this,
@@ -80,8 +72,8 @@ class SearchActivity : AppCompatActivity() {
         }
 
         binding.clearHistory.setOnClickListener {
-            binding.youSearched.isVisible = false
-            binding.clearHistory.isVisible = false
+            binding.youSearched.invisible()
+            binding.clearHistory.invisible()
             viewModel.clearHistory()
             adapter.tracks.clear()
             adapter.notifyDataSetChanged()
@@ -137,23 +129,23 @@ class SearchActivity : AppCompatActivity() {
     private fun showHistory() {
         if (viewModel.loadHistory().isNotEmpty()) {
             adapter.tracks = viewModel.loadHistory()
-            binding.clearHistory.isVisible = true
+            binding.clearHistory.visible()
             adapter.notifyDataSetChanged()
         }
     }
 
     private fun showLoading() {
-        binding.progressBar.isVisible = true
-        binding.youSearched.isVisible = false
-        binding.clearHistory.isVisible = false
-        binding.searchScroll.isVisible = false
-        binding.linearNothingFound.isVisible = false
-        binding.linearInternetError.isVisible = false
+        binding.progressBar.visible()
+        binding.youSearched.invisible()
+        binding.clearHistory.invisible()
+        binding.searchScroll.invisible()
+        binding.linearNothingFound.invisible()
+        binding.linearInternetError.invisible()
     }
 
     private fun showContent(tracks: List<Track>) {
-        binding.progressBar.isVisible = false
-        binding.searchScroll.isVisible = true
+        binding.progressBar.invisible()
+        binding.searchScroll.visible()
         adapter.tracks.clear()
         adapter.tracks.addAll(tracks)
         adapter.notifyDataSetChanged()
@@ -161,15 +153,15 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showError(message: String) {
         binding.textInternetError.text = message
-        binding.progressBar.isVisible = false
-        binding.searchScroll.isVisible = false
-        binding.linearInternetError.isVisible = true
+        binding.progressBar.invisible()
+        binding.searchScroll.invisible()
+        binding.linearInternetError.visible()
     }
 
     private fun showEmpty() {
-        binding.progressBar.isVisible = false
-        binding.searchScroll.isVisible = false
-        binding.linearNothingFound.isVisible = true
+        binding.progressBar.invisible()
+        binding.searchScroll.invisible()
+        binding.linearNothingFound.visible()
     }
 
     private fun clickDebounce(): Boolean {
@@ -179,5 +171,14 @@ class SearchActivity : AppCompatActivity() {
             mainThreadHandler.postDelayed({ isClickedAllowed = true }, CLICK_DEBOUNCE_DELAY)
         }
         return current
+    }
+
+    companion object {
+        const val CLICK_DEBOUNCE_DELAY = 1_000L
+
+        fun startActivity(context: Context) {
+            val intent = Intent(context, SearchActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 }

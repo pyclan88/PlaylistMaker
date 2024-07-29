@@ -7,7 +7,7 @@ import com.practicum.playlistmaker.player.data.dto.TrackDto
 import com.practicum.playlistmaker.player.data.mapper.TrackDtoToTrackMapper
 import com.practicum.playlistmaker.player.data.mapper.TrackToTrackDtoMapper
 import com.practicum.playlistmaker.player.domain.model.Track
-import com.practicum.playlistmaker.search.domain.api.TrackDbRepository
+import com.practicum.playlistmaker.search.domain.api.TrackRepository
 
 const val SAVED_TRACK_PREFERENCES = "saved_track_preferences"
 const val SAVED_TRACK_KEY = "key_for_saved_track"
@@ -17,7 +17,7 @@ const val HISTORY_TRACKS_KEY = "key_for_history_tracks"
 
 const val MAX_NUM_OF_HIST_TRACKS = 10
 
-class TrackDbRepositoryImpl(val context: Context) : TrackDbRepository {
+class TrackRepositoryImpl(val context: Context) : TrackRepository {
 
     private fun addTrackToHistory(list: List<TrackDto>) {
         val jsonTracks = Gson().toJson(list)

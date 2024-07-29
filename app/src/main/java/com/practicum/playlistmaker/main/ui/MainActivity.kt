@@ -11,13 +11,6 @@ import com.practicum.playlistmaker.settings.ui.activity.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        fun startActivity(context: Context) {
-            val intent = Intent(context, MainActivity::class.java)
-            context.startActivity(intent)
-        }
-    }
-
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +29,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.settingsButton.setOnClickListener {
             SettingsActivity.startActivity(this)
+        }
+    }
+
+    companion object {
+        fun startActivity(context: Context) {
+            val intent = Intent(context, MainActivity::class.java)
+            context.startActivity(intent)
         }
     }
 }

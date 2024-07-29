@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.player.ui.view_model
+package com.practicum.playlistmaker.player.ui.viewmodel
 
 import android.content.Context
 import android.os.Handler
@@ -18,19 +18,6 @@ import com.practicum.playlistmaker.player.domain.model.Track
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor
 ) : ViewModel() {
-
-    companion object {
-        private const val DELAY_MILLIS = 300L
-        private val PLAYER_REQUEST_TOKEN = Any()
-
-        fun getViewModelFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PlayerViewModel(
-                    Creator.providePlayerInteractor(context)
-                )
-            }
-        }
-    }
 
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
     private val progressLiveData = MutableLiveData<Int>()
@@ -90,5 +77,18 @@ class PlayerViewModel(
     override fun onCleared() {
         mainThreadHandler.removeCallbacksAndMessages(PLAYER_REQUEST_TOKEN)
         playerInteractor.releasePlayer()
+    }
+
+    companion object {
+        private const val DELAY_MILLIS = 300L
+        private val PLAYER_REQUEST_TOKEN = Any()
+
+        fun getViewModelFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                PlayerViewModel(
+                    Creator.providePlayerInteractor(context)
+                )
+            }
+        }
     }
 }

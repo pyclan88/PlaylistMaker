@@ -6,14 +6,14 @@ import com.practicum.playlistmaker.player.domain.impl.PlayerInteractorImpl
 import com.practicum.playlistmaker.player.domain.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.api.PlayerRepository
 import com.practicum.playlistmaker.search.domain.api.SearchRepository
-import com.practicum.playlistmaker.search.domain.api.TrackDbRepository
+import com.practicum.playlistmaker.search.domain.api.TrackRepository
 import com.practicum.playlistmaker.search.data.impl.SearchRepositoryImpl
-import com.practicum.playlistmaker.search.data.impl.TrackDbRepositoryImpl
+import com.practicum.playlistmaker.search.data.impl.TrackRepositoryImpl
 import com.practicum.playlistmaker.search.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.search.domain.SearchInteractor
-import com.practicum.playlistmaker.search.domain.TrackDbInteractor
+import com.practicum.playlistmaker.search.domain.TrackInteractor
 import com.practicum.playlistmaker.search.domain.impl.SearchInteractorImpl
-import com.practicum.playlistmaker.search.domain.impl.TrackDbInteractorImpl
+import com.practicum.playlistmaker.search.domain.impl.TrackInteractorImpl
 import com.practicum.playlistmaker.settings.data.impl.SettingsRepositoryImpl
 import com.practicum.playlistmaker.settings.domain.SettingsInteractor
 import com.practicum.playlistmaker.settings.domain.api.SettingsRepository
@@ -38,15 +38,18 @@ object Creator {
     }
 
     private fun getSearchRepository(context: Context): SearchRepository {
-        return SearchRepositoryImpl(RetrofitNetworkClient(context))
+        return SearchRepositoryImpl(
+            context,
+            RetrofitNetworkClient(context),
+        )
     }
 
-    fun provideTrackDbInteractor(context: Context): TrackDbInteractor {
-        return TrackDbInteractorImpl(getTrackDBRepository(context))
+    fun provideTrackInteractor(context: Context): TrackInteractor {
+        return TrackInteractorImpl(getTrackRepository(context))
     }
 
-    private fun getTrackDBRepository(context: Context): TrackDbRepository {
-        return TrackDbRepositoryImpl(context)
+    private fun getTrackRepository(context: Context): TrackRepository {
+        return TrackRepositoryImpl(context)
     }
 
     fun provideSharingInteractor(context: Context): SharingInteractor {

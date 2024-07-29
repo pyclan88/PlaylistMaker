@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.search.ui.view_model
+package com.practicum.playlistmaker.search.ui.viewmodel
 
 import android.content.Context
 import android.os.Handler
@@ -13,27 +13,13 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.search.domain.SearchInteractor
-import com.practicum.playlistmaker.search.domain.TrackDbInteractor
+import com.practicum.playlistmaker.search.domain.TrackInteractor
 import com.practicum.playlistmaker.search.ui.model.SearchScreenState
 
 class SearchViewModel(
     private val searchInteractor: SearchInteractor,
-    private val trackDbInteractor: TrackDbInteractor,
+    private val trackInteractor: TrackInteractor,
 ) : ViewModel() {
-
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2_000L
-        private val SEARCH_REQUEST_TOKEN = Any()
-
-        fun getViewModelFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(
-                    Creator.provideSearchInteractor(context),
-                    Creator.provideTrackDbInteractor(context),
-                )
-            }
-        }
-    }
 
     private val mainThreadHandler = Handler(Looper.getMainLooper())
 
@@ -47,12 +33,12 @@ class SearchViewModel(
     }
 
     fun clearHistory() {
-        trackDbInteractor.clearHistory()
+        trackInteractor.clearHistory()
     }
 
     fun loadHistory(): ArrayList<Track> {
         val historyTracks =
-            ArrayList(trackDbInteractor.loadHistory())
+            ArrayList(trackInteractor.loadHistory())
         return historyTracks
     }
 
@@ -77,7 +63,7 @@ class SearchViewModel(
 
     private fun searchRequest(searchInput: String) {
         if (searchInput.isNotEmpty()) {
-            renderState(SearchScreenState.Loading)
+            setState(SearchScreenState.Loading)
 
             searchInteractor.searchTracks(searchInput, object : SearchInteractor.TracksConsumer {
                 override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
@@ -87,15 +73,15 @@ class SearchViewModel(
                     }
                     when {
                         errorMessage != null -> {
-                            renderState(SearchScreenState.Error(errorMessage))
+                            setState(SearchScreenState.Error(errorMessage))
                         }
 
                         tracks.isEmpty() -> {
-                            renderState(SearchScreenState.Empty)
+                            setState(SearchScreenState.Empty)
                         }
 
                         else -> {
-                            renderState(SearchScreenState.Content(tracks = tracks))
+                            setState(SearchScreenState.Content(tracks = tracks))
                         }
                     }
                 }
@@ -104,7 +90,21 @@ class SearchViewModel(
         }
     }
 
-    private fun renderState(state: SearchScreenState) {
+    private fun setState(state: SearchScreenState) {
         screenStateLiveData.postValue(state)
+    }
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2_000L
+        private val SEARCH_REQUEST_TOKEN = Any()
+
+        fun getViewModelFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                SearchViewModel(
+                    Creator.provideSearchInteractor(context),
+                    Creator.provideTrackInteractor(context),
+                )
+            }
+        }
     }
 }

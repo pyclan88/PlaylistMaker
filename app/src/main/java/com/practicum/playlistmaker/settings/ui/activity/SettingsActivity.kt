@@ -7,16 +7,9 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
-import com.practicum.playlistmaker.settings.ui.view_model.SettingsViewModel
+import com.practicum.playlistmaker.settings.ui.viewmodel.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
-
-    companion object {
-        fun startActivity(context: Context) {
-            val intent = Intent(context, SettingsActivity::class.java)
-            context.startActivity(intent)
-        }
-    }
 
     private lateinit var binding: ActivitySettingsBinding
 
@@ -49,6 +42,13 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.themeSwitcher.setOnCheckedChangeListener { _, checked ->
             viewModel.switchTheme(checked)
+        }
+    }
+
+    companion object {
+        fun startActivity(context: Context) {
+            val intent = Intent(context, SettingsActivity::class.java)
+            context.startActivity(intent)
         }
     }
 }

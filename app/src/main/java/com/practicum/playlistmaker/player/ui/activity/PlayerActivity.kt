@@ -10,7 +10,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.player.ui.model.PlayStatus
 import com.practicum.playlistmaker.player.domain.model.Track
-import com.practicum.playlistmaker.player.ui.view_model.PlayerViewModel
+import com.practicum.playlistmaker.player.ui.viewmodel.PlayerViewModel
 
 
 class PlayerActivity : AppCompatActivity() {

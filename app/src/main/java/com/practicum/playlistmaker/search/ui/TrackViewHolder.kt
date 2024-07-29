@@ -19,7 +19,7 @@ class TrackViewHolder(
     private val clickListener: TrackAdapter.TrackClickListener
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private val tracksDbInteractor = Creator.provideTrackDbInteractor(context)
+    private val trackInteractor = Creator.provideTrackInteractor(context)
 
     fun bind(track: Track) {
         Glide.with(itemView)
@@ -35,7 +35,7 @@ class TrackViewHolder(
             .format(track.trackTimeMillis.toLong())
 
         itemView.setOnClickListener {
-            tracksDbInteractor.saveTrack(track)
+            trackInteractor.saveTrack(track)
             clickListener.onTrackClick(track)
         }
     }

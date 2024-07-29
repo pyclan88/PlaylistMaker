@@ -9,7 +9,7 @@ import com.practicum.playlistmaker.player.domain.model.Track
 class PlayerRepositoryImpl(val context: Context) : PlayerRepository {
 
     private var mediaPlayer = MediaPlayer()
-    private val currentTrack = Creator.provideTrackDbInteractor(context).loadTrack()
+    private val currentTrack = Creator.provideTrackInteractor(context).loadTrack()
 
     override fun preparePlayer(
         trackUrl: String,
