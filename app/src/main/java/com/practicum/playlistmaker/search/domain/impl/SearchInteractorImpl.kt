@@ -22,4 +22,5 @@ class SearchInteractorImpl(private val repository: SearchRepository) : SearchInt
             }
         }
     }
+
 }

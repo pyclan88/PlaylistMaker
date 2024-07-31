@@ -35,4 +35,5 @@ class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
         chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(chooserIntent)
     }
+
 }

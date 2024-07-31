@@ -10,6 +10,7 @@ class SharingInteractorImpl(
     private val context: Context,
     private val externalNavigator: ExternalNavigator,
 ) : SharingInteractor {
+
     override fun shareApp() {
         externalNavigator.shareLink(getShareAppLink())
     }
@@ -42,4 +43,5 @@ class SharingInteractorImpl(
             text = message
         )
     }
+
 }

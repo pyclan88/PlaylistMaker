@@ -29,13 +29,16 @@
         android:lines="1"
         android:textColor="@color/customColorOnBackground"
         android:textSize="@dimen/text16"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@id/arrow_forward"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/cover"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Yesterday (Remastered 2009)" />
 
     <TextView
         android:id="@+id/artist_name"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/offset8"
         android:layout_marginTop="@dimen/offset1"
@@ -45,8 +48,10 @@
         android:lines="1"
         android:textColor="@color/customIconTint"
         android:textSize="@dimen/text11"
+        app:layout_constraintBottom_toBottomOf="@id/the_dot"
+        app:layout_constraintEnd_toStartOf="@id/the_dot"
         app:layout_constraintStart_toEndOf="@id/cover"
-        app:layout_constraintTop_toBottomOf="@id/track_name"
+        app:layout_constraintTop_toTopOf="@id/the_dot"
         tools:text="The Beatles" />
 
     <ImageView
@@ -57,6 +62,7 @@
         android:layout_marginTop="@dimen/offset1"
         android:scaleType="center"
         android:src="@drawable/ic_ellipse_1"
+        app:layout_constraintEnd_toStartOf="@id/track_time"
         app:layout_constraintStart_toEndOf="@id/artist_name"
         app:layout_constraintTop_toBottomOf="@id/track_name" />
 
@@ -68,11 +74,14 @@
         android:fontFamily="@font/ys_display_regular"
         android:textColor="@color/customIconTint"
         android:textSize="@dimen/text11"
+        app:layout_constraintBottom_toBottomOf="@id/the_dot"
         app:layout_constraintStart_toEndOf="@+id/the_dot"
-        app:layout_constraintTop_toBottomOf="@id/track_name"
+        app:layout_constraintTop_toTopOf="@id/the_dot"
+
         tools:text="2:55" />
 
     <ImageView
+        android:id="@+id/arrow_forward"
         android:layout_width="@dimen/arrow_forward_offset24"
         android:layout_height="@dimen/arrow_forward_offset24"
         android:layout_gravity="end|center"

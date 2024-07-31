@@ -29,8 +29,8 @@ class PlayerInteractorImpl(private val repository: PlayerRepository) : PlayerInt
         repository.pausePlayer()
     }
 
-    override fun releasePlayer() {
-        repository.releasePlayer()
+    override fun resetPlayer() {
+        repository.resetPlayer()
     }
 
     override fun getCurrentPosition(): Int {
@@ -40,4 +40,5 @@ class PlayerInteractorImpl(private val repository: PlayerRepository) : PlayerInt
     override fun getTrack(): Track {
         return repository.getTrack()
     }
+
 }

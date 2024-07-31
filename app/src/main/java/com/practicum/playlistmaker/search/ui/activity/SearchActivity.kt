@@ -9,7 +9,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.main.ui.MainActivity
@@ -22,11 +21,11 @@ import com.practicum.playlistmaker.search.ui.model.SearchScreenState
 import com.practicum.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.practicum.playlistmaker.util.invisible
 import com.practicum.playlistmaker.util.visible
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
     private val adapter = TrackAdapter(
-        this,
         object : TrackAdapter.TrackClickListener {
             override fun onTrackClick(track: Track) {
                 if (clickDebounce()) {
@@ -45,9 +44,7 @@ class SearchActivity : AppCompatActivity() {
     private var latestSearchText: String = ""
     private val mainThreadHandler = Handler(Looper.getMainLooper())
 
-    private val viewModel by viewModels<SearchViewModel> {
-        SearchViewModel.getViewModelFactory(application)
-    }
+    private val viewModel by viewModel<SearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -182,4 +179,5 @@ class SearchActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
     }
+
 }

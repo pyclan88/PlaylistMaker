@@ -1,25 +1,24 @@
 package com.practicum.playlistmaker.search.ui
 
-import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.databinding.TrackViewBinding
 import com.practicum.playlistmaker.player.domain.model.Track
+import com.practicum.playlistmaker.search.domain.TrackInteractor
+import org.koin.core.component.KoinComponent
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 const val COVER_CORNER_8 = 8
 
 class TrackViewHolder(
-    context: Context,
     private val binding: TrackViewBinding,
     private val clickListener: TrackAdapter.TrackClickListener
-) : RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root), KoinComponent {
 
-    private val trackInteractor = Creator.provideTrackInteractor(context)
+    private val trackInteractor: TrackInteractor = getKoin().get()
 
     fun bind(track: Track) {
         Glide.with(itemView)
@@ -39,4 +38,5 @@ class TrackViewHolder(
             clickListener.onTrackClick(track)
         }
     }
+
 }

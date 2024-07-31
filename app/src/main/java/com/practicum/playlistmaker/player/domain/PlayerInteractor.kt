@@ -9,7 +9,7 @@ interface PlayerInteractor {
     fun pausePlayer()
     fun getCurrentPosition(): Int
 
-    fun releasePlayer()
+    fun resetPlayer()
 
     fun getTrack(): Track
 
@@ -17,4 +17,5 @@ interface PlayerInteractor {
         fun onStop()
         fun onPlay()
     }
+
 }
