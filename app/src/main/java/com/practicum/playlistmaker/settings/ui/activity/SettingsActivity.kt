@@ -3,19 +3,16 @@ package com.practicum.playlistmaker.settings.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker.settings.ui.viewmodel.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
 
-    private val viewModel by viewModels<SettingsViewModel> {
-        SettingsViewModel.getViewModelFactory(application)
-    }
+    private val viewModel by viewModel<SettingsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +35,6 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.themeSwitcher.isChecked = viewModel.getThemeSettings().darkTheme
-        Log.d("CHECK", viewModel.getThemeSettings().darkTheme.toString())
 
         binding.themeSwitcher.setOnCheckedChangeListener { _, checked ->
             viewModel.switchTheme(checked)
@@ -51,4 +47,5 @@ class SettingsActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
     }
+
 }

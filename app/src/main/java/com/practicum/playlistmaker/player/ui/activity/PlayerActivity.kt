@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.player.ui.activity
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -11,6 +10,7 @@ import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.player.ui.model.PlayStatus
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.player.ui.viewmodel.PlayerViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PlayerActivity : AppCompatActivity() {
@@ -18,11 +18,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var currentTrack: Track
     private lateinit var binding: ActivityPlayerBinding
 
-    private val viewModel by viewModels<PlayerViewModel> {
-        PlayerViewModel.getViewModelFactory(
-            application,
-        )
-    }
+    private val viewModel by viewModel<PlayerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,6 +86,8 @@ class PlayerActivity : AppCompatActivity() {
             .into(binding.cover)
     }
 
-    private fun getCoverArtwork(artworkUrl100: String?) =
-        artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
+    private fun getCoverArtwork(artworkUrl100: String?): String? {
+        return artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
+        }
+
 }

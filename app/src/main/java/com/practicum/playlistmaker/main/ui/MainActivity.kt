@@ -38,4 +38,5 @@ class MainActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
     }
+
 }

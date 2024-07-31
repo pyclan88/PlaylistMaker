@@ -6,19 +6,15 @@ import android.net.NetworkCapabilities
 import com.practicum.playlistmaker.search.data.NetworkClient
 import com.practicum.playlistmaker.search.data.dto.Response
 import com.practicum.playlistmaker.search.data.dto.SearchRequest
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import java.net.URL
 
-class RetrofitNetworkClient(private val context: Context) : NetworkClient {
 
-    private val itunesBaseUrl = "https://itunes.apple.com"
+class RetrofitNetworkClient(
+    private val iTunesService: ITunesApi,
+    private val context: Context
+) : NetworkClient {
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(itunesBaseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val iTunesService = retrofit.create(ITunesApi::class.java)
+    private val iTunesBaseUrl = "https://itunes.apple.com"
 
     override fun doRequest(dto: Any): Response {
         if (isConnected() == false) {
@@ -46,10 +42,25 @@ class RetrofitNetworkClient(private val context: Context) : NetworkClient {
         if (capabilities != null) {
             when {
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> return true
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> return true
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> return true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> return isServerConnected(
+                    iTunesBaseUrl
+                )
             }
         }
         return false
     }
+
+    private fun isServerConnected(serverUrl: String): Boolean {
+        return try {
+            val myUrl = URL(serverUrl)
+            val connection = myUrl.openConnection()
+            connection.connectTimeout = 10000
+            connection.connect()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
 }

@@ -1,15 +1,17 @@
 package com.practicum.playlistmaker.player.data.impl
 
-import android.content.Context
 import android.media.MediaPlayer
-import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.player.domain.api.PlayerRepository
 import com.practicum.playlistmaker.player.domain.model.Track
+import com.practicum.playlistmaker.search.domain.TrackInteractor
+import org.koin.core.component.KoinComponent
 
-class PlayerRepositoryImpl(val context: Context) : PlayerRepository {
+class PlayerRepositoryImpl(
+    private val mediaPlayer: MediaPlayer
+) : PlayerRepository, KoinComponent {
 
-    private var mediaPlayer = MediaPlayer()
-    private val currentTrack = Creator.provideTrackInteractor(context).loadTrack()
+    private val trackInteractor: TrackInteractor = getKoin().get()
+    private val currentTrack = trackInteractor.loadTrack()
 
     override fun preparePlayer(
         trackUrl: String,
@@ -30,8 +32,8 @@ class PlayerRepositoryImpl(val context: Context) : PlayerRepository {
         mediaPlayer.pause()
     }
 
-    override fun releasePlayer() {
-        mediaPlayer.release()
+    override fun resetPlayer() {
+        mediaPlayer.reset()
     }
 
     override fun getCurrentPosition(): Int {
@@ -41,4 +43,5 @@ class PlayerRepositoryImpl(val context: Context) : PlayerRepository {
     override fun getTrack(): Track {
         return currentTrack
     }
+
 }
