@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.player.ui.activity
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -42,13 +43,27 @@ class PlayerActivity : AppCompatActivity() {
         setListeners()
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.pause()
+    }
+
     private fun setListeners() {
         binding.backFromAudioPlayer.setOnClickListener {
             finish()
         }
         binding.playButton.setOnClickListener {
-            setPlayButtonAction(viewModel.getPlayStatusLiveData().value)
+            if (viewModel.isPreviewUrlValid()) {
+                setPlayButtonAction(viewModel.getPlayStatusLiveData().value)
+            } else {
+                showEmptySongToast()
+            }
         }
+    }
+
+    private fun showEmptySongToast() {
+        val message = getString(R.string.song_is_not_available)
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     private fun setPlayButtonAction(playStatus: PlayStatus?) {

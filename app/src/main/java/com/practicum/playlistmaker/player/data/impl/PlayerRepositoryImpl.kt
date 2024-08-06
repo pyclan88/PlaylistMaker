@@ -14,7 +14,7 @@ class PlayerRepositoryImpl(
     private val currentTrack = trackInteractor.loadTrack()
 
     override fun preparePlayer(
-        trackUrl: String,
+        trackUrl: String?,
         onComplete: () -> Unit
     ) {
         mediaPlayer.setDataSource(trackUrl)
