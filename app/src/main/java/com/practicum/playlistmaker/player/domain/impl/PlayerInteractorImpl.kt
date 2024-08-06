@@ -9,7 +9,7 @@ class PlayerInteractorImpl(private val repository: PlayerRepository) : PlayerInt
     private var statusObserver: PlayerInteractor.StatusObserver? = null
 
     override fun preparePlayer(
-        trackUrl: String,
+        trackUrl: String?,
         onComplete: () -> Unit
     ) {
         repository.preparePlayer(

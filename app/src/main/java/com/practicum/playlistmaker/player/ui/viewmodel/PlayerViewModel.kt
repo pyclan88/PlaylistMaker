@@ -14,6 +14,8 @@ class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
 ) : ViewModel() {
 
+    private val previewUrl = playerInteractor.getTrack().previewUrl
+
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
     private val progressLiveData = MutableLiveData<Int>()
 
@@ -27,14 +29,20 @@ class PlayerViewModel(
     }
 
     init {
-        playerInteractor.preparePlayer(
-            trackUrl = playerInteractor.getTrack().previewUrl,
-            onComplete = {
-                mainThreadHandler.removeCallbacks(progressUpdateRunnable)
-                playStatusLiveData.postValue(getCurrentPlayStatus().copy(isPlaying = false))
-                progressLiveData.postValue(0)
-            }
-        )
+
+        if (previewUrl != null) {
+
+            playerInteractor.preparePlayer(
+                trackUrl = previewUrl,
+                onComplete = {
+                    mainThreadHandler.removeCallbacks(progressUpdateRunnable)
+                    playStatusLiveData.postValue(getCurrentPlayStatus().copy(isPlaying = false))
+                    progressLiveData.postValue(0)
+                }
+            )
+
+        }
+
     }
 
     fun getPlayStatusLiveData(): LiveData<PlayStatus> = playStatusLiveData
@@ -63,6 +71,10 @@ class PlayerViewModel(
 
     fun provideCurrentTrack(): Track {
         return playerInteractor.getTrack()
+    }
+
+    fun isPreviewUrlValid(): Boolean {
+        return (previewUrl != null)
     }
 
     private fun getCurrentPlayStatus(): PlayStatus {
