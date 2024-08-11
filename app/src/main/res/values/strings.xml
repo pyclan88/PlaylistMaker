@@ -32,4 +32,9 @@
     <string name="search_error_minus1">Проблемы со связью\nЗагрузка не удалась. Проверьте\nподключение к интернету</string>
     <string name="search_error_else">Ошибка сервера</string>
     <string name="song_is_not_available">Песня недоступна для воспроизведения</string>
+    <string name="empty_library">Ваша медиатека пуста</string>
+    <string name="new_playlist">Новый плейлист</string>
+    <string name="no_one_playlist">Вы не создали\nни одного плейлиста</string>
+    <string name="favorite_tracks">Избранные треки</string>
+    <string name="playlists">Плейлисты</string>
 </resources>

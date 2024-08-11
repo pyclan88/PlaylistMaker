@@ -7,12 +7,11 @@
     android:background="@color/customBackground">
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/the_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/the_guideline"
-        app:layout_constraintEnd_toStartOf="@id/arrow_forward"
         android:orientation="vertical"
-        />
+        app:layout_constraintEnd_toStartOf="@id/arrow_forward" />
 
     <ImageView
         android:id="@+id/cover"

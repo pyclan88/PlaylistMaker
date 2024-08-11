@@ -36,22 +36,32 @@
         <item name="android:textCursorDrawable">@drawable/custom_cursor</item>
     </style>
 
-    <style name="ErrorText">
+    <style name="NothingFoundText">
         <item name="android:textSize">@dimen/text19</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textColor">@color/customColorOnBackground</item>
     </style>
 
-    <style name="playerLabel">
+    <style name="PlayerLabel">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/text13</item>
         <item name="android:textColor">@color/yp_text_gray</item>
     </style>
 
-    <style name="playerValue">
+    <style name="PlayerValue">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/text13</item>
         <item name="android:textColor">@color/customColorOnBackground</item>
+    </style>
+
+    <style name="ActionButton">
+        <item name="backgroundTint">@color/customColorOnBackground</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:textColor">@color/customBackground</item>
+        <item name="android:textSize">@dimen/text14</item>
+        <item name="cornerRadius">@dimen/button_corner_54</item>
     </style>
 
 </resources>
