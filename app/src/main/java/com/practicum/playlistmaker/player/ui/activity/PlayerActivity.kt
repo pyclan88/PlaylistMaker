@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.player.ui.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -23,7 +24,6 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -41,11 +41,13 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         setListeners()
+
+        if (viewModel.isMusicPlaying()) viewModel.play()
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.pause()
+    override fun onStop() {
+        super.onStop()
+        viewModel.forcePause()
     }
 
     private fun setListeners() {
@@ -94,7 +96,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun loadCoverToPlayer() {
-        Glide.with(applicationContext)
+        Glide.with(this)
             .load(getCoverArtwork(currentTrack.artworkUrl100))
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.corner8)))
