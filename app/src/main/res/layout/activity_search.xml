@@ -108,7 +108,7 @@
 
         <TextView
             android:id="@+id/text_nothing_found"
-            style="@style/ErrorText"
+            style="@style/NothingFoundText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/offset16"
@@ -132,7 +132,7 @@
 
         <TextView
             android:id="@+id/text_internet_error"
-            style="@style/ErrorText"
+            style="@style/NothingFoundText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/offset16"
@@ -142,7 +142,7 @@
         <Button
             android:id="@+id/refresh_button"
             android:layout_width="@dimen/refresh_width"
-            android:layout_height="@dimen/refresh_height"
+            android:layout_height="@dimen/button_height_36"
             android:layout_gravity="center_horizontal"
             android:backgroundTint="@color/customColorOnBackground"
             android:fontFamily="@font/ys_display_medium"
@@ -151,7 +151,7 @@
             android:text="@string/refresh"
             android:textColor="@color/customBackground"
             android:textSize="@dimen/text14"
-            app:cornerRadius="@dimen/refresh_corner" />
+            app:cornerRadius="@dimen/button_corner_54" />
     </LinearLayout>
 
     <ScrollView

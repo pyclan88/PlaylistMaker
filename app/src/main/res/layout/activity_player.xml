@@ -139,7 +139,7 @@
 
     <TextView
         android:id="@+id/duration_label"
-        style="@style/playerLabel"
+        style="@style/PlayerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/duration"
@@ -150,7 +150,7 @@
 
     <TextView
         android:id="@+id/album_label"
-        style="@style/playerLabel"
+        style="@style/PlayerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/album"
@@ -160,7 +160,7 @@
 
     <TextView
         android:id="@+id/year_label"
-        style="@style/playerLabel"
+        style="@style/PlayerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/year"
@@ -170,7 +170,7 @@
 
     <TextView
         android:id="@+id/genre_label"
-        style="@style/playerLabel"
+        style="@style/PlayerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/genre"
@@ -180,7 +180,7 @@
 
     <TextView
         android:id="@+id/country_label"
-        style="@style/playerLabel"
+        style="@style/PlayerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/offset28"
@@ -198,7 +198,7 @@
 
     <TextView
         android:id="@+id/duration_value"
-        style="@style/playerValue"
+        style="@style/PlayerValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/album_value"
@@ -209,7 +209,7 @@
 
     <TextView
         android:id="@+id/album_value"
-        style="@style/playerValue"
+        style="@style/PlayerValue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/offset16"
@@ -225,7 +225,7 @@
 
     <TextView
         android:id="@+id/year_value"
-        style="@style/playerValue"
+        style="@style/PlayerValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/genre_value"
@@ -235,7 +235,7 @@
 
     <TextView
         android:id="@+id/genre_value"
-        style="@style/playerValue"
+        style="@style/PlayerValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/country_value"
@@ -245,7 +245,7 @@
 
     <TextView
         android:id="@+id/country_value"
-        style="@style/playerValue"
+        style="@style/PlayerValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/offset28"
