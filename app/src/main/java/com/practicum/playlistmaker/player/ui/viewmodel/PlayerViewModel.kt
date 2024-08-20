@@ -14,8 +14,6 @@ class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
 ) : ViewModel() {
 
-    private var isPlaying = false
-
     private val previewUrl = playerInteractor.getTrack().previewUrl
 
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
@@ -65,20 +63,11 @@ class PlayerViewModel(
 
             }
         )
-
-        isPlaying = true
     }
 
     fun pause() {
         playerInteractor.pausePlayer()
-        isPlaying = false
     }
-
-    fun forcePause() {
-        playerInteractor.pausePlayer()
-    }
-
-    fun isMusicPlaying() = isPlaying
 
     fun provideCurrentTrack(): Track {
         return playerInteractor.getTrack()

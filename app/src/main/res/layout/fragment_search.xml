@@ -4,35 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/customBackground"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".search.fragment.SearchFragment"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/head_margin"
-        android:layout_marginTop="@dimen/head_margin"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/backFromSearchButton"
-            android:layout_width="@dimen/return_icon_size"
-            android:layout_height="@dimen/return_icon_size"
-            android:backgroundTint="@color/customBackground"
-            android:contentDescription="@string/return_button"
-            android:src="@drawable/ic_arrow_back"
-            app:tint="@color/customColorOnBackground" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/head_text_start"
-            android:layout_marginTop="@dimen/head_text_top"
-            android:fontFamily="@font/ys_display_medium"
-            android:text="@string/search"
-            android:textColor="@color/customColorOnBackground"
-            android:textFontWeight="500"
-            android:textSize="@dimen/text22" />
-    </LinearLayout>
+        android:layout_marginStart="@dimen/offset16"
+        android:layout_marginTop="@dimen/offset14"
+        android:layout_marginBottom="@dimen/offset16"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/search"
+        android:textColor="@color/customColorOnBackground"
+        android:textFontWeight="500"
+        android:textSize="@dimen/text22" />
 
     <FrameLayout
         android:id="@+id/searchContainer"

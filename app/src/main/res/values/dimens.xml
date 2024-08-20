@@ -46,6 +46,7 @@
     <dimen name="offset54">54dp</dimen>
     <dimen name="offset84">84dp</dimen>
     <dimen name="text13">13sp</dimen>
+    <dimen name="text12">12sp</dimen>
     <dimen name="offset17">17dp</dimen>
     <dimen name="offset28">28dp</dimen>
     <dimen name="offset39">39dp</dimen>
@@ -55,5 +56,6 @@
     <dimen name="offset106">106dp</dimen>
     <dimen name="button_width_133">133dp</dimen>
     <dimen name="offset46">46dp</dimen>
+    <dimen name="edge05">0.5dp</dimen>
 
 </resources>
