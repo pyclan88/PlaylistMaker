@@ -100,7 +100,7 @@ class SearchFragment : Fragment() {
 
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
-            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
         }
     }

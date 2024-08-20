@@ -58,12 +58,13 @@ class PlayerFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        if (!activity?.isChangingConfigurations!!) viewModel.pause()
+//        пауза только при сворачивании, при повороте плеер продолжает играть
+        if (!requireActivity().isChangingConfigurations) viewModel.pause()
     }
 
     override fun onStop() {
         super.onStop()
-        if (!activity?.isChangingConfigurations!!) viewModel.pause()
+        if (!requireActivity().isChangingConfigurations) viewModel.pause()
     }
 
     private fun setListeners() {
