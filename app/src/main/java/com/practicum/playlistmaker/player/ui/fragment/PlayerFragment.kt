@@ -1,58 +1,74 @@
-package com.practicum.playlistmaker.player.ui.activity
+package com.practicum.playlistmaker.player.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.util.DateTimeUtil
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
+import com.practicum.playlistmaker.databinding.FragmentPlayerBinding
 import com.practicum.playlistmaker.player.ui.model.PlayStatus
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerFragment : Fragment() {
 
-    private lateinit var currentTrack: Track
-    private lateinit var binding: ActivityPlayerBinding
+    private var _binding: FragmentPlayerBinding? = null
+    private val binding
+        get() = _binding!!
 
     private val viewModel by viewModel<PlayerViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    private lateinit var currentTrack: Track
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         currentTrack = viewModel.provideCurrentTrack()
 
         setValues()
 
-        viewModel.getPlayStatusLiveData().observe(this) { playStatus ->
+        viewModel.getPlayStatusLiveData().observe(viewLifecycleOwner) { playStatus ->
             renderPlayButton(playStatus)
         }
 
-        viewModel.getProgressLiveData().observe(this) { progress ->
+        viewModel.getProgressLiveData().observe(viewLifecycleOwner) { progress ->
             binding.playbackTime.text =
                 DateTimeUtil.formatTime(progress)
         }
 
         setListeners()
+    }
 
-        if (viewModel.isMusicPlaying()) viewModel.play()
+    override fun onPause() {
+        super.onPause()
+        if (!activity?.isChangingConfigurations!!) viewModel.pause()
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.forcePause()
+        if (!activity?.isChangingConfigurations!!) viewModel.pause()
     }
 
     private fun setListeners() {
         binding.backFromAudioPlayer.setOnClickListener {
-            finish()
+            findNavController().navigateUp()
         }
         binding.playButton.setOnClickListener {
             if (viewModel.isPreviewUrlValid()) {
@@ -65,7 +81,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun showEmptySongToast() {
         val message = getString(R.string.song_is_not_available)
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
     }
 
     private fun setPlayButtonAction(playStatus: PlayStatus?) {
@@ -105,6 +121,6 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun getCoverArtwork(artworkUrl100: String?): String? {
         return artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
-        }
+    }
 
 }

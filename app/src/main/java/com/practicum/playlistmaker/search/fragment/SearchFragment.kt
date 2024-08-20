@@ -1,21 +1,21 @@
-package com.practicum.playlistmaker.search.ui.activity
+package com.practicum.playlistmaker.search.fragment
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.practicum.playlistmaker.main.ui.MainActivity
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.player.domain.model.Track
-import com.practicum.playlistmaker.player.ui.activity.PlayerActivity
 import com.practicum.playlistmaker.search.ui.TrackAdapter
 import com.practicum.playlistmaker.search.ui.model.SearchScreenState
 import com.practicum.playlistmaker.search.ui.viewmodel.SearchViewModel
@@ -23,22 +23,23 @@ import com.practicum.playlistmaker.util.invisible
 import com.practicum.playlistmaker.util.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
+
+    private var _binding: FragmentSearchBinding? = null
+    private val binding
+        get() = _binding!!
 
     private val adapter = TrackAdapter(
         object : TrackAdapter.TrackClickListener {
             override fun onTrackClick(track: Track) {
                 if (clickDebounce()) {
-                    val intent = Intent(this@SearchActivity, PlayerActivity::class.java)
-                    startActivity(intent)
+                    findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
                 }
             }
-
         }
     )
 
     private lateinit var simpleTextWatcher: TextWatcher
-    private lateinit var binding: ActivitySearchBinding
 
     private var isClickedAllowed = true
     private var latestSearchText: String = ""
@@ -46,21 +47,23 @@ class SearchActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<SearchViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.rvSearchTrack.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.rvSearchTrack.adapter = adapter
 
         showHistory()
-
-        binding.backFromSearchButton.setOnClickListener {
-            MainActivity.startActivity(this)
-        }
 
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(R.string.empty_string)
@@ -95,15 +98,15 @@ class SearchActivity : AppCompatActivity() {
 
         simpleTextWatcher.let { binding.searchEditText.addTextChangedListener(simpleTextWatcher) }
 
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         simpleTextWatcher.let { binding.searchEditText.addTextChangedListener(simpleTextWatcher) }
     }
 
@@ -173,11 +176,6 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val CLICK_DEBOUNCE_DELAY = 1_000L
-
-        fun startActivity(context: Context) {
-            val intent = Intent(context, SearchActivity::class.java)
-            context.startActivity(intent)
-        }
     }
 
 }

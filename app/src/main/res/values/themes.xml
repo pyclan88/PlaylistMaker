@@ -9,8 +9,8 @@
         <!-- Settings icons color.-->
         <item name="iconTint">@color/yp_text_gray</item>
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/yp_blue</item>
-        <item name="colorOnPrimary">@color/yp_white</item>
+        <item name="colorPrimary">@color/yp_white</item>
+        <item name="colorOnPrimary">@color/yp_black</item>
         <!-- Switch color. -->
         <item name="thumbTint">@color/yp_text_gray</item>
         <item name="trackTint">@color/yp_light_gray</item>
