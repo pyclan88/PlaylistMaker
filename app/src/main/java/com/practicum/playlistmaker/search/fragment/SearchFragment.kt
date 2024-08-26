@@ -6,10 +6,12 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +19,9 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.search.ui.TrackAdapter
+import com.practicum.playlistmaker.search.ui.TrackClickListener
 import com.practicum.playlistmaker.search.ui.model.SearchScreenState
+import com.practicum.playlistmaker.search.ui.viewmodel.HistoryAdapter
 import com.practicum.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.practicum.playlistmaker.util.invisible
 import com.practicum.playlistmaker.util.visible
@@ -29,13 +33,24 @@ class SearchFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val adapter = TrackAdapter(
-        object : TrackAdapter.TrackClickListener {
+    private val searchAdapter = TrackAdapter(
+        object : TrackClickListener {
             override fun onTrackClick(track: Track) {
                 if (clickDebounce()) {
                     findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
                 }
             }
+        }
+    )
+
+    private val historyAdapter = HistoryAdapter(
+        object : TrackClickListener {
+            override fun onTrackClick(track: Track) {
+                if (clickDebounce()) {
+                    findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
+                }
+            }
+
         }
     )
 
@@ -61,21 +76,28 @@ class SearchFragment : Fragment() {
 
         binding.rvSearchTrack.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-        binding.rvSearchTrack.adapter = adapter
+        binding.rvSearchTrack.adapter = searchAdapter
 
-        showHistory()
+        binding.rvHistoryTrack.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.rvHistoryTrack.adapter = historyAdapter
 
         binding.clearIcon.setOnClickListener {
             binding.searchEditText.setText(R.string.empty_string)
-            showHistory()
+        }
+
+        binding.searchEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && binding.searchEditText.text.isEmpty()) showHistory() else hideHistory()
+            Log.d(TAG, binding.rvSearchTrack.isVisible.toString())
+            Log.d(TAG, binding.rvHistoryTrack.isVisible.toString())
         }
 
         binding.clearHistory.setOnClickListener {
             binding.youSearched.invisible()
             binding.clearHistory.invisible()
             viewModel.clearHistory()
-            adapter.tracks.clear()
-            adapter.notifyDataSetChanged()
+            searchAdapter.tracks.clear()
+            searchAdapter.notifyDataSetChanged()
         }
 
         binding.refreshButton.setOnClickListener {
@@ -86,21 +108,21 @@ class SearchFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (binding.searchEditText.hasFocus() && s?.isEmpty() == true) showHistory() else hideHistory()
                 binding.clearIcon.visibility = clearButtonVisibility(s)
                 viewModel.searchDebounce(changedText = s?.toString() ?: "", false)
                 latestSearchText = s?.toString() ?: ""
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                if (s.isNullOrEmpty()) showHistory()
-            }
+            override fun afterTextChanged(s: Editable?) {}
         }
 
         simpleTextWatcher.let { binding.searchEditText.addTextChangedListener(simpleTextWatcher) }
 
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
-            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
         }
     }
@@ -108,6 +130,7 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         simpleTextWatcher.let { binding.searchEditText.addTextChangedListener(simpleTextWatcher) }
+        _binding = null
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -129,10 +152,17 @@ class SearchFragment : Fragment() {
 
     private fun showHistory() {
         if (viewModel.loadHistory().isNotEmpty()) {
-            adapter.tracks = viewModel.loadHistory()
+            historyAdapter.tracks = viewModel.loadHistory()
+            binding.rvSearchTrack.invisible()
             binding.clearHistory.visible()
-            adapter.notifyDataSetChanged()
+            binding.rvHistoryTrack.visible()
+            historyAdapter.notifyDataSetChanged()
         }
+    }
+
+    private fun hideHistory() {
+        binding.clearHistory.invisible()
+        binding.rvHistoryTrack.invisible()
     }
 
     private fun showLoading() {
@@ -147,9 +177,10 @@ class SearchFragment : Fragment() {
     private fun showContent(tracks: List<Track>) {
         binding.progressBar.invisible()
         binding.searchScroll.visible()
-        adapter.tracks.clear()
-        adapter.tracks.addAll(tracks)
-        adapter.notifyDataSetChanged()
+        binding.rvSearchTrack.visible()
+        searchAdapter.tracks.clear()
+        searchAdapter.tracks.addAll(tracks)
+        searchAdapter.notifyDataSetChanged()
     }
 
     private fun showError(message: String) {
@@ -175,6 +206,7 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
+        const val TAG = "TAG"
         const val CLICK_DEBOUNCE_DELAY = 1_000L
     }
 

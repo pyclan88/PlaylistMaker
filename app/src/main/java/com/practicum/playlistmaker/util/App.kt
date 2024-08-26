@@ -18,7 +18,7 @@ class App : Application() {
             androidContext(this@App)
             modules(dataModule, repositoryModule, interactorModule, viewModelModule)
         }
-
+//to null all bindings
         val settingsRepository: SettingsRepository by inject()
         val condition = settingsRepository.getThemeSettings()
         settingsRepository.switchTheme(condition.darkTheme)
