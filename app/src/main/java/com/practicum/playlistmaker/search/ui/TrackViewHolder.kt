@@ -15,7 +15,7 @@ const val COVER_CORNER_8 = 8
 
 class TrackViewHolder(
     private val binding: TrackViewBinding,
-    private val clickListener: TrackAdapter.TrackClickListener
+    private val clickListener: TrackClickListener
 ) : RecyclerView.ViewHolder(binding.root), KoinComponent {
 
     private val trackInteractor: TrackInteractor = getKoin().get()
