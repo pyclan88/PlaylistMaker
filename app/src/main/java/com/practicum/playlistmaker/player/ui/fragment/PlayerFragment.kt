@@ -1,10 +1,13 @@
 package com.practicum.playlistmaker.player.ui.fragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -12,9 +15,11 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.util.DateTimeUtil
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlayerBinding
-import com.practicum.playlistmaker.player.ui.model.PlayStatus
+import com.practicum.playlistmaker.player.ui.model.PlayerState
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.player.ui.viewmodel.PlayerViewModel
+import com.practicum.playlistmaker.util.invisible
+import com.practicum.playlistmaker.util.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -27,6 +32,9 @@ class PlayerFragment : Fragment() {
     private val viewModel by viewModel<PlayerViewModel>()
 
     private lateinit var currentTrack: Track
+
+    private val mainThreadHandler = Handler(Looper.getMainLooper())
+    private val hideLandPanelRunnable = Runnable { binding.landConst?.invisible() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,11 +54,8 @@ class PlayerFragment : Fragment() {
 
         viewModel.getPlayStatusLiveData().observe(viewLifecycleOwner) { playStatus ->
             renderPlayButton(playStatus)
-        }
-
-        viewModel.getProgressLiveData().observe(viewLifecycleOwner) { progress ->
             binding.playbackTime.text =
-                DateTimeUtil.formatTime(progress)
+                DateTimeUtil.formatTime(playStatus.progress)
         }
 
         setListeners()
@@ -69,6 +74,7 @@ class PlayerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        mainThreadHandler.removeCallbacksAndMessages(null)
     }
 
     private fun pauseAfterCollapse() {
@@ -76,7 +82,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun setListeners() {
-        binding.backFromAudioPlayer.setOnClickListener {
+        binding.backFromAudioPlayer?.setOnClickListener {
             findNavController().navigateUp()
         }
         binding.playButton.setOnClickListener {
@@ -86,6 +92,17 @@ class PlayerFragment : Fragment() {
                 showEmptySongToast()
             }
         }
+        binding.cover.setOnClickListener {
+            if (binding.landConst?.isVisible == true) {
+                binding.landConst?.invisible()
+            } else {
+                binding.landConst?.visible()
+
+                if (viewModel.getPlayStatusLiveData().value?.isPlaying == true) {
+                    restartLandPanelVisibilityTimer()
+                }
+            }
+        }
     }
 
     private fun showEmptySongToast() {
@@ -93,16 +110,27 @@ class PlayerFragment : Fragment() {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
     }
 
-    private fun setPlayButtonAction(playStatus: PlayStatus?) {
-        if (playStatus?.isPlaying == true) {
+    private fun setPlayButtonAction(playerState: PlayerState?) {
+        if (playerState?.isPlaying == true) {
             viewModel.pause()
+            mainThreadHandler.removeCallbacks(hideLandPanelRunnable)
         } else {
             viewModel.play()
+            restartLandPanelVisibilityTimer()
         }
     }
 
-    private fun renderPlayButton(playStatus: PlayStatus?) {
-        if (playStatus?.isPlaying == true) {
+    private fun restartLandPanelVisibilityTimer() {
+        mainThreadHandler.removeCallbacks(hideLandPanelRunnable)
+        mainThreadHandler.postDelayed(hideLandPanelRunnable, SHOW_DELAY)
+    }
+
+    private fun renderPlayButton(playerState: PlayerState?) {
+        if (playerState?.prepared == true) {
+            binding.playButton.setImageResource(R.drawable.ic_play_button)
+        }
+
+        if (playerState?.isPlaying == true) {
             binding.playButton.setImageResource(R.drawable.ic_pause_button)
         } else {
             binding.playButton.setImageResource(R.drawable.ic_play_button)
@@ -110,13 +138,13 @@ class PlayerFragment : Fragment() {
     }
 
     private fun setValues() {
-        binding.trackNamePlayer.text = currentTrack.trackName
-        binding.artistNamePlayer.text = currentTrack.artistName
-        binding.durationValue.text = DateTimeUtil.formatTime(currentTrack.trackTimeMillis.toInt())
-        binding.albumValue.text = currentTrack.collectionName
-        binding.yearValue.text = currentTrack.releaseDate.substring(0, 4)
-        binding.genreValue.text = currentTrack.primaryGenreName
-        binding.countryValue.text = currentTrack.country
+        binding.trackNamePlayer?.text = currentTrack.trackName
+        binding.artistNamePlayer?.text = currentTrack.artistName
+        binding.durationValue?.text = DateTimeUtil.formatTime(currentTrack.trackTimeMillis.toInt())
+        binding.albumValue?.text = currentTrack.collectionName
+        binding.yearValue?.text = currentTrack.releaseDate.substring(0, 4)
+        binding.genreValue?.text = currentTrack.primaryGenreName
+        binding.countryValue?.text = currentTrack.country
         loadCoverToPlayer()
     }
 
@@ -130,6 +158,10 @@ class PlayerFragment : Fragment() {
 
     private fun getCoverArtwork(artworkUrl100: String?): String? {
         return artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
+    }
+
+    companion object {
+        const val SHOW_DELAY = 4000L
     }
 
 }

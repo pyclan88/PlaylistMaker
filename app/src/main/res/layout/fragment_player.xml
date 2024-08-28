@@ -96,7 +96,7 @@
         android:layout_height="100dp"
         android:layout_marginBottom="@dimen/offset4"
         android:background="@drawable/round_button"
-        android:src="@drawable/ic_play_button"
+        android:src="@drawable/ic_play_button_not_prepared"
         app:layout_constraintBottom_toTopOf="@id/playback_time"
         app:layout_constraintEnd_toStartOf="@id/add_to_favorite_button"
         app:layout_constraintStart_toEndOf="@id/add_to_playlist_button" />

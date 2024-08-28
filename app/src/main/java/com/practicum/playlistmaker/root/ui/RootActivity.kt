@@ -29,9 +29,11 @@ class RootActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.playerFragment -> {
                     binding.bottomNavigationView.invisible()
+                    binding.edge.invisible()
                 }
                 else -> {
                     binding.bottomNavigationView.visible()
+                    binding.edge.visible()
                 }
             }
         }
