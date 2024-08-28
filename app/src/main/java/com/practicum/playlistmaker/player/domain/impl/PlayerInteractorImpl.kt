@@ -10,10 +10,12 @@ class PlayerInteractorImpl(private val repository: PlayerRepository) : PlayerInt
 
     override fun preparePlayer(
         trackUrl: String?,
+        onPrepared: () -> Unit,
         onComplete: () -> Unit
     ) {
         repository.preparePlayer(
             trackUrl = trackUrl,
+            onPrepared = { onPrepared.invoke() },
             onComplete = { onComplete.invoke() }
         )
     }

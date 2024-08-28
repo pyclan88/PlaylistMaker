@@ -15,10 +15,14 @@ class PlayerRepositoryImpl(
 
     override fun preparePlayer(
         trackUrl: String?,
+        onPrepared: () -> Unit,
         onComplete: () -> Unit
     ) {
         mediaPlayer.setDataSource(trackUrl)
         mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            onPrepared.invoke()
+        }
         mediaPlayer.setOnCompletionListener {
             onComplete.invoke()
         }

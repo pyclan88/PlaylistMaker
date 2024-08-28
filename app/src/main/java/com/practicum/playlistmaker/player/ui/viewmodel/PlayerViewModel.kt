@@ -5,7 +5,7 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.practicum.playlistmaker.player.ui.model.PlayStatus
+import com.practicum.playlistmaker.player.ui.model.PlayerState
 import com.practicum.playlistmaker.player.domain.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.Track
 
@@ -16,14 +16,16 @@ class PlayerViewModel(
 
     private val previewUrl = playerInteractor.getTrack().previewUrl
 
-    private val playStatusLiveData = MutableLiveData<PlayStatus>()
-    private val progressLiveData = MutableLiveData<Int>()
+    private val playerStateLiveData = MutableLiveData<PlayerState>()
 
     private val mainThreadHandler = Handler(Looper.getMainLooper())
 
     private val progressUpdateRunnable = object : Runnable {
         override fun run() {
-            progressLiveData.postValue(playerInteractor.getCurrentPosition())
+            val currentState = playerStateLiveData.value ?: PlayerState()
+            playerStateLiveData.postValue(
+                currentState.copy(progress = playerInteractor.getCurrentPosition())
+            )
             mainThreadHandler.postDelayed(this, PLAYER_REQUEST_TOKEN, DELAY_MILLIS)
         }
     }
@@ -34,10 +36,17 @@ class PlayerViewModel(
 
             playerInteractor.preparePlayer(
                 trackUrl = previewUrl,
+                onPrepared = {
+                    playerStateLiveData.postValue(PlayerState(false, prepared = true, 0))
+                },
                 onComplete = {
                     mainThreadHandler.removeCallbacks(progressUpdateRunnable)
-                    playStatusLiveData.postValue(getCurrentPlayStatus().copy(isPlaying = false))
-                    progressLiveData.postValue(0)
+                    playerStateLiveData.postValue(
+                        getCurrentPlayStatus().copy(
+                            isPlaying = false,
+                            progress = 0
+                        )
+                    )
                 }
             )
 
@@ -45,19 +54,18 @@ class PlayerViewModel(
 
     }
 
-    fun getPlayStatusLiveData(): LiveData<PlayStatus> = playStatusLiveData
-    fun getProgressLiveData(): LiveData<Int> = progressLiveData
+    fun getPlayStatusLiveData(): LiveData<PlayerState> = playerStateLiveData
 
     fun play() {
         playerInteractor.startPlayer(
             statusObserver = object : PlayerInteractor.StatusObserver {
                 override fun onStop() {
-                    playStatusLiveData.postValue(getCurrentPlayStatus().copy(isPlaying = false))
+                    playerStateLiveData.postValue(getCurrentPlayStatus().copy(isPlaying = false))
                     mainThreadHandler.removeCallbacks(progressUpdateRunnable)
                 }
 
                 override fun onPlay() {
-                    playStatusLiveData.postValue(getCurrentPlayStatus().copy(isPlaying = true))
+                    playerStateLiveData.postValue(getCurrentPlayStatus().copy(isPlaying = true))
                     mainThreadHandler.post(progressUpdateRunnable)
                 }
 
@@ -77,8 +85,8 @@ class PlayerViewModel(
         return (previewUrl != null)
     }
 
-    private fun getCurrentPlayStatus(): PlayStatus {
-        return playStatusLiveData.value ?: PlayStatus(isPlaying = false)
+    private fun getCurrentPlayStatus(): PlayerState {
+        return playerStateLiveData.value ?: PlayerState(isPlaying = false, false, 0)
     }
 
     override fun onCleared() {
