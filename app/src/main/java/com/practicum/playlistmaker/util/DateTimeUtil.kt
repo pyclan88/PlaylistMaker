@@ -10,7 +10,7 @@ object DateTimeUtil {
         return SimpleDateFormat(
             TIME_FORMAT_PATTERN,
             Locale.getDefault()
-        ).format(timeText)
+        ).format(timeText) ?: "00:00"
     }
 
 }

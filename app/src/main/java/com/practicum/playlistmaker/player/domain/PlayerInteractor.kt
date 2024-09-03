@@ -9,17 +9,11 @@ interface PlayerInteractor {
         onComplete: () -> Unit
     )
 
-    fun startPlayer(statusObserver: StatusObserver)
+    fun startPlayer()
     fun pausePlayer()
+    fun isPlaying(): Boolean
     fun getCurrentPosition(): Int
-
     fun resetPlayer()
-
     fun getTrack(): Track
-
-    interface StatusObserver {
-        fun onStop()
-        fun onPlay()
-    }
 
 }

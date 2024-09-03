@@ -1,23 +1,23 @@
-package com.practicum.playlistmaker.player.ui.fragment
+package com.practicum.playlistmaker.player.ui
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.util.DateTimeUtil
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlayerBinding
-import com.practicum.playlistmaker.player.ui.model.PlayerState
 import com.practicum.playlistmaker.player.domain.model.Track
-import com.practicum.playlistmaker.player.ui.viewmodel.PlayerViewModel
+import com.practicum.playlistmaker.player.presentation.PlayerState
+import com.practicum.playlistmaker.player.presentation.PlayerViewModel
+import com.practicum.playlistmaker.util.debounce
 import com.practicum.playlistmaker.util.invisible
 import com.practicum.playlistmaker.util.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,12 +29,10 @@ class PlayerFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val viewModel by viewModel<PlayerViewModel>()
+    private val playerViewModel by viewModel<PlayerViewModel>()
 
     private lateinit var currentTrack: Track
-
-    private val mainThreadHandler = Handler(Looper.getMainLooper())
-    private val hideLandPanelRunnable = Runnable { binding.landConst?.invisible() }
+    private lateinit var hidePanelDebounce: (Unit) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,17 +46,24 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        currentTrack = viewModel.provideCurrentTrack()
+        hidePanelDebounce = debounce(
+            SHOW_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            true
+        ) {
+            binding.landConst?.invisible()
+        }
+
+        currentTrack = playerViewModel.provideCurrentTrack()
 
         setValues()
 
-        viewModel.getPlayStatusLiveData().observe(viewLifecycleOwner) { playStatus ->
-            renderPlayButton(playStatus)
-            binding.playbackTime.text =
-                DateTimeUtil.formatTime(playStatus.progress)
+        playerViewModel.observePlayerState().observe(viewLifecycleOwner) {
+            binding.playButton.isEnabled = it.isPlayButtonEnabled
+            binding.playButton.setImageResource(it.buttonImage)
+            binding.playbackTime.text = it.progress
+            setListeners(it)
         }
-
-        setListeners()
     }
 
     override fun onPause() {
@@ -74,33 +79,31 @@ class PlayerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        mainThreadHandler.removeCallbacksAndMessages(null)
     }
 
     private fun pauseAfterCollapse() {
-        if (!requireActivity().isChangingConfigurations) viewModel.pause()
+        if (!requireActivity().isChangingConfigurations) playerViewModel.onPause()
     }
 
-    private fun setListeners() {
+    private fun setListeners(state: PlayerState) {
         binding.backFromAudioPlayer?.setOnClickListener {
             findNavController().navigateUp()
         }
+
         binding.playButton.setOnClickListener {
-            if (viewModel.isPreviewUrlValid()) {
-                setPlayButtonAction(viewModel.getPlayStatusLiveData().value)
-            } else {
+            if (playerViewModel.isPreviewUrlNotValid()) {
                 showEmptySongToast()
+            } else {
+                playerViewModel.onPlayButtonClicked()
             }
         }
+
         binding.cover.setOnClickListener {
             if (binding.landConst?.isVisible == true) {
                 binding.landConst?.invisible()
             } else {
                 binding.landConst?.visible()
-
-                if (viewModel.getPlayStatusLiveData().value?.isPlaying == true) {
-                    restartLandPanelVisibilityTimer()
-                }
+                hideLandPanel(state)
             }
         }
     }
@@ -110,30 +113,9 @@ class PlayerFragment : Fragment() {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
     }
 
-    private fun setPlayButtonAction(playerState: PlayerState?) {
-        if (playerState?.isPlaying == true) {
-            viewModel.pause()
-            mainThreadHandler.removeCallbacks(hideLandPanelRunnable)
-        } else {
-            viewModel.play()
-            restartLandPanelVisibilityTimer()
-        }
-    }
-
-    private fun restartLandPanelVisibilityTimer() {
-        mainThreadHandler.removeCallbacks(hideLandPanelRunnable)
-        mainThreadHandler.postDelayed(hideLandPanelRunnable, SHOW_DELAY)
-    }
-
-    private fun renderPlayButton(playerState: PlayerState?) {
-        if (playerState?.prepared == true) {
-            binding.playButton.setImageResource(R.drawable.ic_play_button)
-        }
-
-        if (playerState?.isPlaying == true) {
-            binding.playButton.setImageResource(R.drawable.ic_pause_button)
-        } else {
-            binding.playButton.setImageResource(R.drawable.ic_play_button)
+    private fun hideLandPanel(state: PlayerState) {
+        if (binding.landConst?.isVisible == true && state is PlayerState.Playing) {
+            hidePanelDebounce(Unit)
         }
     }
 
