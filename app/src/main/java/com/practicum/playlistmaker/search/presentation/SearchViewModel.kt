@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.practicum.playlistmaker.di.viewModelModule
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.search.domain.SearchInteractor
 import com.practicum.playlistmaker.search.domain.TrackInteractor
@@ -15,10 +16,15 @@ class SearchViewModel(
     private val trackInteractor: TrackInteractor,
 ) : ViewModel() {
 
+    init {
+        loadHistory()
+    }
+
     private val screenStateLiveData = MutableLiveData<SearchScreenState>()
     fun observeState(): LiveData<SearchScreenState> = screenStateLiveData
 
     private var latestSearchText: String? = null
+    private var historyList: ArrayList<Track>? = null
 
     private val trackSearchDebounce = debounce<String>(
         SEARCH_DEBOUNCE_DELAY_MILLIS,
@@ -28,14 +34,12 @@ class SearchViewModel(
         searchRequest(changedText)
     }
 
-    fun clearHistory() {
-        trackInteractor.clearHistory()
+    fun getHistory(): ArrayList<Track> {
+        return historyList ?: ArrayList()
     }
 
-    fun loadHistory(): ArrayList<Track> {
-        val historyTracks =
-            ArrayList(trackInteractor.loadHistory())
-        return historyTracks
+    fun clearHistory() {
+        trackInteractor.clearHistory()
     }
 
     fun searchDebounce(changedText: String, refresh: Boolean) {
@@ -44,6 +48,12 @@ class SearchViewModel(
         } else {
             latestSearchText = changedText
             trackSearchDebounce(changedText)
+        }
+    }
+
+    private fun loadHistory() {
+        viewModelScope.launch {
+            historyList = ArrayList(trackInteractor.loadHistory())
         }
     }
 

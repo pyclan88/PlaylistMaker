@@ -59,9 +59,7 @@ class PlayerFragment : Fragment() {
         setValues()
 
         playerViewModel.observePlayerState().observe(viewLifecycleOwner) {
-            binding.playButton.isEnabled = it.isPlayButtonEnabled
-            binding.playButton.setImageResource(it.buttonImage)
-            binding.playbackTime.text = it.progress
+            updateUI(it)
             setListeners(it)
         }
     }
@@ -79,6 +77,14 @@ class PlayerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun updateUI(state: PlayerState) {
+        binding.playButton.isEnabled = state.isPlayButtonEnabled
+        binding.playButton.setImageResource(
+            if (state.isPlaying) R.drawable.ic_pause_button else R.drawable.ic_play_button
+        )
+        binding.playbackTime.text = state.progress
     }
 
     private fun pauseAfterCollapse() {

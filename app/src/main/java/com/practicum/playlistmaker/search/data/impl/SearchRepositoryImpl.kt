@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.search.data.impl
 
 import android.content.Context
-import android.util.Log
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.search.data.NetworkClient
@@ -19,7 +18,6 @@ class SearchRepositoryImpl(
 
     override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(SearchRequest(expression))
-        Log.d("TEST", response.resultCode.toString())
         when (response.resultCode) {
             -1 -> emit(Resource.Error(context.getString(R.string.search_error_minus1)))
             200 -> {

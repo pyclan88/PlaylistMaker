@@ -153,8 +153,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun showHistory() {
-        if (viewModel.loadHistory().isNotEmpty()) {
-            historyAdapter?.tracks = viewModel.loadHistory()
+        if (viewModel.getHistory().isNotEmpty()) {
+            historyAdapter?.tracks = viewModel.getHistory()
             binding.rvSearchTrack.invisible()
             binding.clearHistory.visible()
             binding.rvHistoryTrack.visible()
