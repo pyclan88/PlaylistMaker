@@ -6,8 +6,6 @@ import com.practicum.playlistmaker.player.domain.model.Track
 
 class PlayerInteractorImpl(private val repository: PlayerRepository) : PlayerInteractor {
 
-    private var statusObserver: PlayerInteractor.StatusObserver? = null
-
     override fun preparePlayer(
         trackUrl: String?,
         onPrepared: () -> Unit,
@@ -20,23 +18,24 @@ class PlayerInteractorImpl(private val repository: PlayerRepository) : PlayerInt
         )
     }
 
-    override fun startPlayer(statusObserver: PlayerInteractor.StatusObserver) {
-        this.statusObserver = statusObserver
-        statusObserver.onPlay()
+    override fun startPlayer() {
         repository.startPlayer()
     }
 
     override fun pausePlayer() {
-        statusObserver?.onStop()
         repository.pausePlayer()
     }
 
-    override fun resetPlayer() {
-        repository.resetPlayer()
+    override fun isPlaying(): Boolean {
+        return repository.isPlaying()
     }
 
     override fun getCurrentPosition(): Int {
         return repository.getCurrentPosition()
+    }
+
+    override fun resetPlayer() {
+        repository.resetPlayer()
     }
 
     override fun getTrack(): Track {

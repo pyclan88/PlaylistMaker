@@ -33,7 +33,7 @@ class RootActivity : AppCompatActivity() {
                 }
                 else -> {
                     binding.bottomNavigationView.visible()
-                    binding.edge.visible()
+                    binding.edge.invisible()
                 }
             }
         }

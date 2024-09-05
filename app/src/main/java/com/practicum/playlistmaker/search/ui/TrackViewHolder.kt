@@ -35,7 +35,7 @@ class TrackViewHolder(
 
         itemView.setOnClickListener {
             trackInteractor.saveTrack(track)
-            clickListener.onTrackClick(track)
+            clickListener.onTrackClick()
         }
     }
 

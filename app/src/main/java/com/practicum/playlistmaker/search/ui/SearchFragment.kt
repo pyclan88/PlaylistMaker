@@ -1,28 +1,23 @@
-package com.practicum.playlistmaker.search.fragment
+package com.practicum.playlistmaker.search.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.player.domain.model.Track
-import com.practicum.playlistmaker.search.ui.TrackAdapter
-import com.practicum.playlistmaker.search.ui.TrackClickListener
-import com.practicum.playlistmaker.search.ui.model.SearchScreenState
-import com.practicum.playlistmaker.search.ui.viewmodel.HistoryAdapter
-import com.practicum.playlistmaker.search.ui.viewmodel.SearchViewModel
+import com.practicum.playlistmaker.search.presentation.SearchScreenState
+import com.practicum.playlistmaker.search.presentation.SearchViewModel
+import com.practicum.playlistmaker.util.debounce
 import com.practicum.playlistmaker.util.invisible
 import com.practicum.playlistmaker.util.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,32 +28,14 @@ class SearchFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val searchAdapter = TrackAdapter(
-        object : TrackClickListener {
-            override fun onTrackClick(track: Track) {
-                if (clickDebounce()) {
-                    findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
-                }
-            }
-        }
-    )
+    private var searchAdapter: TrackAdapter? = null
+    private var historyAdapter: HistoryAdapter? = null
 
-    private val historyAdapter = HistoryAdapter(
-        object : TrackClickListener {
-            override fun onTrackClick(track: Track) {
-                if (clickDebounce()) {
-                    findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
-                }
-            }
-
-        }
-    )
+    private lateinit var onTrackClickDebounce: (Unit) -> Unit
 
     private lateinit var simpleTextWatcher: TextWatcher
 
-    private var isClickedAllowed = true
     private var latestSearchText: String = ""
-    private val mainThreadHandler = Handler(Looper.getMainLooper())
 
     private val viewModel by viewModel<SearchViewModel>()
 
@@ -74,6 +51,33 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        onTrackClickDebounce = debounce(
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) {
+            findNavController().navigate(
+                R.id.action_searchFragment_to_playerFragment
+            )
+        }
+
+        searchAdapter = TrackAdapter(
+            object : TrackClickListener {
+                override fun onTrackClick() {
+                    onTrackClickDebounce(Unit)
+                }
+
+            }
+        )
+
+        historyAdapter = HistoryAdapter(
+            object : TrackClickListener {
+                override fun onTrackClick() {
+                    onTrackClickDebounce(Unit)
+                }
+            }
+        )
+
         binding.rvSearchTrack.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.rvSearchTrack.adapter = searchAdapter
@@ -88,16 +92,14 @@ class SearchFragment : Fragment() {
 
         binding.searchEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && binding.searchEditText.text.isEmpty()) showHistory() else hideHistory()
-            Log.d(TAG, binding.rvSearchTrack.isVisible.toString())
-            Log.d(TAG, binding.rvHistoryTrack.isVisible.toString())
         }
 
         binding.clearHistory.setOnClickListener {
             binding.youSearched.invisible()
             binding.clearHistory.invisible()
             viewModel.clearHistory()
-            searchAdapter.tracks.clear()
-            searchAdapter.notifyDataSetChanged()
+            searchAdapter?.tracks?.clear()
+            searchAdapter?.notifyDataSetChanged()
         }
 
         binding.refreshButton.setOnClickListener {
@@ -151,12 +153,12 @@ class SearchFragment : Fragment() {
     }
 
     private fun showHistory() {
-        if (viewModel.loadHistory().isNotEmpty()) {
-            historyAdapter.tracks = viewModel.loadHistory()
+        if (viewModel.getHistory().isNotEmpty()) {
+            historyAdapter?.tracks = viewModel.getHistory()
             binding.rvSearchTrack.invisible()
             binding.clearHistory.visible()
             binding.rvHistoryTrack.visible()
-            historyAdapter.notifyDataSetChanged()
+            historyAdapter?.notifyDataSetChanged()
         }
     }
 
@@ -178,9 +180,9 @@ class SearchFragment : Fragment() {
         binding.progressBar.invisible()
         binding.searchScroll.visible()
         binding.rvSearchTrack.visible()
-        searchAdapter.tracks.clear()
-        searchAdapter.tracks.addAll(tracks)
-        searchAdapter.notifyDataSetChanged()
+        searchAdapter?.tracks?.clear()
+        searchAdapter?.tracks?.addAll(tracks)
+        searchAdapter?.notifyDataSetChanged()
     }
 
     private fun showError(message: String) {
@@ -196,17 +198,7 @@ class SearchFragment : Fragment() {
         binding.linearNothingFound.visible()
     }
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickedAllowed
-        if (isClickedAllowed) {
-            isClickedAllowed = false
-            mainThreadHandler.postDelayed({ isClickedAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
-
     companion object {
-        const val TAG = "TAG"
         const val CLICK_DEBOUNCE_DELAY = 1_000L
     }
 

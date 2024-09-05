@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".settings.ui.fragment.SettingsFragment"
+    tools:context=".settings.ui.SettingsFragment"
     android:background="@color/customBackground"
     android:orientation="vertical">
     <!--?attr/background-->

@@ -9,8 +9,10 @@ interface PlayerRepository {
         onPrepared: () -> Unit,
         onComplete: () -> Unit
     )
+
     fun startPlayer()
     fun pausePlayer()
+    fun isPlaying(): Boolean
     fun resetPlayer()
     fun getCurrentPosition(): Int
     fun getTrack(): Track

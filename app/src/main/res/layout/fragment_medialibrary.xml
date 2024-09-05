@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/customBackground"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".medialibrary.ui.fragment.MediaLibraryFragment"
+    tools:context=".medialibrary.ui.MediaLibraryFragment"
     android:orientation="vertical">
 
     <TextView

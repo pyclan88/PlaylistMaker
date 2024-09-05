@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/customBackground"
     android:orientation="vertical"
-    tools:context=".search.fragment.SearchFragment">
+    tools:context=".search.ui.SearchFragment">
 
     <TextView
         android:layout_width="wrap_content"

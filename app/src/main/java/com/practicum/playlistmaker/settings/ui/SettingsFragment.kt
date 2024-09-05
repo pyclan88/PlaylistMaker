@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.settings.ui.fragment
+package com.practicum.playlistmaker.settings.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.databinding.FragmentSettingsBinding
-import com.practicum.playlistmaker.settings.ui.viewmodel.SettingsViewModel
+import com.practicum.playlistmaker.settings.presentation.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {

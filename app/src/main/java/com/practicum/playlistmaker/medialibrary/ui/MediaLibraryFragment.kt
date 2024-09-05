@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.medialibrary.ui.fragment
+package com.practicum.playlistmaker.medialibrary.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentMedialibraryBinding
-import com.practicum.playlistmaker.medialibrary.ui.MediaLibraryPagerAdapter
 
 class MediaLibraryFragment : Fragment() {
 

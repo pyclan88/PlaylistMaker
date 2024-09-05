@@ -36,6 +36,10 @@ class PlayerRepositoryImpl(
         mediaPlayer.pause()
     }
 
+    override fun isPlaying(): Boolean {
+        return mediaPlayer.isPlaying
+    }
+
     override fun resetPlayer() {
         mediaPlayer.reset()
     }
