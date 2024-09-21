@@ -38,8 +38,4 @@ class PlayerInteractorImpl(private val repository: PlayerRepository) : PlayerInt
         repository.resetPlayer()
     }
 
-    override fun getTrack(): Track {
-        return repository.getTrack()
-    }
-
 }

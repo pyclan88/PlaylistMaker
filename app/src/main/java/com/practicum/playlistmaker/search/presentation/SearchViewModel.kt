@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.di.viewModelModule
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.search.domain.SearchInteractor
-import com.practicum.playlistmaker.search.domain.TrackInteractor
+import com.practicum.playlistmaker.search.domain.db.HistoryInteractor
 import com.practicum.playlistmaker.util.debounce
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val searchInteractor: SearchInteractor,
-    private val trackInteractor: TrackInteractor,
+    private val historyInteractor: HistoryInteractor,
 ) : ViewModel() {
 
     init {
@@ -23,8 +23,10 @@ class SearchViewModel(
     private val screenStateLiveData = MutableLiveData<SearchScreenState>()
     fun observeState(): LiveData<SearchScreenState> = screenStateLiveData
 
+    private val historyListLiveData = MutableLiveData<List<Track>>()
+    fun observeHistoryList(): LiveData<List<Track>> = historyListLiveData
+
     private var latestSearchText: String? = null
-    private var historyList: ArrayList<Track>? = null
 
     private val trackSearchDebounce = debounce<String>(
         SEARCH_DEBOUNCE_DELAY_MILLIS,
@@ -34,12 +36,18 @@ class SearchViewModel(
         searchRequest(changedText)
     }
 
-    fun getHistory(): ArrayList<Track> {
-        return historyList ?: ArrayList()
+    fun clearHistory() {
+        viewModelScope.launch {
+            historyInteractor.clearHistory()
+            loadHistory()
+        }
     }
 
-    fun clearHistory() {
-        trackInteractor.clearHistory()
+    fun saveTrackToHistory(track: Track) {
+        viewModelScope.launch {
+            historyInteractor.saveTrackToHistory(track)
+            loadHistory()
+        }
     }
 
     fun searchDebounce(changedText: String, refresh: Boolean) {
@@ -53,7 +61,10 @@ class SearchViewModel(
 
     private fun loadHistory() {
         viewModelScope.launch {
-            historyList = ArrayList(trackInteractor.loadHistory())
+            historyInteractor.historyTracks()
+                .collect { tracks ->
+                    historyListLiveData.postValue(tracks)
+                }
         }
     }
 

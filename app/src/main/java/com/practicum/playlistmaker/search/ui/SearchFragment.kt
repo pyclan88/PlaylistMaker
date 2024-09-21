@@ -15,11 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.player.domain.model.Track
+import com.practicum.playlistmaker.player.ui.PlayerFragment
 import com.practicum.playlistmaker.search.presentation.SearchScreenState
 import com.practicum.playlistmaker.search.presentation.SearchViewModel
 import com.practicum.playlistmaker.util.debounce
 import com.practicum.playlistmaker.util.invisible
 import com.practicum.playlistmaker.util.visible
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -29,15 +31,15 @@ class SearchFragment : Fragment() {
         get() = _binding!!
 
     private var searchAdapter: TrackAdapter? = null
-    private var historyAdapter: HistoryAdapter? = null
+    private var historyAdapter: TrackAdapter? = null
 
-    private lateinit var onTrackClickDebounce: (Unit) -> Unit
+    private lateinit var onTrackClickDebounce: (Track) -> Unit
 
     private lateinit var simpleTextWatcher: TextWatcher
 
     private var latestSearchText: String = ""
 
-    private val viewModel by viewModel<SearchViewModel>()
+    private val searchViewModel by viewModel<SearchViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,25 +57,32 @@ class SearchFragment : Fragment() {
             CLICK_DEBOUNCE_DELAY,
             viewLifecycleOwner.lifecycleScope,
             false
-        ) {
+        ) { track ->
             findNavController().navigate(
-                R.id.action_searchFragment_to_playerFragment
+                R.id.action_searchFragment_to_playerFragment,
+                PlayerFragment.createArgs(track = track)
             )
         }
 
         searchAdapter = TrackAdapter(
             object : TrackClickListener {
-                override fun onTrackClick() {
-                    onTrackClickDebounce(Unit)
+                override fun onTrackClick(track: Track) {
+                    onTrackClickDebounce(track)
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        searchViewModel.saveTrackToHistory(track)
+                    }
                 }
 
             }
         )
 
-        historyAdapter = HistoryAdapter(
+        historyAdapter = TrackAdapter(
             object : TrackClickListener {
-                override fun onTrackClick() {
-                    onTrackClickDebounce(Unit)
+                override fun onTrackClick(track: Track) {
+                    onTrackClickDebounce(track)
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        searchViewModel.saveTrackToHistory(track)
+                    }
                 }
             }
         )
@@ -97,13 +106,15 @@ class SearchFragment : Fragment() {
         binding.clearHistory.setOnClickListener {
             binding.youSearched.invisible()
             binding.clearHistory.invisible()
-            viewModel.clearHistory()
-            searchAdapter?.tracks?.clear()
-            searchAdapter?.notifyDataSetChanged()
+            viewLifecycleOwner.lifecycleScope.launch {
+                searchViewModel.clearHistory()
+                searchAdapter?.tracks?.clear()
+                searchAdapter?.notifyDataSetChanged()
+            }
         }
 
         binding.refreshButton.setOnClickListener {
-            viewModel.searchDebounce(latestSearchText, true)
+            searchViewModel.searchDebounce(latestSearchText, true)
         }
 
         simpleTextWatcher = object : TextWatcher {
@@ -112,7 +123,7 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (binding.searchEditText.hasFocus() && s?.isEmpty() == true) showHistory() else hideHistory()
                 binding.clearIcon.visibility = clearButtonVisibility(s)
-                viewModel.searchDebounce(changedText = s?.toString() ?: "", false)
+                searchViewModel.searchDebounce(changedText = s?.toString() ?: "", false)
                 latestSearchText = s?.toString() ?: ""
             }
 
@@ -121,11 +132,16 @@ class SearchFragment : Fragment() {
 
         simpleTextWatcher.let { binding.searchEditText.addTextChangedListener(simpleTextWatcher) }
 
-        viewModel.observeState().observe(viewLifecycleOwner) {
+        searchViewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
             val imm =
                 requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
+        }
+
+        searchViewModel.observeHistoryList().observe(viewLifecycleOwner) { tracks ->
+            historyAdapter?.tracks = ArrayList(tracks)
+            historyAdapter?.notifyDataSetChanged()
         }
     }
 
@@ -153,12 +169,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun showHistory() {
-        if (viewModel.getHistory().isNotEmpty()) {
-            historyAdapter?.tracks = viewModel.getHistory()
+        if (searchViewModel.observeHistoryList().value?.isNotEmpty() == true) {
             binding.rvSearchTrack.invisible()
             binding.clearHistory.visible()
             binding.rvHistoryTrack.visible()
-            historyAdapter?.notifyDataSetChanged()
         }
     }
 
@@ -199,7 +213,7 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        const val CLICK_DEBOUNCE_DELAY = 1_000L
+        private const val CLICK_DEBOUNCE_DELAY = 1_000L
     }
 
 }
