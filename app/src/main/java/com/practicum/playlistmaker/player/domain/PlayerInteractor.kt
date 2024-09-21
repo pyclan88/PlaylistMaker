@@ -14,6 +14,4 @@ interface PlayerInteractor {
     fun isPlaying(): Boolean
     fun getCurrentPosition(): Int
     fun resetPlayer()
-    fun getTrack(): Track
-
 }

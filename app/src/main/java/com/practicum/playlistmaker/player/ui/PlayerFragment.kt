@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -18,9 +19,11 @@ import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.player.presentation.PlayerState
 import com.practicum.playlistmaker.player.presentation.PlayerViewModel
 import com.practicum.playlistmaker.util.debounce
+import com.practicum.playlistmaker.util.getParcelableCompat
 import com.practicum.playlistmaker.util.invisible
 import com.practicum.playlistmaker.util.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 
 class PlayerFragment : Fragment() {
@@ -29,7 +32,9 @@ class PlayerFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val playerViewModel by viewModel<PlayerViewModel>()
+    private val playerViewModel by viewModel<PlayerViewModel> {
+        parametersOf(requireArguments().getParcelableCompat(ARGS_TRACK))
+    }
 
     private lateinit var currentTrack: Track
     private lateinit var hidePanelDebounce: (Unit) -> Unit
@@ -149,7 +154,11 @@ class PlayerFragment : Fragment() {
     }
 
     companion object {
-        const val SHOW_DELAY = 4000L
+        private const val SHOW_DELAY = 4000L
+        private const val ARGS_TRACK = "TRACK_KEY"
+
+        fun createArgs(track: Track): Bundle =
+            bundleOf(ARGS_TRACK to track)
     }
 
 }

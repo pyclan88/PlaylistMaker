@@ -3,15 +3,11 @@ package com.practicum.playlistmaker.player.data.impl
 import android.media.MediaPlayer
 import com.practicum.playlistmaker.player.domain.api.PlayerRepository
 import com.practicum.playlistmaker.player.domain.model.Track
-import com.practicum.playlistmaker.search.domain.TrackInteractor
 import org.koin.core.component.KoinComponent
 
 class PlayerRepositoryImpl(
     private val mediaPlayer: MediaPlayer
-) : PlayerRepository, KoinComponent {
-
-    private val trackInteractor: TrackInteractor = getKoin().get()
-    private val currentTrack = trackInteractor.loadTrack()
+) : PlayerRepository {
 
     override fun preparePlayer(
         trackUrl: String?,
@@ -46,10 +42,6 @@ class PlayerRepositoryImpl(
 
     override fun getCurrentPosition(): Int {
         return mediaPlayer.currentPosition
-    }
-
-    override fun getTrack(): Track {
-        return currentTrack
     }
 
 }

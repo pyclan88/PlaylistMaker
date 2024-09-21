@@ -15,6 +15,5 @@ interface PlayerRepository {
     fun isPlaying(): Boolean
     fun resetPlayer()
     fun getCurrentPosition(): Int
-    fun getTrack(): Track
 
 }

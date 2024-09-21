@@ -16,10 +16,9 @@ import kotlinx.coroutines.launch
 
 
 class PlayerViewModel(
+    private val track: Track,
     private val playerInteractor: PlayerInteractor,
 ) : ViewModel() {
-
-    private val previewUrl = playerInteractor.getTrack().previewUrl
 
     private var timerJob: Job? = null
 
@@ -48,7 +47,7 @@ class PlayerViewModel(
 
     private fun initMediaPlayer() {
         playerInteractor.preparePlayer(
-            trackUrl = previewUrl,
+            trackUrl = track.previewUrl,
             onPrepared = {
                 playerState.postValue(Prepared())
             },
@@ -85,11 +84,11 @@ class PlayerViewModel(
     }
 
     fun provideCurrentTrack(): Track {
-        return playerInteractor.getTrack()
+        return track
     }
 
     fun isPreviewUrlNotValid(): Boolean {
-        return (previewUrl == null)
+        return (track.previewUrl == null)
     }
 
     companion object {
