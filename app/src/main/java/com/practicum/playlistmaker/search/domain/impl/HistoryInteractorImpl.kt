@@ -9,16 +9,16 @@ class HistoryInteractorImpl(
     private val historyRepository: HistoryRepository,
 ) : HistoryInteractor {
 
-    override suspend fun saveTrackToHistory(track: Track) {
-        historyRepository.saveTrackToHistory(track)
-    }
-
-    override suspend fun historyTracks(): Flow<List<Track>> {
-        return historyRepository.historyTracks()
+    override suspend fun addTrackToHistory(track: Track) {
+        historyRepository.addTrackToHistory(track)
     }
 
     override suspend fun clearHistory() {
         historyRepository.clearHistory()
+    }
+
+    override suspend fun historyTracks(): Flow<List<Track>> {
+        return historyRepository.historyTracks()
     }
 
 }

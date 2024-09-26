@@ -4,7 +4,7 @@ import com.practicum.playlistmaker.player.domain.model.Track
 import kotlinx.coroutines.flow.Flow
 
 interface HistoryRepository {
-    suspend fun saveTrackToHistory(track: Track)
-    suspend fun historyTracks(): Flow<List<Track>>
+    suspend fun addTrackToHistory(track: Track)
     suspend fun clearHistory()
+    suspend fun historyTracks(): Flow<List<Track>>
 }

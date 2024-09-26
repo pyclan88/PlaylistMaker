@@ -1,13 +1,17 @@
 package com.practicum.playlistmaker.player.ui
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -16,6 +20,7 @@ import com.practicum.playlistmaker.util.DateTimeUtil
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlayerBinding
 import com.practicum.playlistmaker.player.domain.model.Track
+import com.practicum.playlistmaker.player.presentation.PlayerScreenState
 import com.practicum.playlistmaker.player.presentation.PlayerState
 import com.practicum.playlistmaker.player.presentation.PlayerViewModel
 import com.practicum.playlistmaker.util.debounce
@@ -67,6 +72,17 @@ class PlayerFragment : Fragment() {
             updateUI(it)
             setListeners(it)
         }
+
+        val callback = object : OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() {
+                val resultBundle = Bundle().apply {
+                    putBoolean("isFavoriteChanged", true)
+                }
+                setFragmentResult("favoriteUpdate", resultBundle)
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     override fun onPause() {
@@ -84,19 +100,20 @@ class PlayerFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateUI(state: PlayerState) {
+    private fun updateUI(state: PlayerScreenState) {
         binding.playButton.isEnabled = state.isPlayButtonEnabled
         binding.playButton.setImageResource(
-            if (state.isPlaying) R.drawable.ic_pause_button else R.drawable.ic_play_button
+            if (state.playerState == PlayerState.PLAYING) R.drawable.ic_pause_button else R.drawable.ic_play_button
         )
         binding.playbackTime.text = state.progress
+        binding.addToFavoriteButton?.setImageDrawable(getFavoriteToggleDrawable(state.isFavorite))
     }
 
     private fun pauseAfterCollapse() {
         if (!requireActivity().isChangingConfigurations) playerViewModel.onPause()
     }
 
-    private fun setListeners(state: PlayerState) {
+    private fun setListeners(state: PlayerScreenState) {
         binding.backFromAudioPlayer?.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -105,8 +122,14 @@ class PlayerFragment : Fragment() {
             if (playerViewModel.isPreviewUrlNotValid()) {
                 showEmptySongToast()
             } else {
-                playerViewModel.onPlayButtonClicked()
+                playerViewModel.onPlayClicked()
             }
+        }
+
+        binding.addToFavoriteButton?.setOnClickListener {
+            playerViewModel.onFavoriteClicked()
+
+
         }
 
         binding.cover.setOnClickListener {
@@ -124,8 +147,8 @@ class PlayerFragment : Fragment() {
         Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show()
     }
 
-    private fun hideLandPanel(state: PlayerState) {
-        if (binding.landConst?.isVisible == true && state is PlayerState.Playing) {
+    private fun hideLandPanel(state: PlayerScreenState) {
+        if (binding.landConst?.isVisible == true && state.playerState == PlayerState.PLAYING) {
             hidePanelDebounce(Unit)
         }
     }
@@ -139,6 +162,13 @@ class PlayerFragment : Fragment() {
         binding.genreValue?.text = currentTrack.primaryGenreName
         binding.countryValue?.text = currentTrack.country
         loadCoverToPlayer()
+    }
+
+    private fun getFavoriteToggleDrawable(isFavorite: Boolean): Drawable? {
+        return AppCompatResources.getDrawable(
+            context ?: return null,
+            if (isFavorite) R.drawable.ic_favorite_active else R.drawable.ic_favorite_inactive
+        )
     }
 
     private fun loadCoverToPlayer() {

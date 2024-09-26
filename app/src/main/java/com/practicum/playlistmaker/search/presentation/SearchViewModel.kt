@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.di.viewModelModule
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.search.domain.SearchInteractor
 import com.practicum.playlistmaker.search.domain.db.HistoryInteractor
@@ -45,7 +44,7 @@ class SearchViewModel(
 
     fun saveTrackToHistory(track: Track) {
         viewModelScope.launch {
-            historyInteractor.saveTrackToHistory(track)
+            historyInteractor.addTrackToHistory(track)
             loadHistory()
         }
     }
@@ -59,7 +58,7 @@ class SearchViewModel(
         }
     }
 
-    private fun loadHistory() {
+    fun loadHistory() {
         viewModelScope.launch {
             historyInteractor.historyTracks()
                 .collect { tracks ->

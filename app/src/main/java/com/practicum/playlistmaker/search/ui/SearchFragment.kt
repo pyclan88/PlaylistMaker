@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.search.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -18,6 +19,7 @@ import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.player.ui.PlayerFragment
 import com.practicum.playlistmaker.search.presentation.SearchScreenState
 import com.practicum.playlistmaker.search.presentation.SearchViewModel
+import com.practicum.playlistmaker.util.AppConstants
 import com.practicum.playlistmaker.util.debounce
 import com.practicum.playlistmaker.util.invisible
 import com.practicum.playlistmaker.util.visible
@@ -50,14 +52,18 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         onTrackClickDebounce = debounce(
-            CLICK_DEBOUNCE_DELAY,
+            AppConstants.CLICK_DEBOUNCE_DELAY,
             viewLifecycleOwner.lifecycleScope,
             false
         ) { track ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                searchViewModel.saveTrackToHistory(track)
+            }
             findNavController().navigate(
                 R.id.action_searchFragment_to_playerFragment,
                 PlayerFragment.createArgs(track = track)
@@ -68,11 +74,7 @@ class SearchFragment : Fragment() {
             object : TrackClickListener {
                 override fun onTrackClick(track: Track) {
                     onTrackClickDebounce(track)
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        searchViewModel.saveTrackToHistory(track)
-                    }
                 }
-
             }
         )
 
@@ -80,9 +82,6 @@ class SearchFragment : Fragment() {
             object : TrackClickListener {
                 override fun onTrackClick(track: Track) {
                     onTrackClickDebounce(track)
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        searchViewModel.saveTrackToHistory(track)
-                    }
                 }
             }
         )
@@ -143,6 +142,8 @@ class SearchFragment : Fragment() {
             historyAdapter?.tracks = ArrayList(tracks)
             historyAdapter?.notifyDataSetChanged()
         }
+
+        searchViewModel.loadHistory()
     }
 
     override fun onDestroyView() {
@@ -190,13 +191,16 @@ class SearchFragment : Fragment() {
         binding.linearInternetError.invisible()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showContent(tracks: List<Track>) {
         binding.progressBar.invisible()
         binding.searchScroll.visible()
         binding.rvSearchTrack.visible()
-        searchAdapter?.tracks?.clear()
-        searchAdapter?.tracks?.addAll(tracks)
-        searchAdapter?.notifyDataSetChanged()
+        searchAdapter?.apply {
+            this.tracks.clear()
+            this.tracks.addAll(tracks)
+            this.notifyDataSetChanged()
+        }
     }
 
     private fun showError(message: String) {
@@ -210,10 +214,6 @@ class SearchFragment : Fragment() {
         binding.progressBar.invisible()
         binding.searchScroll.invisible()
         binding.linearNothingFound.visible()
-    }
-
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1_000L
     }
 
 }

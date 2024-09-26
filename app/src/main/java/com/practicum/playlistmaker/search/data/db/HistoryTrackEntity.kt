@@ -16,5 +16,6 @@ data class HistoryTrackEntity(
     val primaryGenreName: String,
     val country: String,
     val previewUrl: String?,
+    val isFavorite: Boolean,
     val addedAt: Long = 0,
 )
