@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentFavoritesTracksBinding
 import com.practicum.playlistmaker.medialibrary.presenation.FavoriteScreenState
@@ -71,8 +70,6 @@ class FavoriteTracksFragment : Fragment() {
         favoriteTracksViewModel.observerState().observe(viewLifecycleOwner) {
             render(it)
         }
-
-        favoriteTracksViewModel.loadFavoriteTracks()
     }
 
     private fun render(state: FavoriteScreenState) {

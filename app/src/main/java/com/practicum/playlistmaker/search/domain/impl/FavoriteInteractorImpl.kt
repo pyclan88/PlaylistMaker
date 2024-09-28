@@ -13,20 +13,12 @@ class FavoriteInteractorImpl(
         favoriteRepository.addTrackToFavorites(track)
     }
 
-    override suspend fun getTrack(trackId: Int): Flow<Track> {
-        return favoriteRepository.getTrack(trackId)
-    }
-
     override suspend fun removeTrackFromFavorites(track: Track) {
         favoriteRepository.removeTrackFromFavorites(track)
     }
 
     override suspend fun favoriteTracks(): Flow<List<Track>> {
         return favoriteRepository.favoriteTracks()
-    }
-
-    override suspend fun getAllIds(): Flow<List<Int>> {
-        return favoriteRepository.getAllIds()
     }
 
 }

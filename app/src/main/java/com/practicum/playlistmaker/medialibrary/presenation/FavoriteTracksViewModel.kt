@@ -21,7 +21,7 @@ class FavoriteTracksViewModel(
 
     fun observerState(): LiveData<FavoriteScreenState> = stateLiveData
 
-    fun loadFavoriteTracks() {
+    private fun loadFavoriteTracks() {
         viewModelScope.launch {
             favoriteInteractor.favoriteTracks()
                 .collect { tracks ->
@@ -32,10 +32,13 @@ class FavoriteTracksViewModel(
 
     private fun processResult(loadedTracks: List<Track>?) {
         val tracks = ArrayList<Track>()
-        if (loadedTracks != null) tracks.addAll(loadedTracks)
-        when {
-            tracks.isEmpty() -> setState(FavoriteScreenState.Empty)
-            else -> setState(FavoriteScreenState.Content(tracks = tracks))
+        if (loadedTracks != null) {
+            tracks.addAll(loadedTracks)
+        }
+        if (tracks.isNotEmpty()) {
+            setState(FavoriteScreenState.Content(tracks))
+        } else {
+            setState(FavoriteScreenState.Empty)
         }
     }
 

@@ -30,12 +30,9 @@ class HistoryRepositoryImpl(
     }
 
     override suspend fun historyTracks(): Flow<List<Track>> = flow {
-        val historyTrackEntities = appDatabase.historyTrackDao().getAllTracks()
-        val favoriteIds = appDatabase.favoriteTrackDao().getAllIds()
-        val updatedHistoryTrackEntities = historyTrackEntities.map { track ->
-            track.copy(isFavorite = favoriteIds.contains(track.trackId))
-        }
-        val tracks = updatedHistoryTrackEntities.map { track -> trackDbConverter.map(track) }
+        val historyTrackEntities: List<HistoryTrackEntity> = appDatabase.historyTrackDao().getAllTracks()
+        val tracks = historyTrackEntities.map { historyTrackEntity ->
+            trackDbConverter.map(historyTrackEntity) }
         emit(tracks)
     }
 
