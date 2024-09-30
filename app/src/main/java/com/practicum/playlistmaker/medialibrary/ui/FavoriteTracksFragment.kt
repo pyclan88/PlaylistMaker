@@ -16,10 +16,10 @@ import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.player.ui.PlayerFragment
 import com.practicum.playlistmaker.search.ui.TrackAdapter
 import com.practicum.playlistmaker.search.ui.TrackClickListener
-import com.practicum.playlistmaker.util.AppConstants
-import com.practicum.playlistmaker.util.debounce
-import com.practicum.playlistmaker.util.invisible
-import com.practicum.playlistmaker.util.visible
+import com.practicum.playlistmaker.utils.AppConstants
+import com.practicum.playlistmaker.utils.debounce
+import com.practicum.playlistmaker.utils.invisible
+import com.practicum.playlistmaker.utils.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteTracksFragment : Fragment() {

@@ -8,7 +8,7 @@ import com.practicum.playlistmaker.search.data.db.AppDatabase
 import com.practicum.playlistmaker.search.domain.api.SearchRepository
 import com.practicum.playlistmaker.search.data.dto.ITunesResponse
 import com.practicum.playlistmaker.search.data.dto.SearchRequest
-import com.practicum.playlistmaker.util.Resource
+import com.practicum.playlistmaker.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

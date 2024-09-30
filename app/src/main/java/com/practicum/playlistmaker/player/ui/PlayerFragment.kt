@@ -14,17 +14,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.practicum.playlistmaker.util.DateTimeUtil
+import com.practicum.playlistmaker.utils.DateTimeUtil
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlayerBinding
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.player.presentation.PlayerScreenState
 import com.practicum.playlistmaker.player.presentation.PlayerState
 import com.practicum.playlistmaker.player.presentation.PlayerViewModel
-import com.practicum.playlistmaker.util.debounce
-import com.practicum.playlistmaker.util.getParcelableCompat
-import com.practicum.playlistmaker.util.invisible
-import com.practicum.playlistmaker.util.visible
+import com.practicum.playlistmaker.utils.debounce
+import com.practicum.playlistmaker.utils.getParcelableCompat
+import com.practicum.playlistmaker.utils.invisible
+import com.practicum.playlistmaker.utils.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 

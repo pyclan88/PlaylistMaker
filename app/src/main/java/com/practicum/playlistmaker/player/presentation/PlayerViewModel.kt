@@ -10,7 +10,7 @@ import com.practicum.playlistmaker.player.presentation.PlayerState.PAUSED
 import com.practicum.playlistmaker.player.domain.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.search.domain.db.FavoriteInteractor
-import com.practicum.playlistmaker.util.DateTimeUtil
+import com.practicum.playlistmaker.utils.DateTimeUtil
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

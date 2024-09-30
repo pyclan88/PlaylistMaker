@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.search.domain.SearchInteractor
 import com.practicum.playlistmaker.search.domain.db.HistoryInteractor
-import com.practicum.playlistmaker.util.debounce
+import com.practicum.playlistmaker.utils.debounce
 import kotlinx.coroutines.launch
 
 class SearchViewModel(

@@ -1,8 +1,8 @@
 package com.practicum.playlistmaker.search.data.converter
 
 import com.practicum.playlistmaker.player.domain.model.Track
-import com.practicum.playlistmaker.search.data.db.FavoriteTrackEntity
-import com.practicum.playlistmaker.search.data.db.HistoryTrackEntity
+import com.practicum.playlistmaker.search.data.db.entities.FavoriteTrackEntity
+import com.practicum.playlistmaker.search.data.db.entities.HistoryTrackEntity
 import kotlin.reflect.KClass
 
 class TrackDbConverter {
