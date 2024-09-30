@@ -4,11 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.di.viewModelModule
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.search.domain.SearchInteractor
 import com.practicum.playlistmaker.search.domain.db.HistoryInteractor
-import com.practicum.playlistmaker.util.debounce
+import com.practicum.playlistmaker.utils.debounce
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
@@ -16,15 +15,8 @@ class SearchViewModel(
     private val historyInteractor: HistoryInteractor,
 ) : ViewModel() {
 
-    init {
-        loadHistory()
-    }
-
     private val screenStateLiveData = MutableLiveData<SearchScreenState>()
     fun observeState(): LiveData<SearchScreenState> = screenStateLiveData
-
-    private val historyListLiveData = MutableLiveData<List<Track>>()
-    fun observeHistoryList(): LiveData<List<Track>> = historyListLiveData
 
     private var latestSearchText: String? = null
 
@@ -39,14 +31,13 @@ class SearchViewModel(
     fun clearHistory() {
         viewModelScope.launch {
             historyInteractor.clearHistory()
-            loadHistory()
         }
+        setState(SearchScreenState.EmptyHistory)
     }
 
     fun saveTrackToHistory(track: Track) {
         viewModelScope.launch {
-            historyInteractor.saveTrackToHistory(track)
-            loadHistory()
+            historyInteractor.addTrackToHistory(track)
         }
     }
 
@@ -59,12 +50,24 @@ class SearchViewModel(
         }
     }
 
-    private fun loadHistory() {
+     fun showHistory() {
         viewModelScope.launch {
             historyInteractor.historyTracks()
                 .collect { tracks ->
-                    historyListLiveData.postValue(tracks)
+                    processHistory(tracks)
                 }
+        }
+    }
+
+    private fun processHistory(historyTracks: List<Track>?) {
+        val tracks = ArrayList<Track>()
+        if (historyTracks != null) {
+            tracks.addAll(historyTracks)
+        }
+        if (tracks.isNotEmpty()) {
+            setState(SearchScreenState.HistoryContent(tracks))
+        } else {
+            setState(SearchScreenState.EmptyHistory)
         }
     }
 
@@ -76,13 +79,13 @@ class SearchViewModel(
                 searchInteractor
                     .searchTracks(searchInput)
                     .collect { pair ->
-                        processResult(pair.first, pair.second)
+                        processSearch(pair.first, pair.second)
                     }
             }
         }
     }
 
-    private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
+    private fun processSearch(foundTracks: List<Track>?, errorMessage: String?) {
         val tracks = ArrayList<Track>()
         if (foundTracks != null) {
             tracks.addAll(foundTracks)
@@ -94,11 +97,11 @@ class SearchViewModel(
             }
 
             tracks.isEmpty() -> {
-                setState(SearchScreenState.Empty)
+                setState(SearchScreenState.EmptySearch)
             }
 
             else -> {
-                setState(SearchScreenState.Content(tracks = tracks))
+                setState(SearchScreenState.SearchContent(tracks = tracks))
             }
         }
     }

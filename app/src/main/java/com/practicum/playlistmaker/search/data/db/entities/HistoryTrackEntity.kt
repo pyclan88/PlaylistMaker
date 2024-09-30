@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.search.data.db
+package com.practicum.playlistmaker.search.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,5 +16,6 @@ data class HistoryTrackEntity(
     val primaryGenreName: String,
     val country: String,
     val previewUrl: String?,
+    val isFavorite: Boolean,
     val addedAt: Long = 0,
 )

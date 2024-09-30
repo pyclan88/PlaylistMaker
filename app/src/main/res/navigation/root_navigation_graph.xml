@@ -23,10 +23,24 @@
         android:id="@+id/mediaLibraryFragment"
         android:name="com.practicum.playlistmaker.medialibrary.ui.MediaLibraryFragment"
         android:label="fragment_medialibrary"
-        tools:layout="@layout/fragment_medialibrary" />
+        tools:layout="@layout/fragment_medialibrary" >
+        <action
+            android:id="@+id/action_mediaLibraryFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.practicum.playlistmaker.settings.ui.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.practicum.playlistmaker.medialibrary.ui.FavoriteTracksFragment"
+        android:label="fragment_favorite_tracks"
+        tools:layout="@layout/fragment_favorites_tracks"
+        >
+        <action
+            android:id="@+id/action_favoriteFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
 </navigation>

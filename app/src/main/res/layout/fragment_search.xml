@@ -167,15 +167,10 @@
                 android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_search_track"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvHistoryTrack"
+                android:id="@+id/rvTracks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <Button
                 android:id="@+id/clear_history"

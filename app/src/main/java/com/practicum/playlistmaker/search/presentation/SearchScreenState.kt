@@ -6,7 +6,9 @@ sealed interface SearchScreenState {
 
     object Loading : SearchScreenState
 
-    data class Content(
+    object EmptySearch : SearchScreenState
+
+    data class SearchContent(
         val tracks: List<Track>
     ) : SearchScreenState
 
@@ -14,6 +16,10 @@ sealed interface SearchScreenState {
         val message: String
     ) : SearchScreenState
 
-    object Empty : SearchScreenState
+    object EmptyHistory : SearchScreenState
+
+    data class HistoryContent(
+        val tracks: List<Track>
+    ) : SearchScreenState
 
 }

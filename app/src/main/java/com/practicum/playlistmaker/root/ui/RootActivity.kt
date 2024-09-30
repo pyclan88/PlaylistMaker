@@ -7,8 +7,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityRootBinding
-import com.practicum.playlistmaker.util.invisible
-import com.practicum.playlistmaker.util.visible
+import com.practicum.playlistmaker.utils.invisible
+import com.practicum.playlistmaker.utils.visible
 
 class RootActivity : AppCompatActivity() {
 
@@ -33,7 +33,7 @@ class RootActivity : AppCompatActivity() {
                 }
                 else -> {
                     binding.bottomNavigationView.visible()
-                    binding.edge.invisible()
+                    binding.edge.visible()
                 }
             }
         }
