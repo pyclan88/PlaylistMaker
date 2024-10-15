@@ -173,6 +173,8 @@ class SearchFragment : Fragment() {
         binding.clearHistory.visible()
         binding.searchScroll.visible()
         binding.rvTracks.visible()
+        binding.linearInternetError.invisible()
+        binding.linearNothingFound.invisible()
         trackAdapter?.apply {
             this.tracks.clear()
             this.tracks.addAll(tracks)

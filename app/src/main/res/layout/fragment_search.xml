@@ -27,7 +27,7 @@
         android:layout_marginLeft="@dimen/offset16"
         android:layout_marginTop="@dimen/offset8"
         android:layout_marginRight="@dimen/offset16"
-        android:background="@drawable/round_corners"
+        android:background="@drawable/round_corners8"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -94,7 +94,7 @@
 
         <TextView
             android:id="@+id/text_nothing_found"
-            style="@style/NothingFoundText"
+            style="@style/nothing_found_text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/offset16"
@@ -118,7 +118,7 @@
 
         <TextView
             android:id="@+id/text_internet_error"
-            style="@style/NothingFoundText"
+            style="@style/nothing_found_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/offset16"

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.medialibrary.presenation
+package com.practicum.playlistmaker.medialibrary.presenation.favoritetracks
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,9 +16,7 @@ class FavoriteTracksViewModel(
         loadFavoriteTracks()
     }
 
-
     private val stateLiveData = MutableLiveData<FavoriteScreenState>()
-
     fun observerState(): LiveData<FavoriteScreenState> = stateLiveData
 
     private fun loadFavoriteTracks() {

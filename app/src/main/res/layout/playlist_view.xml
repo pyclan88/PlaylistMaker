@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginHorizontal="@dimen/offset4"
+    android:layout_marginVertical="@dimen/offset8"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/cover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/placeholder" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/offset4"
+        android:fontFamily="@font/ys_display_regular"
+        android:textColor="@color/customColorOnBackground"
+        android:textFontWeight="400"
+        android:textSize="@dimen/text12"
+        android:ellipsize="end"
+        android:lines="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cover"
+        tools:text="BeSt SoNg EvEr!" />
+
+    <TextView
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_display_regular"
+        android:textColor="@color/customColorOnBackground"
+        android:textFontWeight="400"
+        android:textSize="@dimen/text12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        tools:text="1 трек" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
