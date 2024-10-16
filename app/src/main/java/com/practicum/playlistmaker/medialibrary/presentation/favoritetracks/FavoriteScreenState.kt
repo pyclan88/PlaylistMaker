@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.medialibrary.presenation.favoritetracks
+package com.practicum.playlistmaker.medialibrary.presentation.favoritetracks
 
 import com.practicum.playlistmaker.player.domain.model.Track
 

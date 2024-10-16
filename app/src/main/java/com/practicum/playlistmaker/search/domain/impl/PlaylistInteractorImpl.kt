@@ -30,4 +30,13 @@ class PlaylistInteractorImpl(
         playlistRepository.addTrackToPlaylistTrack(track)
     }
 
+    override suspend fun createPlaylist(coverPath: String?, name: String, description: String?) {
+        val playlist = Playlist(
+            coverPath = coverPath,
+            name = name,
+            description = description
+        )
+        playlistRepository.addPlaylist(playlist)
+    }
+
 }

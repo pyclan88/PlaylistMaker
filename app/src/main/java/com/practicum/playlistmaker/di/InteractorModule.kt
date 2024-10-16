@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.medialibrary.domain.ImageInteractor
+import com.practicum.playlistmaker.medialibrary.domain.impl.ImageInteractorImpl
 import com.practicum.playlistmaker.player.domain.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.impl.PlayerInteractorImpl
 import com.practicum.playlistmaker.search.domain.SearchInteractor
@@ -24,40 +26,46 @@ val interactorModule = module {
         )
     }
 
-    single<SearchInteractor> {
+    factory<SearchInteractor> {
         SearchInteractorImpl(
             repository = get(),
         )
     }
 
-    single<SharingInteractor> {
+    factory<SharingInteractor> {
         SharingInteractorImpl(
             context = get(),
             externalNavigator = get(),
         )
     }
 
-    single<SettingsInteractor> {
+    factory<SettingsInteractor> {
         SettingsInteractorImpl(
             settingsRepository = get(),
         )
     }
 
-    single<HistoryInteractor> {
+    factory<HistoryInteractor> {
         HistoryInteractorImpl(
             historyRepository = get(),
         )
     }
 
-    single<FavoriteInteractor> {
+    factory<FavoriteInteractor> {
         FavoriteInteractorImpl(
             favoriteRepository = get(),
         )
     }
 
-    single<PlaylistInteractor> {
+    factory<PlaylistInteractor> {
         PlaylistInteractorImpl(
             playlistRepository = get(),
+        )
+    }
+
+    factory<ImageInteractor> {
+        ImageInteractorImpl(
+            imageRepository = get(),
         )
     }
 

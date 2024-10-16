@@ -20,13 +20,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.practicum.playlistmaker.utils.DateTimeUtil
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlayerBinding
-import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.player.presentation.AddTrackState
 import com.practicum.playlistmaker.player.presentation.PlayerScreenState
 import com.practicum.playlistmaker.player.presentation.PlayerState
 import com.practicum.playlistmaker.player.presentation.PlayerViewModel
-import com.practicum.playlistmaker.utils.AppConstants
 import com.practicum.playlistmaker.utils.debounce
 import com.practicum.playlistmaker.utils.getParcelableCompat
 import com.practicum.playlistmaker.utils.invisible
@@ -42,8 +40,6 @@ class PlayerFragment : Fragment() {
         get() = _binding!!
 
     private var playlistAdapter: PlayerAdapter? = null
-
-    private lateinit var onPlaylistClickDebounce: (Playlist) -> Unit
 
     private val playerViewModel by viewModel<PlayerViewModel> {
         parametersOf(requireArguments().getParcelableCompat(ARGS_TRACK))
@@ -87,17 +83,9 @@ class PlayerFragment : Fragment() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
-        onPlaylistClickDebounce = debounce(
-            AppConstants.CLICK_DEBOUNCE_DELAY,
-            viewLifecycleOwner.lifecycleScope,
-            false
-        ) { playlist ->
-            playerViewModel.addTrackToPlaylist(playlist)
-        }
-
         playlistAdapter = PlayerAdapter(
             PlaylistClickListener {
-                onPlaylistClickDebounce(it)
+                playerViewModel.addTrackToPlaylist(it)
             }
         )
 

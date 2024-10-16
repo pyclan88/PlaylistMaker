@@ -58,7 +58,7 @@
     <dimen name="edge05">0.5dp</dimen>
     <dimen name="dash_gap">36dp</dimen>
     <dimen name="offset32">32dp</dimen>
-    <dimen name="bottom_sheet_handle_height">8dp</dimen>
+    <dimen name="bottom_sheet_handle_height">4dp</dimen>
     <dimen name="bottom_sheet_handle_width">50dp</dimen>
     <dimen name="offset30">30dp</dimen>
     <dimen name="bottom_sheet_505">505dp</dimen>

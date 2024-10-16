@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PlaylistDao {
 
-    @Insert()
+    @Insert
     suspend fun insertPlaylist(playlist: PlaylistEntity)
 
-    @Update()
+    @Update
     suspend fun updatePlaylist(playlist: PlaylistEntity)
 
     @Query("SELECT * FROM playlist_table ORDER BY lastModifiedAt DESC")

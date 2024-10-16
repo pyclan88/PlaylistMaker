@@ -1,11 +1,11 @@
-package com.practicum.playlistmaker.medialibrary.presenation.playlist
+package com.practicum.playlistmaker.medialibrary.presentation.playlist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
-import com.practicum.playlistmaker.medialibrary.presenation.newplaylist.PlaylistScreenState
+import com.practicum.playlistmaker.medialibrary.presentation.newplaylist.PlaylistScreenState
 import com.practicum.playlistmaker.search.domain.db.PlaylistInteractor
 import kotlinx.coroutines.launch
 

@@ -34,7 +34,7 @@ class PlayerViewModel(
 
     fun observePlayerState(): LiveData<PlayerScreenState> = screenStateLiveData
 
-    private val addingTrackStateLiveData = MutableLiveData<AddTrackState>()
+    private val addingTrackStateLiveData = SingleLiveEvent<AddTrackState>()
     fun observeAddingTrackState(): LiveData<AddTrackState> = addingTrackStateLiveData
 
     init {

@@ -10,4 +10,5 @@ interface PlaylistInteractor {
     suspend fun playlists(): Flow<List<Playlist>>
     suspend fun playlistNames(): Flow<List<String>>
     suspend fun addTrackToPlaylistTrack(track: Track)
+    suspend fun createPlaylist(coverPath: String?, name: String, description: String?)
 }

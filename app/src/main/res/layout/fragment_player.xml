@@ -286,6 +286,7 @@
             android:layout_height="@dimen/bottom_sheet_handle_height"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/offset8"
+            android:id="@+id/drag_handler"
             android:background="@drawable/round_corners8" />
 
         <TextView

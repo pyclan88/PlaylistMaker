@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.medialibrary.data.impl.ImageRepositoryImpl
+import com.practicum.playlistmaker.medialibrary.domain.api.ImageRepository
 import com.practicum.playlistmaker.player.data.impl.PlayerRepositoryImpl
 import com.practicum.playlistmaker.player.domain.api.PlayerRepository
 import com.practicum.playlistmaker.search.data.converter.PlaylistDbConverter
@@ -61,6 +63,12 @@ val repositoryModule = module {
         PlaylistRepositoryImpl(
             appDatabase = get(),
             playlistDbConverter = get(),
+        )
+    }
+
+    single<ImageRepository> {
+        ImageRepositoryImpl(
+            application = get(),
         )
     }
 

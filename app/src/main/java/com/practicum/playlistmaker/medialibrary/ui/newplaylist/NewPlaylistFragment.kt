@@ -20,7 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.practicum.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.medialibrary.presenation.newplaylist.NewPlaylistViewModel
+import com.practicum.playlistmaker.medialibrary.presentation.newplaylist.NewPlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewPlaylistFragment : Fragment() {
@@ -48,12 +48,6 @@ class NewPlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val pickMedia = registerMediaPicker()
-
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                showExitConformationDialog()
-            }
-        })
 
         setListeners(pickMedia)
 
@@ -94,7 +88,7 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun handleOnBackPressed() {
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 handleBackNavigation()
             }

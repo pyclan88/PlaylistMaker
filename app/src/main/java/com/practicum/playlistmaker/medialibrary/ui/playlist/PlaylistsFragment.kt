@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
-import com.practicum.playlistmaker.medialibrary.presenation.newplaylist.PlaylistScreenState
-import com.practicum.playlistmaker.medialibrary.presenation.playlist.PlaylistViewModel
+import com.practicum.playlistmaker.medialibrary.presentation.newplaylist.PlaylistScreenState
+import com.practicum.playlistmaker.medialibrary.presentation.playlist.PlaylistViewModel
 import com.practicum.playlistmaker.utils.invisible
 import com.practicum.playlistmaker.utils.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
