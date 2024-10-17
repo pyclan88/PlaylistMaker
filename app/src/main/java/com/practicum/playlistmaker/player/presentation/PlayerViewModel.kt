@@ -4,12 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
 import com.practicum.playlistmaker.player.presentation.PlayerState.PREPARED
 import com.practicum.playlistmaker.player.presentation.PlayerState.PLAYING
 import com.practicum.playlistmaker.player.presentation.PlayerState.PAUSED
 import com.practicum.playlistmaker.player.domain.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.search.domain.db.FavoriteInteractor
+import com.practicum.playlistmaker.search.domain.db.PlaylistInteractor
 import com.practicum.playlistmaker.utils.DateTimeUtil
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -20,20 +23,43 @@ class PlayerViewModel(
     private var track: Track,
     private val playerInteractor: PlayerInteractor,
     private val favoriteInteractor: FavoriteInteractor,
+    private val playlistInteractor: PlaylistInteractor,
+    private val gson: Gson,
 ) : ViewModel() {
 
     private var timerJob: Job? = null
 
     private val screenStateLiveData =
         MutableLiveData(PlayerScreenState(isFavorite = track.isFavorite))
+
     fun observePlayerState(): LiveData<PlayerScreenState> = screenStateLiveData
+
+    private val addingTrackStateLiveData = SingleLiveEvent<AddTrackState>()
+    fun observeAddingTrackState(): LiveData<AddTrackState> = addingTrackStateLiveData
 
     init {
         initMediaPlayer()
+        loadPlaylists()
     }
 
-    override fun onCleared() {
-        playerInteractor.resetPlayer()
+    fun addTrackToPlaylist(playlist: Playlist) {
+        val idListString: String = playlist.idList
+        val idListInt = gson.fromJson(idListString, Array<Int>::class.java).toMutableList()
+        if (idListInt.contains(track.trackId)) {
+            setState(AddTrackState.TrackAlreadyExists(playlist.name))
+        } else {
+            idListInt.add(track.trackId)
+            val gsonRestoredTrackIdList: String = gson.toJson(idListInt)
+            viewModelScope.launch {
+                playlistInteractor.updatePlaylist(playlist, gsonRestoredTrackIdList)
+                playlistInteractor.addTrackToPlaylistTrack(track)
+            }
+            setState(AddTrackState.TrackAdded(playlist.name))
+        }
+    }
+
+    private fun setState(state: AddTrackState) {
+        addingTrackStateLiveData.postValue(state)
     }
 
     fun onPause() {
@@ -67,6 +93,23 @@ class PlayerViewModel(
 
     fun isPreviewUrlNotValid(): Boolean {
         return (track.previewUrl == null)
+    }
+
+    private fun loadPlaylists() {
+        viewModelScope.launch {
+            playlistInteractor.playlists()
+                .collect { playlists ->
+                    processResult(playlists)
+                }
+        }
+    }
+
+    private fun processResult(loadedPlaylists: List<Playlist>?) {
+        val playlists = ArrayList<Playlist>()
+        if (loadedPlaylists != null) {
+            playlists.addAll(loadedPlaylists)
+            updatePlayerScreenState(playlists = playlists)
+        }
     }
 
     private fun initMediaPlayer() {
@@ -112,15 +155,21 @@ class PlayerViewModel(
         progress: String? = null,
         playerState: PlayerState? = null,
         isFavorite: Boolean? = null,
+        playlists: List<Playlist>? = null,
     ) {
         val currentState = screenStateLiveData.value
         val updatedState = currentState?.copy(
             isPlayButtonEnabled = isPlayButtonEnabled ?: currentState.isPlayButtonEnabled,
             progress = progress ?: currentState.progress,
             playerState = playerState ?: currentState.playerState,
-            isFavorite = isFavorite ?: currentState.isFavorite
+            isFavorite = isFavorite ?: currentState.isFavorite,
+            playlists = playlists ?: currentState.playlists,
         )
         screenStateLiveData.value = updatedState
+    }
+
+    override fun onCleared() {
+        playerInteractor.resetPlayer()
     }
 
     companion object {

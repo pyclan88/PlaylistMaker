@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.medialibrary.ui
+package com.practicum.playlistmaker.medialibrary.ui.favoritetracks
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,8 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentFavoritesTracksBinding
-import com.practicum.playlistmaker.medialibrary.presenation.FavoriteScreenState
-import com.practicum.playlistmaker.medialibrary.presenation.FavoriteTracksViewModel
+import com.practicum.playlistmaker.medialibrary.presentation.favoritetracks.FavoriteScreenState
+import com.practicum.playlistmaker.medialibrary.presentation.favoritetracks.FavoriteTracksViewModel
 import com.practicum.playlistmaker.player.domain.model.Track
 import com.practicum.playlistmaker.player.ui.PlayerFragment
 import com.practicum.playlistmaker.search.ui.TrackAdapter

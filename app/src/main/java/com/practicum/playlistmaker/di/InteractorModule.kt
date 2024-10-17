@@ -1,12 +1,16 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.medialibrary.domain.ImageInteractor
+import com.practicum.playlistmaker.medialibrary.domain.impl.ImageInteractorImpl
 import com.practicum.playlistmaker.player.domain.PlayerInteractor
 import com.practicum.playlistmaker.player.domain.impl.PlayerInteractorImpl
 import com.practicum.playlistmaker.search.domain.SearchInteractor
 import com.practicum.playlistmaker.search.domain.db.FavoriteInteractor
 import com.practicum.playlistmaker.search.domain.db.HistoryInteractor
+import com.practicum.playlistmaker.search.domain.db.PlaylistInteractor
 import com.practicum.playlistmaker.search.domain.impl.FavoriteInteractorImpl
 import com.practicum.playlistmaker.search.domain.impl.HistoryInteractorImpl
+import com.practicum.playlistmaker.search.domain.impl.PlaylistInteractorImpl
 import com.practicum.playlistmaker.search.domain.impl.SearchInteractorImpl
 import com.practicum.playlistmaker.settings.domain.SettingsInteractor
 import com.practicum.playlistmaker.settings.domain.impl.SettingsInteractorImpl
@@ -22,34 +26,46 @@ val interactorModule = module {
         )
     }
 
-    single<SearchInteractor> {
+    factory<SearchInteractor> {
         SearchInteractorImpl(
             repository = get(),
         )
     }
 
-    single<SharingInteractor> {
+    factory<SharingInteractor> {
         SharingInteractorImpl(
             context = get(),
             externalNavigator = get(),
         )
     }
 
-    single<SettingsInteractor> {
+    factory<SettingsInteractor> {
         SettingsInteractorImpl(
             settingsRepository = get(),
         )
     }
 
-    single<HistoryInteractor> {
+    factory<HistoryInteractor> {
         HistoryInteractorImpl(
             historyRepository = get(),
         )
     }
 
-    single<FavoriteInteractor> {
+    factory<FavoriteInteractor> {
         FavoriteInteractorImpl(
-            favoriteRepository = get()
+            favoriteRepository = get(),
+        )
+    }
+
+    factory<PlaylistInteractor> {
+        PlaylistInteractorImpl(
+            playlistRepository = get(),
+        )
+    }
+
+    factory<ImageInteractor> {
+        ImageInteractorImpl(
+            imageRepository = get(),
         )
     }
 

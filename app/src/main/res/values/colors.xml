@@ -26,4 +26,6 @@
     <color name="customSearchHintIcon">#AEAFB4</color>
     <color name="customSearchIcons">#AEAFB4</color>
     <color name="customSearchViewStyle">#E6E8EB</color>
+<!--    Playlist edit outline color-->
+    <color name="outlineBoxColor">#DADADA</color>
 </resources>

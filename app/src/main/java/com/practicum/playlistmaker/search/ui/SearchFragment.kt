@@ -1,14 +1,12 @@
 package com.practicum.playlistmaker.search.ui
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -104,9 +102,6 @@ class SearchFragment : Fragment() {
 
         searchViewModel.observeState().observe(viewLifecycleOwner) { state ->
             render(state)
-            val imm =
-                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
         }
     }
 
@@ -173,6 +168,8 @@ class SearchFragment : Fragment() {
         binding.clearHistory.visible()
         binding.searchScroll.visible()
         binding.rvTracks.visible()
+        binding.linearInternetError.invisible()
+        binding.linearNothingFound.invisible()
         trackAdapter?.apply {
             this.tracks.clear()
             this.tracks.addAll(tracks)

@@ -36,7 +36,6 @@
     <dimen name="button_height_36">36dp</dimen>
     <dimen name="button_corner_54">54dp</dimen>
     <dimen name="offset6">6dp</dimen>
-    <dimen name="font_weight500">500</dimen>
     <dimen name="offset42">42dp</dimen>
     <dimen name="offset26">26dp</dimen>
     <dimen name="height36">36dp</dimen>
@@ -57,5 +56,11 @@
     <dimen name="button_width_133">133dp</dimen>
     <dimen name="offset46">46dp</dimen>
     <dimen name="edge05">0.5dp</dimen>
+    <dimen name="dash_gap">36dp</dimen>
+    <dimen name="offset32">32dp</dimen>
+    <dimen name="bottom_sheet_handle_height">4dp</dimen>
+    <dimen name="bottom_sheet_handle_width">50dp</dimen>
+    <dimen name="offset30">30dp</dimen>
+    <dimen name="bottom_sheet_505">505dp</dimen>
 
 </resources>

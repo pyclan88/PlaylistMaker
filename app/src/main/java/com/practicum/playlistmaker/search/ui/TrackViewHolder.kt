@@ -6,11 +6,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.TrackViewBinding
 import com.practicum.playlistmaker.player.domain.model.Track
+import com.practicum.playlistmaker.utils.AppConstants.COVER_CORNER_8
 import org.koin.core.component.KoinComponent
 import java.text.SimpleDateFormat
 import java.util.Locale
-
-const val COVER_CORNER_8 = 8
 
 class TrackViewHolder(
     private val binding: TrackViewBinding,
