@@ -12,7 +12,7 @@ import com.practicum.playlistmaker.search.data.db.entities.PlaylistEntity
 import com.practicum.playlistmaker.search.data.db.entities.PlaylistTrackEntity
 
 @Database(
-    version = 2, entities = [
+    version = 3, entities = [
         HistoryTrackEntity::class,
         FavoriteTrackEntity::class,
         PlaylistEntity::class,

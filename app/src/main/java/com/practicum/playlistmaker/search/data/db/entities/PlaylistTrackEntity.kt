@@ -3,7 +3,7 @@ package com.practicum.playlistmaker.search.data.db.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "playlist_track_entity")
+@Entity(tableName = "playlist_track_table")
 data class PlaylistTrackEntity(
     val trackName: String,
     val artistName: String,
@@ -17,4 +17,5 @@ data class PlaylistTrackEntity(
     val country: String,
     val previewUrl: String?,
     val isFavorite: Boolean,
+    val addedAt: Long = 0,
 )

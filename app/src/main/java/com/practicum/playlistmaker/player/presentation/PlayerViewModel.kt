@@ -31,7 +31,6 @@ class PlayerViewModel(
 
     private val screenStateLiveData =
         MutableLiveData(PlayerScreenState(isFavorite = track.isFavorite))
-
     fun observePlayerState(): LiveData<PlayerScreenState> = screenStateLiveData
 
     private val addingTrackStateLiveData = SingleLiveEvent<AddTrackState>()
@@ -51,7 +50,7 @@ class PlayerViewModel(
             idListInt.add(track.trackId)
             val gsonRestoredTrackIdList: String = gson.toJson(idListInt)
             viewModelScope.launch {
-                playlistInteractor.updatePlaylist(playlist, gsonRestoredTrackIdList)
+                playlistInteractor.addTrackToPlaylist(playlist, gsonRestoredTrackIdList)
                 playlistInteractor.addTrackToPlaylistTrack(track)
             }
             setState(AddTrackState.TrackAdded(playlist.name))

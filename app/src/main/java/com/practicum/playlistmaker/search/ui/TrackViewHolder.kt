@@ -13,7 +13,8 @@ import java.util.Locale
 
 class TrackViewHolder(
     private val binding: TrackViewBinding,
-    private val clickListener: TrackClickListener
+    private val clickListener: TrackClickListener,
+    private val longClickListener: ((Track) -> Unit)?,
 ) : RecyclerView.ViewHolder(binding.root), KoinComponent {
 
     fun bind(track: Track) {
@@ -31,6 +32,11 @@ class TrackViewHolder(
 
         itemView.setOnClickListener {
             clickListener.onTrackClick(track)
+        }
+
+        itemView.setOnLongClickListener {
+            longClickListener?.invoke(track)
+            true
         }
     }
 

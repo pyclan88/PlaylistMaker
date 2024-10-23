@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.PlayerViewBinding
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
+import com.practicum.playlistmaker.medialibrary.ui.playlists.PlaylistClickListener
 import com.practicum.playlistmaker.utils.AppConstants.COVER_CORNER_8
 import com.practicum.playlistmaker.utils.WordUtils
 
@@ -17,16 +18,18 @@ class PlayerViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(playlist: Playlist) {
-        if (playlist.coverPath != null) {
-            val coverUri = Uri.parse(playlist.coverPath)
-            Glide.with(itemView)
-                .load(coverUri)
-                .transform(
-                    CenterCrop(),
-                    RoundedCorners(COVER_CORNER_8)
-                )
-                .into(binding.cover)
-        }
+        binding.cover.setImageDrawable(null)
+
+        val coverUri: Uri? = playlist.coverPath?.let { Uri.parse(it) }
+
+        Glide.with(itemView)
+            .load(coverUri)
+            .placeholder(R.drawable.placeholder)
+            .transform(
+                CenterCrop(),
+                RoundedCorners(COVER_CORNER_8)
+            )
+            .into(binding.cover)
 
         binding.name.text = playlist.name
         val trackCount = playlist.count

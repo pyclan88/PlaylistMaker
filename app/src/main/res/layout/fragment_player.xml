@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/customBackground"
-    android:orientation="vertical"
     tools:context=".player.ui.PlayerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <ImageButton
             android:id="@+id/back_from_audio_player"
@@ -264,12 +262,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
+        android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/overlay"
         android:background="#99000000"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/playlist_bottom_sheet"
@@ -282,12 +279,8 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
-            android:layout_width="@dimen/bottom_sheet_handle_width"
-            android:layout_height="@dimen/bottom_sheet_handle_height"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/offset8"
             android:id="@+id/drag_handler"
-            android:background="@drawable/round_corners8" />
+            style="@style/DragHandler" />
 
         <TextView
             style="@style/BottomSheetHeader"
