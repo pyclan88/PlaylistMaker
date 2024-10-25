@@ -22,4 +22,13 @@ interface PlaylistDao {
     @Query("SELECT name FROM playlist_table")
     suspend fun getAllNames(): List<String>
 
+    @Query("SELECT * FROM playlist_table WHERE id = :id")
+    fun getPlaylistById(id: Long): Flow<PlaylistEntity>
+
+    @Query("SELECT COUNT(*) FROM playlist_table WHERE idList LIKE '%' || :trackId || '%'")
+    suspend fun countPlaylistsContainingTrack(trackId: Int): Int
+
+    @Query("DELETE FROM playlist_table WHERE id = :id")
+    suspend fun deletePlaylist(id: Long)
+
 }

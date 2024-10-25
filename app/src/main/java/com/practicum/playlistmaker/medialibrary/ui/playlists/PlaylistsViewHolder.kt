@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.medialibrary.ui.playlist
+package com.practicum.playlistmaker.medialibrary.ui.playlists
 
 import android.net.Uri
 import androidx.recyclerview.widget.RecyclerView
@@ -11,21 +11,24 @@ import com.practicum.playlistmaker.utils.AppConstants.COVER_CORNER_8
 import com.practicum.playlistmaker.utils.WordUtils
 import com.practicum.playlistmaker.R
 
-class PlaylistViewHolder(
-    private val binding: PlaylistViewBinding
+class PlaylistsViewHolder(
+    private val binding: PlaylistViewBinding,
+    private val clickListener: PlaylistClickListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(playlist: Playlist) {
-        if (playlist.coverPath != null) {
-            val coverUri = Uri.parse(playlist.coverPath)
-            Glide.with(itemView)
-                .load(coverUri)
-                .transform(
-                    CenterCrop(),
-                    RoundedCorners(COVER_CORNER_8)
-                )
-                .into(binding.cover)
-        }
+        binding.cover.setImageDrawable(null)
+
+        val coverUri: Uri? = playlist.coverPath?.let { Uri.parse(it) }
+
+        Glide.with(itemView)
+            .load(coverUri)
+            .placeholder(R.drawable.placeholder)
+            .transform(
+                CenterCrop(),
+                RoundedCorners(COVER_CORNER_8)
+            )
+            .into(binding.cover)
 
         binding.name.text = playlist.name
         val trackCount = playlist.count
@@ -35,6 +38,10 @@ class PlaylistViewHolder(
             itemView.context.getString(R.string.track_many)
         )
         binding.count.text = WordUtils.getDeclension(trackCount, wordForms)
+
+        itemView.setOnClickListener {
+            clickListener.onPlaylistClick(playlist)
+        }
     }
 
 }

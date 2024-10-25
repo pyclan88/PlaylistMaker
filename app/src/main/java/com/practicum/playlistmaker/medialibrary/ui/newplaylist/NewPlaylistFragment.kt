@@ -22,18 +22,21 @@ import com.practicum.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.medialibrary.presentation.newplaylist.NewPlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
-class NewPlaylistFragment : Fragment() {
+open class NewPlaylistFragment : Fragment() {
 
     private var _binding: FragmentNewPlaylistBinding? = null
-    private val binding
+    protected val binding
         get() = _binding!!
 
-    private var coverToPlaylist: String? = null
-    private lateinit var nameToPlaylist: String
-    private var descriptionToPlaylist: String? = null
+    protected var coverToPlaylist: String? = null
+    protected lateinit var nameToPlaylist: String
+    protected var descriptionToPlaylist: String? = null
 
-    private val newPlaylistViewModel by viewModel<NewPlaylistViewModel>()
+    protected open val newPlaylistViewModel by viewModel<NewPlaylistViewModel> {
+        parametersOf(-1L)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,14 +91,16 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun handleOnBackPressed() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                handleBackNavigation()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    handleBackNavigation()
+                }
+            })
     }
 
-    private fun showSameNameToast() {
+    protected fun showSameNameToast() {
         Toast.makeText(
             requireContext(),
             requireContext().getString(R.string.playlist_name_already_exist),
@@ -130,7 +135,7 @@ class NewPlaylistFragment : Fragment() {
             .show()
     }
 
-    private fun handleBackNavigation() {
+    protected open fun handleBackNavigation() {
         if (hasUnsavedChanges()) {
             showExitConformationDialog()
         } else {
@@ -145,7 +150,7 @@ class NewPlaylistFragment : Fragment() {
         return isImageSelected || isNameEntered || isDescriptionFilled
     }
 
-    private fun setListeners(pickMedia: ActivityResultLauncher<PickVisualMediaRequest?>) {
+    protected open fun setListeners(pickMedia: ActivityResultLauncher<PickVisualMediaRequest?>) {
         binding.pickImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
         }

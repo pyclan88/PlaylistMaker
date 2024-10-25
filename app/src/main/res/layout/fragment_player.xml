@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/customBackground"
-    android:orientation="vertical"
     tools:context=".player.ui.PlayerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <ImageButton
             android:id="@+id/back_from_audio_player"
@@ -87,8 +85,8 @@
 
         <ImageView
             android:id="@+id/add_to_playlist_button"
-            android:layout_width="@dimen/playerButton51"
-            android:layout_height="@dimen/playerButton51"
+            android:layout_width="@dimen/player_button_52"
+            android:layout_height="@dimen/player_button_52"
             app:layout_constraintBottom_toBottomOf="@id/play_button"
             app:layout_constraintEnd_toStartOf="@id/play_button"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -109,8 +107,8 @@
 
         <ImageView
             android:id="@+id/add_to_favorite_button"
-            android:layout_width="@dimen/playerButton51"
-            android:layout_height="@dimen/playerButton51"
+            android:layout_width="@dimen/player_button_52"
+            android:layout_height="@dimen/player_button_52"
             app:layout_constraintBottom_toBottomOf="@id/play_button"
             app:layout_constraintEnd_toStartOf="@id/right_top_guideline"
             app:layout_constraintStart_toEndOf="@id/play_button"
@@ -121,7 +119,7 @@
             android:id="@+id/playback_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/offset39"
+            android:layout_marginBottom="@dimen/offset40"
             android:fontFamily="@font/ys_display_medium"
             android:text="@string/audioplayer_playback_time"
             android:textColor="@color/customColorOnBackground"
@@ -264,12 +262,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
+        android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/overlay"
         android:background="#99000000"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/playlist_bottom_sheet"
@@ -278,29 +275,25 @@
         android:background="@drawable/bottom_sheet"
         android:orientation="vertical"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="@dimen/bottom_sheet_505"
+        app:behavior_peekHeight="@dimen/bottom_sheet_height_504"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
-            android:layout_width="@dimen/bottom_sheet_handle_width"
-            android:layout_height="@dimen/bottom_sheet_handle_height"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/offset8"
             android:id="@+id/drag_handler"
-            android:background="@drawable/round_corners8" />
+            style="@style/DragHandler" />
 
         <TextView
             style="@style/BottomSheetHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/offset30"
+            android:layout_marginTop="@dimen/offset32"
             android:text="@string/add_to_playlist" />
 
         <Button
             android:id="@+id/button_new_playlist"
             style="@style/ActionButton"
-            android:layout_width="@dimen/button_width_133"
+            android:layout_width="@dimen/button_width_132"
             android:layout_height="@dimen/button_height_36"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/offset28"

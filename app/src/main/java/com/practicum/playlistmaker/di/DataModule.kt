@@ -55,14 +55,15 @@ val dataModule = module {
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
             .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_2_3)
             .build()
     }
-
 }
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE IF NOT EXISTS playlist_table (
             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             name TEXT NOT NULL,
@@ -72,10 +73,12 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
             count INTEGER NOT NULL,
             lastModifiedAt INTEGER NOT NULL
             )
-        """.trimIndent())
+        """.trimIndent()
+        )
 
-        db.execSQL("""
-            CREATE TABLE IF NOT EXISTS playlist_track_entity (
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS playlist_track_entity ( 
             trackId INTEGER PRIMARY KEY NOT NULL,
             trackName TEXT NOT NULL,
             artistName TEXT NOT NULL,
@@ -88,7 +91,50 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
             previewUrl TEXT,
             isFavorite INTEGER NOT NULL
             )
-        """.trimIndent())
-    }
+        """.trimIndent()
+        )
 
+        db.execSQL(
+            """
+            INSERT INTO playlist_track_table (trackId, trackName, artistName, trackTimeMillis, artworkUrl100, collectionName, releaseDate, primaryGenreName, country, previewUrl, isFavorite)
+            SELECT trackId, trackName, artistName, trackTimeMillis, artworkUrl100, collectionName, releaseDate, primaryGenreName, country, previewUrl, isFavorite 
+            FROM playlist_track_entity
+        """
+        )
+
+        db.execSQL("DROP TABLE IF EXISTS playlist_track_entity")
+    }
+}
+
+val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS playlist_track_table ( 
+            trackId INTEGER PRIMARY KEY NOT NULL,
+            trackName TEXT NOT NULL,
+            artistName TEXT NOT NULL,
+            trackTimeMillis TEXT NOT NULL,
+            artworkUrl100 TEXT NOT NULL,
+            collectionName TEXT NOT NULL,
+            releaseDate TEXT NOT NULL,
+            primaryGenreName TEXT NOT NULL,
+            country TEXT NOT NULL,
+            previewUrl TEXT,
+            isFavorite INTEGER NOT NULL,
+            addedAt INTEGER NOT NULL
+            )
+        """.trimIndent()
+        )
+
+        db.execSQL(
+            """
+            INSERT INTO playlist_track_table (trackId, trackName, artistName, trackTimeMillis, artworkUrl100, collectionName, releaseDate, primaryGenreName, country, previewUrl, isFavorite)
+            SELECT trackId, trackName, artistName, trackTimeMillis, artworkUrl100, collectionName, releaseDate, primaryGenreName, country, previewUrl, isFavorite 
+            FROM playlist_track_entity
+        """
+        )
+
+        db.execSQL("DROP TABLE IF EXISTS playlist_track_entity")
+    }
 }

@@ -17,7 +17,9 @@ class FavoriteTracksViewModel(
     }
 
     private val stateLiveData = MutableLiveData<FavoriteScreenState>()
-    fun observerState(): LiveData<FavoriteScreenState> = stateLiveData
+    fun observerState(): LiveData<FavoriteScreenState> {
+        return stateLiveData
+    }
 
     private fun loadFavoriteTracks() {
         viewModelScope.launch {

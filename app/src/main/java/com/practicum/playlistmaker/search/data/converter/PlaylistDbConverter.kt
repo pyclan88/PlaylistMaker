@@ -44,6 +44,24 @@ class PlaylistDbConverter {
             country = track.country,
             previewUrl = track.previewUrl,
             isFavorite = track.isFavorite,
+            addedAt = track.addedAt,
+        )
+    }
+
+    fun map(track: PlaylistTrackEntity): Track {
+        return Track(
+            trackName = track.trackName,
+            artistName = track.artistName,
+            trackTimeMillis = track.trackTimeMillis,
+            artworkUrl100 = track.artworkUrl100,
+            trackId = track.trackId,
+            collectionName = track.collectionName,
+            primaryGenreName = track.primaryGenreName,
+            releaseDate = track.releaseDate,
+            country = track.country,
+            previewUrl = track.previewUrl,
+            isFavorite = track.isFavorite,
+            addedAt = track.addedAt
         )
     }
 

@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="MainButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="android:backgroundTint">?attr/colorSurface</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/customColorOnSurface</item>
-        <item name="android:textSize">@dimen/text22</item>
-        <item name="cornerRadius">@dimen/corner16</item>
-        <item name="iconGravity">textStart</item>
-        <item name="iconPadding">@dimen/main_menu_icon_padding</item>
-        <item name="iconTint">@color/customColorOnSurface</item>
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textFontWeight">500</item>
-    </style>
-
     <style name="SettingsButtonStyle">
         <item name="android:backgroundTint">@color/customBackground</item>
         <item name="android:gravity">center_vertical</item>
@@ -42,9 +29,16 @@
 
     <style name="ViewTextLower">
         <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="android:textColor">@color/customColorOnBackground</item>
+        <item name="android:textColor">@color/customIconTint</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">@dimen/text11</item>
+    </style>
+
+    <style name="single_playlist">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/yp_black</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/text18</item>
     </style>
 
     <style name="EditTextCursorStyle" parent="Widget.AppCompat.EditText">
@@ -127,6 +121,36 @@
 
     <style name="Alert.Button.Positive" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="backgroundTint">@color/yp_blue</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/yp_white</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/TitleTextStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+    </style>
+    <style name="TitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/yp_black</item>
+        <item name="android:textSize">@dimen/text14</item>
+        <item name="android:fontWeight">400</item>
+    </style>
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/yp_blue</item>"
+        <item name="android:textSize">@dimen/text14</item>
+        <item name="android:fontWeight">500</item>
+    </style>
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/yp_blue</item>
+        <item name="android:textSize">@dimen/text14</item>
+        <item name="android:fontWeight">500</item>
+    </style>
+
+    <style name="DragHandler">
+        <item name="android:layout_width">@dimen/bottom_sheet_handle_width</item>
+        <item name="android:layout_height">@dimen/bottom_sheet_handle_height</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/offset8</item>
+        <item name="android:background">@drawable/round_corners8</item>
     </style>
 
 </resources>

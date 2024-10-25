@@ -16,7 +16,7 @@
         android:id="@+id/landConst"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/offset46"
+        android:paddingTop="@dimen/offset48"
         android:visibility="gone">
 
         <ImageButton
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/offset39"
+            android:layout_marginBottom="@dimen/offset40"
             android:fontFamily="@font/ys_display_medium"
             tools:text="@string/audioplayer_playback_time"
             android:textColor="@color/customColorOnBackground"

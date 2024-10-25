@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.medialibrary.ui.playlist
+package com.practicum.playlistmaker.medialibrary.ui.playlists
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,6 +12,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.medialibrary.domain.model.Playlist
 import com.practicum.playlistmaker.medialibrary.presentation.newplaylist.PlaylistScreenState
 import com.practicum.playlistmaker.medialibrary.presentation.playlist.PlaylistViewModel
+import com.practicum.playlistmaker.medialibrary.ui.singleplaylist.SinglePlaylistFragment
 import com.practicum.playlistmaker.utils.invisible
 import com.practicum.playlistmaker.utils.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +23,7 @@ class PlaylistsFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private var playlistAdapter: PlaylistAdapter? = null
+    private var playlistsAdapter: PlaylistsAdapter? = null
 
     private val playlistViewModel by viewModel<PlaylistViewModel>()
 
@@ -44,8 +45,16 @@ class PlaylistsFragment : Fragment() {
             )
         }
 
-        playlistAdapter = PlaylistAdapter()
-        binding.rvPlaylist.adapter = playlistAdapter
+        playlistsAdapter = PlaylistsAdapter(
+            PlaylistClickListener { playlist ->
+                findNavController().navigate(
+                    R.id.action_mediaLibraryFragment_to_singlePlaylistFragment,
+                    SinglePlaylistFragment.createArgs(playlistId = playlist.id)
+                )
+            }
+        )
+
+        binding.rvPlaylist.adapter = playlistsAdapter
 
         playlistViewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
@@ -63,7 +72,7 @@ class PlaylistsFragment : Fragment() {
     private fun showContent(playlists: List<Playlist>) {
         binding.rvPlaylist.visible()
         binding.itsEmpty.invisible()
-        playlistAdapter?.apply {
+        playlistsAdapter?.apply {
             this.playlists.clear()
             this.playlists.addAll(playlists)
             notifyDataSetChanged()
