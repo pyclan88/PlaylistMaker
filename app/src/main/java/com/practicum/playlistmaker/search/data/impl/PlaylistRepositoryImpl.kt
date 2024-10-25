@@ -49,7 +49,7 @@ class PlaylistRepositoryImpl(
         }
     }
 
-    override suspend fun playlists(): Flow<List<Playlist>> {
+    override suspend fun getAllPlaylists(): Flow<List<Playlist>> {
         val playlistEntitiesFlow = appDatabase.playlistDao().getAllPlaylists()
         val playlistsFlow = playlistEntitiesFlow.map { playlistEntities ->
             playlistEntities.map { playlistEntity ->
@@ -59,7 +59,7 @@ class PlaylistRepositoryImpl(
         return playlistsFlow
     }
 
-    override suspend fun playlistNames(): Flow<List<String>> = flow {
+    override suspend fun getAllNames(): Flow<List<String>> = flow {
         val names: List<String> = appDatabase.playlistDao().getAllNames()
         emit(names)
     }

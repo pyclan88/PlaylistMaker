@@ -15,9 +15,9 @@
 
     <ImageView
         android:id="@+id/cover"
-        android:layout_width="@dimen/cover_size45"
-        android:layout_height="@dimen/cover_size45"
-        android:layout_marginStart="@dimen/offset13"
+        android:layout_width="@dimen/cover_size44"
+        android:layout_height="@dimen/cover_size44"
+        android:layout_marginStart="@dimen/offset12"
         android:layout_marginTop="@dimen/offset8"
         android:layout_marginBottom="@dimen/offset8"
         android:src="@drawable/placeholder"

@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/cover"
-        android:layout_width="@dimen/cover_size45"
-        android:layout_height="@dimen/cover_size45"
+        android:layout_width="@dimen/cover_size44"
+        android:layout_height="@dimen/cover_size44"
         android:layout_marginVertical="@dimen/offset8"
-        android:layout_marginStart="@dimen/offset13"
+        android:layout_marginStart="@dimen/offset12"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

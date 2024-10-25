@@ -18,11 +18,13 @@ class PlaylistViewModel(
     }
 
     private val stateLiveData = MutableLiveData<PlaylistScreenState>()
-    fun observeState(): LiveData<PlaylistScreenState> = stateLiveData
+    fun observeState(): LiveData<PlaylistScreenState> {
+        return stateLiveData
+    }
 
     private fun loadPlaylists() {
         viewModelScope.launch {
-            playlistInteractor.playlists()
+            playlistInteractor.getAllPlaylists()
                 .collect { playlists ->
                     processResult(playlists)
                 }

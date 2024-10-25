@@ -16,7 +16,9 @@ class SearchViewModel(
 ) : ViewModel() {
 
     private val screenStateLiveData = MutableLiveData<SearchScreenState>()
-    fun observeState(): LiveData<SearchScreenState> = screenStateLiveData
+    fun observeState(): LiveData<SearchScreenState> {
+        return screenStateLiveData
+    }
 
     private var latestSearchText: String? = null
 

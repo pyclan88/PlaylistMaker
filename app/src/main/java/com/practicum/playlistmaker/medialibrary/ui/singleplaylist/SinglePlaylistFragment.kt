@@ -325,7 +325,7 @@ class SinglePlaylistFragment : Fragment() {
 
     private fun formatTime(trackList: List<Track>?): String {
         val durationSum: Int? = trackList?.sumOf { it.trackTimeMillis.toInt() } ?: 0
-        val formatedDurationSum = SimpleDateFormat("mm", Locale.getDefault()).format(durationSum)
+        val formatedDurationSum = SimpleDateFormat(TIME_FORMAT, Locale.getDefault()).format(durationSum)
         val wordForms = listOf(
             requireContext().getString(R.string.minute_singular),
             requireActivity().getString(R.string.minute_few),
@@ -337,7 +337,7 @@ class SinglePlaylistFragment : Fragment() {
     private fun formatTrackCount(toInt: Int): String {
         val wordForms = listOf(
             requireContext().getString(R.string.track_singular),
-            requireActivity().getString(R.string.track_few),
+            requireContext().getString(R.string.track_few),
             requireContext().getString(R.string.track_many)
         )
         return WordUtils.getDeclension(toInt, wordForms)
@@ -349,6 +349,7 @@ class SinglePlaylistFragment : Fragment() {
     }
 
     companion object {
+        private const val TIME_FORMAT = "mm"
         private const val ARGS_PLAYLIST_ID = "PLAYLIST_ID_KEY"
 
         fun createArgs(playlistId: Long): Bundle =

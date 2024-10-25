@@ -42,7 +42,7 @@
                 android:id="@+id/themeSwitcher"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingEnd="@dimen/offset6"
+                android:paddingEnd="@dimen/offset8"
                 app:thumbTint="@color/customThumbTint"
                 app:trackTint="@color/customTrackTint" />
 

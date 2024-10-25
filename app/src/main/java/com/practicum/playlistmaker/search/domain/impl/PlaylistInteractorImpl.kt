@@ -22,12 +22,12 @@ class PlaylistInteractorImpl(
         playlistRepository.updatePlaylistAfterTrackRemoval(playlist, idList, trackId)
     }
 
-    override suspend fun playlists(): Flow<List<Playlist>> {
-        return playlistRepository.playlists()
+    override suspend fun getAllPlaylists(): Flow<List<Playlist>> {
+        return playlistRepository.getAllPlaylists()
     }
 
-    override suspend fun playlistNames(): Flow<List<String>> {
-        return playlistRepository.playlistNames()
+    override suspend fun getAllNames(): Flow<List<String>> {
+        return playlistRepository.getAllNames()
     }
 
     override suspend fun createPlaylist(coverPath: String?, name: String, description: String?) {

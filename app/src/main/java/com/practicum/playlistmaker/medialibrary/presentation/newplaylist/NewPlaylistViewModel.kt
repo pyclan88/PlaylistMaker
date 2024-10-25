@@ -25,7 +25,9 @@ class NewPlaylistViewModel(
     private val allPlaylistNames = mutableListOf<String>()
 
     private val playlistStateLiveData = MutableLiveData<Playlist>()
-    fun observePlaylistState(): LiveData<Playlist> = playlistStateLiveData
+    fun observePlaylistState(): LiveData<Playlist> {
+        return playlistStateLiveData
+    }
 
     fun loadPlaylist() {
         if (playlistId.toInt() != -1) {
@@ -40,7 +42,7 @@ class NewPlaylistViewModel(
 
     fun loadNames() {
         viewModelScope.launch {
-            playlistInteractor.playlistNames()
+            playlistInteractor.getAllNames()
                 .collect { names ->
                     allPlaylistNames.addAll(names)
                 }

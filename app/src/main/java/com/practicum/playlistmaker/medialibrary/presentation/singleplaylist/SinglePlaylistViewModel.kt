@@ -17,7 +17,7 @@ class SinglePlaylistViewModel(
     private val gson: Gson,
 ) : ViewModel() {
 
-    private lateinit var playlist: Playlist
+    private var playlist: Playlist? = null
     private lateinit var idList: MutableList<Int>
 
     private val playlistStateLiveData = MutableLiveData<Playlist>()
@@ -34,25 +34,23 @@ class SinglePlaylistViewModel(
         }
     }
 
-    fun observeCombinedState(): LiveData<Pair<Playlist?, List<Track>?>> = combinedLiveData
+    fun observeCombinedState(): LiveData<Pair<Playlist?, List<Track>?>> {
+        return combinedLiveData
+    }
 
     fun deleteTrack(track: Track) {
-        val idListJson = updateIdList(track)
-        viewModelScope.launch {
-            playlistInteractor.removeTrackFromPlaylist(playlist, idListJson, track.trackId)
-        }
+        if (playlist != null) {
+            val idListJson = updateIdList(track)
+            viewModelScope.launch {
+                playlistInteractor.removeTrackFromPlaylist(playlist!!, idListJson, track.trackId)
+            }
+        } else throw IllegalArgumentException("Playlist is null!")
     }
 
     fun deletePlaylist(playlist: Playlist?) {
         viewModelScope.launch {
             playlistInteractor.deletePlaylist(playlist!!)
         }
-    }
-
-    private fun updateIdList(track: Track): String {
-        idList.remove(track.trackId)
-        val idListJson = gson.toJson(idList)
-        return idListJson
     }
 
     private fun loadPlaylist() {
@@ -63,6 +61,12 @@ class SinglePlaylistViewModel(
                     loadTracks(playlistFromBd)
                 }
         }
+    }
+
+    private fun updateIdList(track: Track): String {
+        idList.remove(track.trackId)
+        val idListJson = gson.toJson(idList)
+        return idListJson
     }
 
     private fun loadTracks(playlist: Playlist) {
